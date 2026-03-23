@@ -486,9 +486,9 @@ header {
                 > img{width:36px;height:28px;}
                 gap:15px;
                 .icon-div{
-                    width:162px;
+                    width:245px;
                     display:grid;
-                    grid-template-columns:1fr 1fr;
+                    grid-template-columns:1fr 170px;
                     grid-template-rows:1fr 1fr;
                     grid-template-areas:
                     "ava name-rev"
@@ -1133,9 +1133,7 @@ footer {
   }
 }
 
-/* ============================================
-   IPAD PRO (1024x1366) - PORTRAIT
-   ============================================ */
+
 @media (min-width: 1024px) and (max-width: 1024px) and (min-height: 1366px) {
   
   // HEADER
@@ -1286,9 +1284,7 @@ footer {
   }
 }
 
-/* ============================================
-   GENERAL TABLET ADJUSTMENTS (BOTH DEVICES)
-   ============================================ */
+
 @media (min-width: 1024px) and (max-width: 1024px) {
   
   // Ensure smooth scrolling for horizontal content
