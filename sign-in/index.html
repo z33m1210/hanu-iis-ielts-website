@@ -3,57 +3,294 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>BandPath – Sign In</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <style>
+        /* ── Toast notification ─────────────────────────── */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            min-width: 280px;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .toast.success { background: #16a34a; }
+        .toast.error   { background: #dc2626; }
+
+        /* ── Input error state ──────────────────────────── */
+        input.input-error {
+            border-color: #dc2626 !important;
+            background: #fff5f5;
+        }
+        .field-error {
+            font-size: 12px;
+            color: #dc2626;
+            margin-top: 4px;
+        }
+
+        /* ── Loading spinner on button ──────────────────── */
+        .btn-loading {
+            position: relative;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+
+        /* ── Show/hide password toggle ──────────────────── */
+        .pw-wrapper {
+            position: relative;
+        }
+        .pw-wrapper input {
+            width: 100%;
+        }
+        .pw-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #9ca3af;
+            padding: 0;
+            line-height: 1;
+        }
+
+        /* ── Forgot password link ───────────────────────── */
+        .forgot-link {
+            font-size: 13px;
+            color: #2563eb;
+            text-align: right;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .forgot-link:hover { text-decoration: underline; }
+
+        /* ── Redirect link ──────────────────────────────── */
+        .redirect-text {
+            text-align: center;
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        .redirect-text a {
+            color: #2563eb;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .redirect-text a:hover { text-decoration: underline; }
+    </style>
 </head>
 <body>
     <header>
         <div class="head-start">
             <div class="logo">
                 <img src="./logo (1).png">
-                <span>Byway</span>
+                <span>BandPath</span>
             </div>
-            <p>Categories</p>
+            <p>IELTS Skills</p>
             <div class="search-container">
                 <img src="./search-icon.png">
-                <input type="text" class="search-box" placeholder="Search courses">
+                <input type="text" class="search-box" placeholder="Search IELTS courses">
             </div>
-            <p>Teach on Byway</p>
+            <p>Teach on BandPath</p>
         </div>
         <div class="func-bar">
             <img src="./Frame 427318762.png">
             <div class="button-container">
-                <button class="login-btn">Log In</button>
-                <button class="signup-btn">Sign Up</button>
+                <button class="login-btn" onclick="window.location.href='../sign-in/index.html'">Log In</button>
+                <button class="signup-btn" onclick="window.location.href='../sign-up/index.html'">Sign Up</button>
             </div>
         </div>
-    </header> 
+    </header>
+
     <div class="main-page">
         <div class="sign-in-field">
+
             <p>Sign in to your account</p>
+
+            <!-- Email field -->
             <div class="email-field">
-                <p>Email</p>
-                <input type="text" placeholder="Username or Email id">
+                <p>Email or Username</p>
+                <input type="text" id="identifier" placeholder="Username or Email" autocomplete="username">
+                <span class="field-error" id="err-identifier"></span>
             </div>
+
+            <!-- Password field -->
             <div class="password-field">
                 <p>Password</p>
-                <input type="text" placeholder="Password">
+                <div class="pw-wrapper">
+                    <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+                    <button class="pw-toggle" onclick="togglePw('password', this)" tabindex="-1">👁</button>
+                </div>
+                <span class="field-error" id="err-password"></span>
             </div>
-            <button>Sign in</button>
+
+            <!-- Forgot password -->
+            <a class="forgot-link" href="#" onclick="forgotPassword(event)">Forgot password?</a>
+
+            <!-- Sign in button -->
+            <button id="signin-btn" onclick="handleSignIn()">Sign in</button>
+
+            <!-- Redirect to sign up -->
+            <p class="redirect-text">
+                Don't have an account? <a href="../sign-up/index.html">Sign up</a>
+            </p>
+
+            <!-- Divider -->
             <div class="sep-line"><span>Or sign in with</span></div>
+
+            <!-- Social buttons -->
             <div class="sign-in-other">
-                <button id="button1"><img src="./google.png"></button>
-                <button id="button2"><img src="./facebook.png"></button>
-                <button id="button3"><img src='./microsoft.png'></button>
+                <button id="button1" onclick="socialLogin('Google')"><img src="./google.png"></button>
+                <button id="button2" onclick="socialLogin('Facebook')"><img src="./facebook.png"></button>
+                <button id="button3" onclick="socialLogin('Microsoft')"><img src="./microsoft.png"></button>
             </div>
+
         </div>
-    <img src="./2db5e36f46d740f4e31aba5b5364cdf2ea7d24db.jpg">
-        
+
+        <img src="./2db5e36f46d740f4e31aba5b5364cdf2ea7d24db.jpg" alt="IELTS study">
     </div>
-    
-    
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script src="../auth.js"></script>
+    <script>
+        // ── Redirect nếu đã đăng nhập ────────────────────
+        if (Auth.isLoggedIn()) {
+            window.location.href = '../category/index.html';
+        }
+
+        // ── Toggle show/hide password ─────────────────────
+        function togglePw(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const isText = input.type === 'text';
+            input.type = isText ? 'password' : 'text';
+            btn.textContent = isText ? '👁' : '🙈';
+        }
+
+        // ── Clear error trạng thái ────────────────────────
+        function clearErrors() {
+            ['identifier','password'].forEach(id => {
+                document.getElementById(id)?.classList.remove('input-error');
+            });
+            ['err-identifier','err-password'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = '';
+            });
+        }
+
+        function showFieldError(fieldId, errId, msg) {
+            document.getElementById(fieldId)?.classList.add('input-error');
+            const err = document.getElementById(errId);
+            if (err) err.textContent = msg;
+        }
+
+        // ── Toast ─────────────────────────────────────────
+        function showToast(msg, type = 'success') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className   = `toast ${type} show`;
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        // ── Handle sign in ────────────────────────────────
+        function handleSignIn() {
+            clearErrors();
+            const identifier = document.getElementById('identifier').value.trim();
+            const password   = document.getElementById('password').value;
+            const btn        = document.getElementById('signin-btn');
+
+            // Client-side basic check
+            let hasError = false;
+            if (!identifier) {
+                showFieldError('identifier','err-identifier','Vui lòng nhập email hoặc username.');
+                hasError = true;
+            }
+            if (!password) {
+                showFieldError('password','err-password','Vui lòng nhập mật khẩu.');
+                hasError = true;
+            }
+            if (hasError) return;
+
+            // Loading state
+            btn.classList.add('btn-loading');
+            btn.textContent = 'Signing in...';
+
+            // Simulate slight delay for UX
+            setTimeout(() => {
+                const result = Auth.login({ identifier, password });
+                btn.classList.remove('btn-loading');
+                btn.textContent = 'Sign in';
+
+                if (result.ok) {
+                    showToast(`👋 Welcome back, ${result.user.firstName}!`, 'success');
+                    sessionStorage.setItem('bp_welcome', `👋 Welcome back, ${result.user.firstName}!`);
+                    setTimeout(() => {
+                        window.location.href = '../category/index.html';
+                    }, 1200);
+                } else {
+                    showToast(result.message, 'error');
+                    if (result.message.includes('Tài khoản')) {
+                        showFieldError('identifier','err-identifier', result.message);
+                    } else if (result.message.includes('Mật khẩu')) {
+                        showFieldError('password','err-password', result.message);
+                    }
+                }
+            }, 600);
+        }
+
+        // ── Enter key support ─────────────────────────────
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Enter') handleSignIn();
+        });
+
+        // ── Forgot password ───────────────────────────────
+        function forgotPassword(e) {
+            e.preventDefault();
+            const email = document.getElementById('identifier').value.trim();
+            if (!email) {
+                showFieldError('identifier','err-identifier','Nhập email của bạn trước, rồi click Forgot password.');
+                return;
+            }
+            showToast(`📧 Nếu email "${email}" tồn tại, link reset sẽ được gửi.`, 'success');
+        }
+
+        // ── Social login placeholder ──────────────────────
+        function socialLogin(provider) {
+            showToast(`${provider} login sẽ sớm được hỗ trợ!`, 'success');
+        }
+    </script>
 </body>
 </html>

@@ -3,69 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>BandPath – Sign Up</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <style>
+        /* ── Toast ──────────────────────────────────────── */
+        .toast {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            min-width: 280px;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 14px; font-weight: 500;
+            color: white; z-index: 9999;
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+        .toast.show  { opacity: 1; transform: translateY(0); }
+        .toast.success { background: #16a34a; }
+        .toast.error   { background: #dc2626; }
+
+        /* ── Input errors ───────────────────────────────── */
+        input.input-error { border-color: #dc2626 !important; background: #fff5f5; }
+        .field-error { font-size: 12px; color: #dc2626; margin-top: 3px; display: block; }
+
+        /* ── Password strength bar ──────────────────────── */
+        .strength-bar {
+            height: 4px; border-radius: 4px;
+            margin-top: 6px;
+            background: #e2e8f0;
+            overflow: hidden;
+        }
+        .strength-fill {
+            height: 100%; width: 0;
+            border-radius: 4px;
+            transition: width 0.3s ease, background 0.3s ease;
+        }
+        .strength-label { font-size: 11px; color: #64748b; margin-top: 3px; }
+
+        /* ── Show/hide password ─────────────────────────── */
+        .pw-wrapper { position: relative; }
+        .pw-wrapper input { width: 100%; }
+        .pw-toggle {
+            position: absolute; right: 12px; top: 50%;
+            transform: translateY(-50%);
+            background: none; border: none; cursor: pointer;
+            font-size: 15px; color: #9ca3af; padding: 0; line-height: 1;
+        }
+
+        /* ── Loading ────────────────────────────────────── */
+        .btn-loading { position: relative; pointer-events: none; opacity: 0.8; }
+        .btn-loading::after {
+            content: ''; position: absolute;
+            right: 16px; top: 50%; transform: translateY(-50%);
+            width: 16px; height: 16px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-top-color: white; border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+
+        /* ── Redirect link ──────────────────────────────── */
+        .redirect-text {
+            text-align: center; font-size: 13px; color: #6b7280;
+            grid-area: CA; margin-top: -8px;
+        }
+        .redirect-text a { color: #2563eb; font-weight: 600; text-decoration: none; }
+        .redirect-text a:hover { text-decoration: underline; }
+    </style>
 </head>
 <body>
     <header>
         <div class="head-start">
             <div class="logo">
                 <img src="./logo (1).png">
-                <span>Byway</span>
+                <span>BandPath</span>
             </div>
-            <p>Categories</p>
+            <p>IELTS Skills</p>
             <div class="search-container">
                 <img src="./search-icon.png">
-                <input type="text" class="search-box" placeholder="Search courses">
+                <input type="text" class="search-box" placeholder="Search IELTS courses">
             </div>
-            <p>Teach on Byway</p>
+            <p>Teach on BandPath</p>
         </div>
         <div class="func-bar">
             <img src="./Frame 427318762.png">
             <div class="button-container">
-                <button class="login-btn">Log In</button>
-                <button class="signup-btn">Sign Up</button>
+                <button class="login-btn" onclick="window.location.href='../sign-in/index.html'">Log In</button>
+                <button class="signup-btn" onclick="window.location.href='../sign-up/index.html'">Sign Up</button>
             </div>
         </div>
-    </header> 
+    </header>
+
     <div class="main-page">
-        <img src="./af8ea6962e98d38a250ef334d5e66706b6031b27 (1).jpg">
+        <img src="./af8ea6962e98d38a250ef334d5e66706b6031b27 (1).jpg" alt="IELTS study">
+
         <div class="sign-up-section">
-            <p>Sign up to your account</p>
+            <p>Create your BandPath account</p>
+
+            <!-- Full name -->
             <div class="first-name">
                 <p>Full name</p>
-                <input type="text" placeholder="First name">
+                <input type="text" id="firstName" placeholder="First name" autocomplete="given-name">
+                <span class="field-error" id="err-firstName"></span>
             </div>
             <div class="last-name">
-                <input type="text" placeholder="Last name">
+                <input type="text" id="lastName" placeholder="Last name" autocomplete="family-name">
+                <span class="field-error" id="err-lastName"></span>
             </div>
+
+            <!-- Username -->
             <div class="Username">
                 <p>Username</p>
-                <input type="text" placeholder="Username">
+                <input type="text" id="username" placeholder="Username" autocomplete="username">
+                <span class="field-error" id="err-username"></span>
             </div>
+
+            <!-- Email -->
             <div class="Email">
                 <p>Email</p>
-                <input type="text" placeholder="Email ID">
+                <input type="email" id="email" placeholder="Email ID" autocomplete="email">
+                <span class="field-error" id="err-email"></span>
             </div>
+
+            <!-- Password -->
             <div class="Password">
                 <p>Password</p>
-                <input type="text" placeholder="Password">
+                <div class="pw-wrapper">
+                    <input type="password" id="password" placeholder="Password"
+                           autocomplete="new-password" oninput="checkStrength(this.value)">
+                    <button class="pw-toggle" onclick="togglePw('password',this)" tabindex="-1">👁</button>
+                </div>
+                <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+                <span class="strength-label" id="strength-label"></span>
+                <span class="field-error" id="err-password"></span>
             </div>
+
+            <!-- Confirm password -->
             <div class="C-Password">
                 <p>Confirm Password</p>
-                <input type="text" placeholder="Confirm Password">
+                <div class="pw-wrapper">
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password"
+                           autocomplete="new-password">
+                    <button class="pw-toggle" onclick="togglePw('confirmPassword',this)" tabindex="-1">👁</button>
+                </div>
+                <span class="field-error" id="err-confirmPassword"></span>
             </div>
-            <button>Create Account</button>
+
+            <!-- Create account button -->
+            <button id="signup-btn" onclick="handleSignUp()">Create Account</button>
+
+            <!-- Redirect -->
+            <p class="redirect-text">
+                Already have an account? <a href="../sign-in/index.html">Sign in</a>
+            </p>
+
+            <!-- Divider -->
             <div class="sep-line"><span>Or sign up with</span></div>
+
+            <!-- Social -->
             <div class="sign-in-other">
-                <button id="button1"><img src="./google.png"></button>
-                <button id="button2"><img src="./facebook.png"></button>
-                <button id="button3"><img src='./microsoft.png'></button>
+                <button id="button1" onclick="socialLogin('Google')"><img src="./google.png"></button>
+                <button id="button2" onclick="socialLogin('Facebook')"><img src="./facebook.png"></button>
+                <button id="button3" onclick="socialLogin('Microsoft')"><img src="./microsoft.png"></button>
             </div>
         </div>
     </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script src="../auth.js"></script>
+    <script>
+        // ── Redirect nếu đã đăng nhập ────────────────────
+        if (Auth.isLoggedIn()) {
+            window.location.href = '../category/index.html';
+        }
+
+        // ── Toggle password visibility ────────────────────
+        function togglePw(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const isText = input.type === 'text';
+            input.type = isText ? 'password' : 'text';
+            btn.textContent = isText ? '👁' : '🙈';
+        }
+
+        // ── Password strength checker ─────────────────────
+        function checkStrength(pw) {
+            const fill  = document.getElementById('strength-fill');
+            const label = document.getElementById('strength-label');
+            let score = 0;
+            if (pw.length >= 6)               score++;
+            if (pw.length >= 10)              score++;
+            if (/[A-Z]/.test(pw))             score++;
+            if (/[0-9]/.test(pw))             score++;
+            if (/[^A-Za-z0-9]/.test(pw))     score++;
+
+            const levels = [
+                { w:'0%',   bg:'#e2e8f0', text:'' },
+                { w:'20%',  bg:'#ef4444', text:'Rất yếu' },
+                { w:'40%',  bg:'#f97316', text:'Yếu' },
+                { w:'60%',  bg:'#eab308', text:'Trung bình' },
+                { w:'80%',  bg:'#22c55e', text:'Mạnh' },
+                { w:'100%', bg:'#16a34a', text:'Rất mạnh 💪' },
+            ];
+            const lvl = levels[Math.min(score, 5)];
+            fill.style.width      = lvl.w;
+            fill.style.background = lvl.bg;
+            label.textContent     = lvl.text;
+            label.style.color     = lvl.bg;
+        }
+
+        // ── Clear errors ──────────────────────────────────
+        function clearErrors() {
+            ['firstName','lastName','username','email','password','confirmPassword'].forEach(id => {
+                document.getElementById(id)?.classList.remove('input-error');
+                const err = document.getElementById('err-' + id);
+                if (err) err.textContent = '';
+            });
+        }
+
+        function showFieldError(fieldId, msg) {
+            document.getElementById(fieldId)?.classList.add('input-error');
+            const err = document.getElementById('err-' + fieldId);
+            if (err) err.textContent = msg;
+        }
+
+        // ── Toast ─────────────────────────────────────────
+        function showToast(msg, type = 'success') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className   = `toast ${type} show`;
+            setTimeout(() => t.classList.remove('show'), 3500);
+        }
+
+        // ── Handle sign up ────────────────────────────────
+        function handleSignUp() {
+            clearErrors();
+
+            const firstName       = document.getElementById('firstName').value.trim();
+            const lastName        = document.getElementById('lastName').value.trim();
+            const username        = document.getElementById('username').value.trim();
+            const email           = document.getElementById('email').value.trim();
+            const password        = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const btn             = document.getElementById('signup-btn');
+
+            // Client-side validation
+            let hasError = false;
+            if (!firstName)  { showFieldError('firstName', 'Vui lòng nhập tên.'); hasError = true; }
+            if (!lastName)   { showFieldError('lastName',  'Vui lòng nhập họ.');  hasError = true; }
+            if (!username)   { showFieldError('username',  'Vui lòng nhập username.'); hasError = true; }
+            if (!email)      { showFieldError('email',     'Vui lòng nhập email.'); hasError = true; }
+            if (!password)   { showFieldError('password',  'Vui lòng nhập mật khẩu.'); hasError = true; }
+            if (!confirmPassword) { showFieldError('confirmPassword', 'Vui lòng xác nhận mật khẩu.'); hasError = true; }
+            if (hasError) return;
+
+            if (password !== confirmPassword) {
+                showFieldError('confirmPassword', 'Mật khẩu xác nhận không khớp.');
+                return;
+            }
+
+            // Loading state
+            btn.classList.add('btn-loading');
+            btn.textContent = 'Creating account...';
+
+            setTimeout(() => {
+                const result = Auth.register({ firstName, lastName, username, email, password, confirmPassword });
+                btn.classList.remove('btn-loading');
+                btn.textContent = 'Create Account';
+
+                if (result.ok) {
+                    showToast(`🎉 Chào mừng ${firstName} đến với BandPath!`, 'success');
+                    sessionStorage.setItem('bp_welcome', `🎉 Chào mừng ${firstName} đến với BandPath!`);
+                    setTimeout(() => {
+                        window.location.href = '../category/index.html';
+                    }, 1500);
+                } else {
+                    showToast(result.message, 'error');
+                    // Map error to specific field
+                    if (result.message.includes('Username'))        showFieldError('username', result.message);
+                    else if (result.message.includes('Email'))      showFieldError('email', result.message);
+                    else if (result.message.includes('Mật khẩu'))  showFieldError(result.message.includes('xác nhận') ? 'confirmPassword' : 'password', result.message);
+                }
+            }, 700);
+        }
+
+        // ── Social login placeholder ──────────────────────
+        function socialLogin(provider) {
+            showToast(`${provider} login sẽ sớm được hỗ trợ!`, 'success');
+        }
+    </script>
 </body>
 </html>

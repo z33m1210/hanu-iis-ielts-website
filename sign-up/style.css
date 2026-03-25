@@ -212,7 +212,7 @@ header .func-bar .button-container button.signup-btn:hover {
   gap: 4px;
   display: flex;
   flex-direction: column;
-  align-self: end;
+  align-self: center;
 }
 .main-page .sign-up-section .last-name input {
   width: 100%;
