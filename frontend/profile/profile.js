@@ -1,4 +1,4 @@
-// profile-page/profile.js
+// profile/profile.js
 document.addEventListener('DOMContentLoaded', async () => {
     if (typeof Auth === 'undefined' || !Auth.isLoggedIn()) {
         window.location.href = '../sign-in/index.html';
@@ -81,3 +81,4 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 });
+

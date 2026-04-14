@@ -4,7 +4,7 @@
 // ============================================================
 
 const Auth = (() => {
-    const API_URL = 'http://localhost:5000/api';
+    const API_URL = '/api';
     const SESSION_KEY = 'bandpath_session';
     const TOKEN_KEY = 'bandpath_token';
 

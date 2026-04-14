@@ -194,7 +194,7 @@ const extras = coursesData
         </div>
     `;
     card.addEventListener('click', () => {
-        window.location.href = `../course-page/course-page.html?id=${c.id}`;
+        window.location.href = `../course/course-page.html?id=${c.id}`;
     });
     relatedContainer.appendChild(card);
 });

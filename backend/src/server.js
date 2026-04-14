@@ -18,11 +18,11 @@ app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 
 // Static frontend files
-app.use(express.static(path.join(__dirname, '../../')));
+app.use(express.static(path.join(__dirname, '../../frontend')));
 
-// Root route redirects to home-page
+// Root route redirects to the home page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../home-page/index.html'));
+  res.redirect('/');
 });
 
 app.use(errorHandler);

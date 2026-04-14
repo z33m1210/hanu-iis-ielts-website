@@ -10,8 +10,8 @@ const coursesPerPage = 9;
 // ── Path to the course detail page ───────────────────────
 // Adjust this relative path to match your folder structure:
 //   category page is in:  .../category/index.html
-//   course page is in:    .../course-page/course-page.html
-const COURSE_PAGE_PATH = '../course-page/course-page.html';
+//   course page is in:    .../course/course-page.html
+const COURSE_PAGE_PATH = '../course/course-page.html';
 
 // ── Render course cards ───────────────────────────────────
 function renderCourses() {
