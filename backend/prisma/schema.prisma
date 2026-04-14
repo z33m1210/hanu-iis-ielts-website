@@ -13,8 +13,16 @@ model User {
   password  String
   name      String?
   avatarUrl String?
-  role      String   @default("STUDENT")
+  role      String   @default("STUDENT") // STUDENT, TEACHER, ADMIN
   isActive  Boolean  @default(true)
+  
+  // Instructor specific fields
+  title              String?
+  bio                String?
+  instructorReviews  String?  @default("0")
+  instructorStudents String?  @default("0")
+  instructorCourses  String?  @default("0")
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -24,10 +32,20 @@ model User {
 }
 
 model Course {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String?
-  price       Float    @default(0.0)
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String?
+  price         Float    @default(0.0)
+  originalPrice Float?
+  rating        Float    @default(0.0)
+  ratingCount   Int      @default(0)
+  hours         Int      @default(0)
+  lectures      Int      @default(0)
+  level         String   @default("Beginner") // Beginner, Intermediate, Advanced, All Levels
+  category      String   @default("full") // listening, reading, writing, speaking, full
+  chapters      Int      @default(0)
+  image         String?
+  
   teacherId   Int
   isPublished Boolean  @default(false)
   createdAt   DateTime @default(now())

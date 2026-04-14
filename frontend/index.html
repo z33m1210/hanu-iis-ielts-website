@@ -26,8 +26,8 @@
         <div class="func-bar">
             <img src="./Frame 427318762.png">
             <div class="button-container">
-                <button onclick="window.location.href='./sign-in/index.html'" class="login-btn">Log In</button>
-                <button onclick="window.location.href='./sign-up/index.html'" class="signup-btn">Sign Up</button>
+                <button onclick="window.location.href='./sign-in/'" class="login-btn">Log In</button>
+                <button onclick="window.location.href='./sign-up/'" class="signup-btn">Sign Up</button>
             </div>
         </div>
     </header>
@@ -80,145 +80,53 @@
         </div>
 
         <div class="top-field">
-            <div class="top-cat">
+            <div class="top-cat" id="topCategories">
                 <p>Top Categories</p>
-                <a>See all</a>
+                <a href="./category/">See all</a>
                 <div class="ast">
                     <div class="img-bino">
                         <img src="./Icon (3).png">
                     </div>
                     <p>IELTS Listening</p>
-                    <p>18 Courses</p>
+                    <p id="count-listening">18 Courses</p>
                 </div>
                 <div class="dev">
                     <div class="img-dev">
                         <img src="./code-browser.png">
                     </div>
                     <p>IELTS Reading</p>
-                    <p>22 Courses</p>
+                    <p id="count-reading">22 Courses</p>
                 </div>
                 <div class="Market">
                     <div class="mar-img">
                         <img src="./briefcase-02.png">
                     </div>
                     <p>IELTS Writing</p>
-                    <p>20 Courses</p>
+                    <p id="count-writing">20 Courses</p>
                 </div>
                 <div class="Physic">
                     <div class="phy-img">
                         <img src="./Icon.png">
                     </div>
                     <p>IELTS Speaking</p>
-                    <p>15 Courses</p>
+                    <p id="count-speaking">15 Courses</p>
                 </div>
             </div>
 
             <div class="top-cour">
                 <p>Top Courses</p>
-                <a>See all</a>
-                <div class="c1">
-                    <img src="./Rectangle 1080.png">
-                    <p>IELTS Writing Task 2 Masterclass</p>
-                    <p>By Sarah Mitchell</p>
-                    <div class="rtin">
-                        <img src="./ratings.png">
-                        <p>3,450 Ratings</p>
-                    </div>
-                    <p>30 Total Hours. 210 Lectures. All Levels</p>
-                    <p>$129.9</p>
-                </div>
-                <div class="c2">
-                    <img src="./Rectangle 1080.png">
-                    <p>IELTS Speaking Band 7+ Blueprint</p>
-                    <p>By James Whitfield</p>
-                    <div class="rtin">
-                        <img src="./ratings.png">
-                        <p>2,810 Ratings</p>
-                    </div>
-                    <p>18 Total Hours. 140 Lectures. Intermediate</p>
-                    <p>$109.9</p>
-                </div>
-                <div class="c3">
-                    <img src="./Rectangle 1080.png">
-                    <p>Complete IELTS Academic Prep</p>
-                    <p>By Emily Nguyen</p>
-                    <div class="rtin">
-                        <img src="./ratings.png">
-                        <p>4,200 Ratings</p>
-                    </div>
-                    <p>45 Total Hours. 320 Lectures. All Levels</p>
-                    <p>$189.9</p>
-                </div>
-                <div class="c4">
-                    <img src="./Rectangle 1080.png">
-                    <p>IELTS Reading Speed & Strategies</p>
-                    <p>By David Chen</p>
-                    <div class="rtin">
-                        <img src="./ratings.png">
-                        <p>1,980 Ratings</p>
-                    </div>
-                    <p>12 Total Hours. 95 Lectures. Beginner</p>
-                    <p>$89.9</p>
+                <a href="./category/">See all</a>
+                <div id="topCoursesContainer" style="display: contents;">
+                    <!-- Dynamically injected -->
+                    <p style="grid-column: 1/-1; text-align: center; padding: 20px;">Loading courses...</p>
                 </div>
             </div>
 
             <div class="top-ins">
                 <p>Top Instructors</p>
-                <a>See all</a>
-                <div class="ins1">
-                    <img src="./Rectangle 1136.png">
-                    <p>Sarah Mitchell</p>
-                    <p>IELTS Writing Expert</p>
-                    <div id="sep-line-ins"></div>
-                    <div class="str-n-num">
-                        <img src="./icon-1star.png">
-                        <p>4.9</p>
-                    </div>
-                    <p>12,400 students</p>
-                </div>
-                <div class="ins2">
-                    <img src="./Rectangle 1136.png">
-                    <p>James Whitfield</p>
-                    <p>IELTS Speaking Coach</p>
-                    <div id="sep-line-ins"></div>
-                    <div class="str-n-num">
-                        <img src="./icon-1star.png">
-                        <p>4.8</p>
-                    </div>
-                    <p>9,300 students</p>
-                </div>
-                <div class="ins3">
-                    <img src="./Rectangle 1136.png">
-                    <p>Emily Nguyen</p>
-                    <p>Academic IELTS Trainer</p>
-                    <div id="sep-line-ins"></div>
-                    <div class="str-n-num">
-                        <img src="./icon-1star.png">
-                        <p>4.9</p>
-                    </div>
-                    <p>18,700 students</p>
-                </div>
-                <div class="ins4">
-                    <img src="./Rectangle 1136.png">
-                    <p>David Chen</p>
-                    <p>IELTS Reading Specialist</p>
-                    <div id="sep-line-ins"></div>
-                    <div class="str-n-num">
-                        <img src="./icon-1star.png">
-                        <p>4.7</p>
-                    </div>
-                    <p>7,100 students</p>
-                </div>
-                <div class="ins5">
-                    <img src="./Rectangle 1136.png">
-                    <p>Anna Petrova</p>
-                    <p>IELTS Listening Trainer</p>
-                    <div id="sep-line-ins"></div>
-                    <div class="str-n-num">
-                        <img src="./icon-1star.png">
-                        <p>4.8</p>
-                    </div>
-                    <p>5,900 students</p>
+                <a href="#">See all</a>
+                <div id="topInstructorsContainer" style="display: contents;">
+                    <!-- Dynamically injected -->
                 </div>
             </div>
         </div>
@@ -349,6 +257,9 @@
         </div>
     </footer>
 
+    <script src="auth.js"></script>
+    <script src="cart.js"></script>
+    <script src="header-auth.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

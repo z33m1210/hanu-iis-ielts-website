@@ -102,6 +102,8 @@ const Auth = (() => {
             id:        user.id,
             firstName: firstName,
             lastName:  lastName,
+            fullName:  user.name || `${firstName} ${lastName}`.trim(),
+            username:  user.email.split('@')[0], // Basic fallback for Admin Panel
             email:     user.email,
             role:      user.role,
             avatar:    avatar,
@@ -109,6 +111,11 @@ const Auth = (() => {
         };
         localStorage.setItem(SESSION_KEY, JSON.stringify(session));
         localStorage.setItem(TOKEN_KEY, token);
+    }
+
+    /** Lấy user đang đăng nhập (null nếu chưa) - Alias for getSession */
+    function getUser() {
+        return getSession();
     }
 
     /** Lấy user đang đăng nhập (null nếu chưa) */
@@ -135,26 +142,50 @@ const Auth = (() => {
     /** Utility func to make authenticated requests */
     async function fetchWithAuth(endpoint, options = {}) {
         const token = getToken();
-        if (!token) {
-            logout();
-            window.location.href = '../sign-in/index.html';
-            throw new Error('No token found');
-        }
-        
+        // Allow public routes (e.g. /courses) without redirection to login
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
             ...(options.headers || {})
         };
 
-        const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
-        if (res.status === 401 || res.status === 403) {
-            logout();
-            window.location.href = '../sign-in/index.html';
-            throw new Error('Unauthorized');
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
         }
-        return res.json();
+        
+        try {
+            const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+            
+            if (res.status === 401 || res.status === 403) {
+                logout();
+                window.location.href = '../sign-in/';
+                throw new Error('Unauthorized');
+            }
+
+            // Check content type before parsing
+            const contentType = res.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                const data = await res.json();
+                if (!res.ok) {
+                    console.warn(`API Error [${res.status}]:`, data.message);
+                }
+                return data;
+            } else {
+                // Not JSON (could be a 500 HTML error or something else)
+                const text = await res.text();
+                console.error(`API Non-JSON Response [${res.status}]:`, text.substring(0, 200));
+                return { 
+                    success: false, 
+                    message: `Server Error (${res.status}). Please try again later.` 
+                };
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            return { 
+                success: false, 
+                message: 'Không thể kết nối đến máy chủ.' 
+            };
+        }
     }
 
-    return { register, login, logout, getSession, getToken, isLoggedIn, fetchWithAuth, API_URL };
+    return { register, login, logout, getSession, getUser, getToken, isLoggedIn, fetchWithAuth, API_URL };
 })();

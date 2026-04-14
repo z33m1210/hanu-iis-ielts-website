@@ -3,205 +3,91 @@
 //  Reads ?id=N from URL, populates the page, handles all UX
 // ============================================================
 
-// ── 1. Read course ID from URL ────────────────────────────
-const params   = new URLSearchParams(window.location.search);
-const courseId = parseInt(params.get('id')) || 1;
-const course   = coursesData.find(c => c.id === courseId) || coursesData[0];
+async function initCoursePage() {
+    // ── 1. Read course ID from URL ────────────────────────────
+    const params   = new URLSearchParams(window.location.search);
+    const courseId = parseInt(params.get('id')) || 1;
 
-// ── 2. Populate header / breadcrumb ──────────────────────
-document.getElementById('breadcrumb-title').textContent = course.title;
-document.title = `BandPath – ${course.title}`;
+    try {
+        const data = await Auth.fetchWithAuth(`/courses/${courseId}`);
+        if (!data.success) throw new Error('Course not found');
+        
+        const course = data.course;
 
-// ── 3. Populate Main Title block ─────────────────────────
-document.getElementById('course-title').textContent   = course.title;
-document.getElementById('course-desc').textContent    = course.description;
-document.getElementById('course-rating').textContent  = course.rating.toFixed(1);
-document.getElementById('course-reviews').textContent = `(${course.ratingCount.toLocaleString()} ratings)`;
-document.getElementById('course-meta').textContent    =
-    `${course.hours} Total Hours. ${course.lectures} Lectures. ${course.level}`;
-document.getElementById('course-author').textContent  = course.author;
+        // ── 2. Populate header / breadcrumb ──────────────────────
+        document.getElementById('breadcrumb-title').textContent = course.title;
+        document.title = `BandPath – ${course.title}`;
 
-// ── 4. Populate price card ────────────────────────────────
-document.getElementById('price-sale').textContent     = `$${course.price}`;
-document.getElementById('price-original').textContent = `$${course.originalPrice}`;
+        // ── 3. Populate Main Title block ─────────────────────────
+        document.getElementById('course-title').textContent   = course.title;
+        document.getElementById('course-desc').textContent    = course.description || 'No description available.';
+        document.getElementById('course-rating').textContent  = course.rating.toFixed(1);
+        document.getElementById('course-reviews').textContent = `(${course.ratingCount.toLocaleString()} ratings)`;
+        document.getElementById('course-meta').textContent    =
+            `${course.hours} Total Hours. ${course.lectures} Lectures. ${course.level}`;
+        document.getElementById('course-author').textContent  = course.teacher.name;
 
-// style original price as strikethrough
-document.getElementById('price-original').style.cssText =
-    'text-decoration:line-through; color:#9ca3af; font-size:14px;';
-
-// ── 5. Populate Instructor section ───────────────────────
-document.getElementById('instructor-name').textContent    = course.author;
-document.getElementById('instructor-title').textContent   = course.instructorTitle;
-document.getElementById('instructor-reviews').textContent = `${course.instructorReviews} Reviews`;
-document.getElementById('instructor-students').textContent= `${course.instructorStudents} Students`;
-document.getElementById('instructor-courses').textContent = `${course.instructorCourses} Courses`;
-document.getElementById('instructor-bio').textContent     = course.instructorBio;
-
-// ── 6. Build Syllabus (TOC) ───────────────────────────────
-const tocContainer = document.getElementById('toc-container');
-tocContainer.innerHTML = '';
-
-// reset grid to match actual number of chapters
-const tocCount = course.syllabus.length;
-tocContainer.style.cssText = `
-    width:100%; border:1px solid #d1d5db; border-radius:8px;
-    display:grid; grid-template-columns:1fr;
-    grid-template-rows:repeat(${tocCount}, 1fr); height:auto;
-`;
-
-course.syllabus.forEach((item, index) => {
-    const card = document.createElement('div');
-    card.className = 'toc-card-dyn';
-    card.style.cssText = `
-        display:flex; align-items:center; gap:10px; padding:14px 25px;
-        cursor:pointer; transition:background 0.2s;
-        ${index < tocCount - 1 ? 'border-bottom:1px solid #d1d5db;' : ''}
-    `;
-    card.innerHTML = `
-        <img src="./chevron-down.png" alt="toggle"
-             style="width:24px;height:24px;transition:transform 0.3s;">
-        <p style="flex:1;font-weight:500;">${item.title}</p>
-        <p style="margin-left:auto;padding-right:15px;color:#6b7280;font-size:14px;">
-            ${item.lessons} Lessons
-        </p>
-        <p style="margin-right:25px;color:#6b7280;font-size:14px;">${item.duration}</p>
-    `;
-    // toggle expand animation on click
-    card.addEventListener('click', () => {
-        const arrow = card.querySelector('img');
-        const isOpen = card.dataset.open === 'true';
-        arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
-        card.dataset.open = isOpen ? 'false' : 'true';
-        card.style.background = isOpen ? '' : '#f0f7ff';
-    });
-    tocContainer.appendChild(card);
-});
-
-// ── 7. Build Reviews ─────────────────────────────────────
-const allReviews = course.reviews || [];
-let shownReviews = 3;
-
-function renderReviews() {
-    const list = document.getElementById('review-list');
-    list.innerHTML = '';
-
-    allReviews.slice(0, shownReviews).forEach(rev => {
-        const div = document.createElement('div');
-        div.className = 'review1';    // reuses existing CSS
-        div.style.marginBottom = '16px';
-        div.innerHTML = `
-            <div class="ava">
-                <img src="./Ellipse 19.png">
-                <p style="font-weight:600;">${rev.name}</p>
-            </div>
-            <div class="star-rating">
-                <img src="./Star 3.png" style="width:18px;height:17px;">
-                <p style="margin-left:4px;">${rev.stars}</p>
-            </div>
-            <p>${rev.date}</p>
-            <p>${rev.comment}</p>
-        `;
-        list.appendChild(div);
-    });
-
-    document.getElementById('more-reviews').style.display =
-        shownReviews >= allReviews.length ? 'none' : 'inline-block';
-    document.getElementById('avg-rating').textContent = course.rating.toFixed(1);
-}
-
-function loadMoreReviews() {
-    shownReviews += 3;
-    renderReviews();
-}
-
-renderReviews();
-
-// ── 8. Build FAQ ─────────────────────────────────────────
-const faqList = document.getElementById('faq-list');
-(course.faq || []).forEach((item, i) => {
-    const block = document.createElement('div');
-    block.className  = 'faq-item';
-    block.style.cssText = `
-        border:1px solid #e2e8f0; border-radius:10px;
-        margin-bottom:12px; overflow:hidden;
-    `;
-    block.innerHTML = `
-        <div class="faq-q" style="
-            display:flex; justify-content:space-between; align-items:center;
-            padding:16px 20px; cursor:pointer; background:#fff;
-            font-weight:600; font-size:15px; user-select:none;
-        ">
-            <span>${item.q}</span>
-            <span class="faq-arrow" style="transition:transform 0.3s; font-size:12px;">▼</span>
-        </div>
-        <div class="faq-a" style="
-            max-height:0; overflow:hidden;
-            transition:max-height 0.35s ease, padding 0.35s ease;
-            background:#f8fafc; font-size:14px; color:#374151;
-        ">
-            <p style="padding:0 20px;">${item.a}</p>
-        </div>
-    `;
-    const header  = block.querySelector('.faq-q');
-    const content = block.querySelector('.faq-a');
-    const arrow   = block.querySelector('.faq-arrow');
-
-    header.addEventListener('click', () => {
-        const isOpen = content.style.maxHeight !== '0px' && content.style.maxHeight !== '';
-        // close all others
-        document.querySelectorAll('.faq-a').forEach(el => {
-            el.style.maxHeight = '0px';
-            el.style.padding   = '0 20px';
-        });
-        document.querySelectorAll('.faq-arrow').forEach(el => {
-            el.style.transform = 'rotate(0deg)';
-        });
-        if (!isOpen) {
-            content.style.maxHeight = content.scrollHeight + 40 + 'px';
-            content.style.padding   = '14px 20px';
-            arrow.style.transform   = 'rotate(180deg)';
+        // ── 4. Populate price card ────────────────────────────────
+        document.getElementById('price-sale').textContent     = `$${course.price}`;
+        if (course.originalPrice) {
+            document.getElementById('price-original').textContent = `$${course.originalPrice}`;
+            document.getElementById('price-original').style.cssText = 'text-decoration:line-through; color:#9ca3af; font-size:14px;';
+        } else {
+            document.getElementById('price-original').style.display = 'none';
         }
-    });
-    faqList.appendChild(block);
-});
 
-// ── 9. Build Related Courses ─────────────────────────────
-const relatedContainer = document.getElementById('related-courses');
-const related = coursesData
-    .filter(c => c.id !== course.id && c.category === course.category)
-    .slice(0, 4);
+        // ── 5. Populate Instructor section ───────────────────────
+        document.getElementById('instructor-name').textContent    = course.teacher.name;
+        document.getElementById('instructor-title').textContent   = course.teacher.title || 'IELTS Expert';
+        document.getElementById('instructor-reviews').textContent = `${course.teacher.instructorReviews || '0'} Reviews`;
+        document.getElementById('instructor-students').textContent= `${course.teacher.instructorStudents || '0'} Students`;
+        document.getElementById('instructor-courses').textContent = `${course.teacher.instructorCourses || '0'} Courses`;
+        document.getElementById('instructor-bio').textContent     = course.teacher.bio || 'Professional IELTS Instructor.';
 
-// fallback: if same category has < 4, fill from others
-const extras = coursesData
-    .filter(c => c.id !== course.id && c.category !== course.category)
-    .slice(0, 4 - related.length);
+        // ── 6. Build Syllabus (Mocked mapping for now as DB doesn't have syllabus nested yet) ────────────────
+        // If syllabus data is needed, we could add a Syllabus model later. 
+        // For now, let's keep the mock cards if data is missing, or just show a message.
+        if (!course.syllabus || course.syllabus.length === 0) {
+             const tocContainer = document.getElementById('toc-container');
+             tocContainer.innerHTML = '<p style="padding: 20px;">Syllabus content is coming soon.</p>';
+        }
 
-[...related, ...extras].forEach(c => {
-    const card = document.createElement('div');
-    card.className = 'course-card';
-    card.style.cursor = 'pointer';
-    card.innerHTML = `
-        <img class="bk-card" src="./Rectangle 1080.png">
-        <div class="course-body">
-            <h3>${c.title}</h3>
-            <p class="author">By ${c.author}</p>
-            <div class="rating">
-                <img id="course-star" src="./Rating.png">
-                <p>(${c.ratingCount.toLocaleString()} Ratings)</p>
-            </div>
-            <p class="meta">${c.hours} Total Hours. ${c.lectures} Lectures. ${c.level}</p>
-            <p class="price">$${c.price}</p>
-        </div>
-    `;
-    card.addEventListener('click', () => {
-        window.location.href = `../course/course-page.html?id=${c.id}`;
-    });
-    relatedContainer.appendChild(card);
-});
+        // Related courses logic can be simplified or fetched from another endpoint
+        loadRelatedCourses(course.category, course.id);
 
-// ── 10. Tab navbar – smooth scroll ───────────────────────
+    } catch (err) {
+        console.error('Error loading course:', err);
+        document.body.innerHTML = `<div style="text-align:center; padding: 100px;"><h1>Course Not Found</h1><a href="../category/">Back to courses</a></div>`;
+    }
+}
+
+async function loadRelatedCourses(category, currentId) {
+    try {
+        const data = await Auth.fetchWithAuth(`/courses?category=${category}`);
+        if (data.success) {
+            const relatedContainer = document.getElementById('related-courses');
+            const related = data.courses.filter(c => c.id !== currentId).slice(0, 4);
+            
+            relatedContainer.innerHTML = related.map(c => `
+                <div class="course-card" onclick="window.location.href='../course/course-page.html?id=${c.id}'" style="cursor:pointer">
+                    <img class="bk-card" src="./Rectangle 1080.png">
+                    <div class="course-body">
+                        <h3>${c.title}</h3>
+                        <p class="author">By ${c.teacher.name}</p>
+                        <div class="rating">
+                            <img id="course-star" src="./Rating.png" style="width: auto; height: 16px;">
+                            <p>(${c.ratingCount.toLocaleString()} Ratings)</p>
+                        </div>
+                        <p class="meta">${c.hours} Total Hours. ${c.lectures} Lectures. ${c.level}</p>
+                        <p class="price">$${c.price}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+    } catch (err) {}
+}
+
 function scrollToSection(sectionId, checkbox) {
-    // uncheck all other checkboxes
     ['btn1','btn2','btn3','btn4'].forEach(id => {
         const el = document.getElementById(id);
         if (el && el !== checkbox) el.checked = false;
@@ -212,17 +98,54 @@ function scrollToSection(sectionId, checkbox) {
     }
 }
 
-// ── 11. Add to cart / Buy now ─────────────────────────────
 function addToCart() {
     const btn = document.querySelector('.add-to-cart-button');
-    btn.textContent = '✓ Added to Cart!';
-    btn.style.background = 'linear-gradient(180deg, #166534, #14532d)';
-    setTimeout(() => {
-        btn.textContent = 'Add To Cart';
-        btn.style.background = '';
-    }, 2000);
+    const title = document.getElementById('course-title').textContent;
+    const priceText = document.getElementById('price-sale').textContent;
+    const priceValue = parseFloat(priceText.replace('$', ''));
+    const author = document.getElementById('course-author').textContent;
+    const meta = document.getElementById('course-meta').textContent;
+    
+    // Get ID from URL
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get('id'));
+
+    const course = {
+        id,
+        title,
+        price: priceValue,
+        author,
+        meta,
+        image: './Rectangle 1080.png'
+    };
+
+    if (Cart.addItem(course)) {
+        btn.textContent = '✓ Added to Cart!';
+        btn.style.background = 'linear-gradient(180deg, #166534, #14532d)';
+        setTimeout(() => {
+            btn.textContent = 'Add To Cart';
+            btn.style.background = '';
+        }, 2000);
+    } else {
+        btn.textContent = 'Already in Cart';
+        setTimeout(() => {
+            btn.textContent = 'Add To Cart';
+        }, 2000);
+    }
 }
 
 function buyNow() {
-    alert(`Enrolling in: ${course.title}\nPrice: $${course.price}\n\nRedirecting to checkout...`);
+    const session = Auth.getSession();
+    if (!session) {
+        window.location.href = '../sign-in/';
+        return;
+    }
+    
+    // Make sure it's in cart first
+    addToCart();
+    
+    // Redirect to checkout
+    window.location.href = '../checkout/checkout.html';
 }
+
+document.addEventListener('DOMContentLoaded', initCoursePage);

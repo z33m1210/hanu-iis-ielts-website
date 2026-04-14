@@ -128,8 +128,8 @@
         <div class="func-bar">
             <img src="./Frame 427318762.png">
             <div class="button-container">
-                <button class="login-btn" onclick="window.location.href='../sign-in/index.html'">Log In</button>
-                <button class="signup-btn" onclick="window.location.href='../sign-up/index.html'">Sign Up</button>
+                <button class="login-btn" onclick="window.location.href='../sign-in/'">Log In</button>
+                <button class="signup-btn" onclick="window.location.href='../sign-up/'">Sign Up</button>
             </div>
         </div>
     </header>
@@ -164,7 +164,7 @@
 
             <!-- Redirect to sign up -->
             <p class="redirect-text">
-                Don't have an account? <a href="../sign-up/index.html">Sign up</a>
+                Don't have an account? <a href="../sign-up/">Sign up</a>
             </p>
 
             <!-- Divider -->
@@ -189,7 +189,9 @@
     <script>
         // ── Redirect nếu đã đăng nhập ────────────────────
         if (Auth.isLoggedIn()) {
-            window.location.href = '../category/index.html';
+            const user = Auth.getSession();
+            const redirectPath = user && user.role === 'ADMIN' ? '../admin/index.html' : '../category/';
+            window.location.href = redirectPath;
         }
 
         // ── Toggle show/hide password ─────────────────────
@@ -255,9 +257,10 @@
 
             if (result.ok) {
                 showToast(`👋 Welcome back, ${result.user.firstName}!`, 'success');
-                sessionStorage.setItem('bp_welcome', `👋 Welcome back, ${result.user.firstName}!`);
+                sessionStorage.setItem('bp_welcome', `👋 Welcome back, ${result.user.name}!`);
                 setTimeout(() => {
-                    window.location.href = '../category/index.html';
+                    const redirectPath = result.user.role === 'ADMIN' ? '../admin/index.html' : '../category/';
+                    window.location.href = redirectPath;
                 }, 1200);
             } else {
                 showToast(result.message, 'error');

@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const user = Auth.getUser();
     if (!user || user.role !== 'ADMIN') {
         alert('Access Denied: Admin privileges required.');
-        window.location.href = '../sign-in/index.html';
+        window.location.href = '../sign-in/';
         return;
     }
 
@@ -17,10 +17,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 3. Fetch Users
     async function fetchUsers() {
         try {
-            const data = await Auth.fetchWithAuth('/api/admin/users');
-            allUsers = data;
-            renderStats(data);
-            renderUserTable(data);
+            const data = await Auth.fetchWithAuth('/admin/users');
+            if (data.success) {
+                allUsers = data.users;
+                renderStats(allUsers);
+                renderUserTable(allUsers);
+            } else {
+                throw new Error(data.message || 'Failed to fetch users');
+            }
         } catch (error) {
             console.error('Error fetching users:', error);
             document.getElementById('userTableBody').innerHTML = `
@@ -36,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 4. Render Functions
     function renderStats(users) {
         document.getElementById('totalUsersCount').textContent = users.length;
-        document.getElementById('activeStudentsCount').textContent = users.filter(u => u.status === 'ACTIVE' && u.role === 'STUDENT').length;
+        document.getElementById('activeStudentsCount').textContent = users.filter(u => u.isActive && u.role === 'STUDENT').length;
         document.getElementById('teachersCount').textContent = users.filter(u => u.role === 'TEACHER').length;
     }
 
@@ -51,9 +55,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             <tr>
                 <td>
                     <div class="user-info">
-                        <div class="admin-avatar" style="background-color: ${getRandomColor()}">${user.username.charAt(0).toUpperCase()}</div>
+                        <div class="admin-avatar" style="background-color: ${getRandomColor()}">${(user.name || user.email).charAt(0).toUpperCase()}</div>
                         <div>
-                            <p class="user-name">${user.fullName || user.username}</p>
+                            <p class="user-name">${user.name || 'N/A'}</p>
                             <p class="user-email">${user.email}</p>
                         </div>
                     </div>
@@ -62,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td>${new Date(user.createdAt).toLocaleDateString()}</td>
                 <td>
                     <label class="switch">
-                        <input type="checkbox" ${user.status === 'ACTIVE' ? 'checked' : ''} onchange="handleStatusToggle('${user.id}', this.checked)">
+                        <input type="checkbox" ${user.isActive ? 'checked' : ''} onchange="handleStatusToggle('${user.id}', this.checked)">
                         <span class="slider"></span>
                     </label>
                 </td>
@@ -85,16 +89,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 5. Action Handlers
     window.handleStatusToggle = async (userId, isChecked) => {
-        const newStatus = isChecked ? 'ACTIVE' : 'SUSPENDED';
         try {
-            await Auth.fetchWithAuth(`/api/admin/users/${userId}/status`, {
+            await Auth.fetchWithAuth(`/admin/users/${userId}/status`, {
                 method: 'PUT',
-                body: JSON.stringify({ status: newStatus })
+                body: JSON.stringify({ isActive: isChecked })
             });
             // Update local state and re-render stats if necessary
-            const user = allUsers.find(u => u.id === userId);
-            if (user) user.status = newStatus;
-            renderStats(allUsers);
+            const user = allUsers.find(u => u.id == userId);
+            if (user) {
+                user.isActive = isChecked;
+                renderStats(allUsers);
+            }
         } catch (error) {
             alert('Failed to update user status: ' + error.message);
             // Revert checkbox if failed
@@ -106,10 +111,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) return;
         
         try {
-            await Auth.fetchWithAuth(`/api/admin/users/${userId}`, {
+            await Auth.fetchWithAuth(`/admin/users/${userId}`, {
                 method: 'DELETE'
             });
-            allUsers = allUsers.filter(u => u.id !== userId);
+            allUsers = allUsers.filter(u => u.id != userId);
             renderUserTable(allUsers);
             renderStats(allUsers);
         } catch (error) {
@@ -125,8 +130,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('userSearch').addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase();
         const filtered = allUsers.filter(user => 
-            (user.fullName && user.fullName.toLowerCase().includes(query)) ||
-            user.username.toLowerCase().includes(query) ||
+            (user.name && user.name.toLowerCase().includes(query)) ||
             user.email.toLowerCase().includes(query)
         );
         renderUserTable(filtered);
@@ -135,6 +139,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Logout
     document.getElementById('logoutBtn').addEventListener('click', () => {
         Auth.logout();
+        window.location.href = '../sign-in/';
     });
 
     // Helper: Random color for placeholders

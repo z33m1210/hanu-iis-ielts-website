@@ -10,3 +10,5 @@ backend/.env
 backend/dist/
 backend/prisma/*.db
 backend/prisma/*.sqlite-journal
+backend/*.db
+backend/*.sqlite*

@@ -5,6 +5,11 @@
 // ============================================================
 
 (function initHeader() {
+    // Determine depth to set base path reliably
+    const pathname = window.location.pathname;
+    // Count directory depth (ignoring the filename like index.html)
+    const isRoot = pathname === '/' || pathname === '/index.html' || pathname.endsWith('/frontend/') || pathname.endsWith('/frontend/index.html');
+    const basePath = isRoot ? '.' : '..';
 
     // Màu avatar xoay vòng theo chữ cái đầu
     const AVATAR_COLORS = {
@@ -204,17 +209,17 @@
                             <div class="ava-dropdown-email">${session.email}</div>
                         </div>
                     </div>
-                    <a class="ava-dropdown-item" href="../profile/index.html">
+                    <a class="ava-dropdown-item" href="${basePath}/profile/profile.html">
                         <span class="item-icon">👤</span> My Profile
                     </a>
-                    <a class="ava-dropdown-item" href="../my-courses/index.html">
+                    <a class="ava-dropdown-item" href="${basePath}/profile/profile.html#enrolled-courses-section">
                         <span class="item-icon">📚</span> My Courses
                     </a>
-                    <a class="ava-dropdown-item" href="../wishlist/index.html">
+                    <a class="ava-dropdown-item" href="${basePath}/wishlist/">
                         <span class="item-icon">❤️</span> Wishlist
                     </a>
                     <div class="ava-dropdown-divider"></div>
-                    <a class="ava-dropdown-item" href="../settings/index.html">
+                    <a class="ava-dropdown-item" href="${basePath}/settings/">
                         <span class="item-icon">⚙️</span> Settings
                     </a>
                     <div class="ava-dropdown-divider"></div>
@@ -251,9 +256,9 @@
                 btnContainer.className = 'auth-buttons';
                 btnContainer.innerHTML = `
                     <button class="login-btn"
-                        onclick="window.location.href='../sign-in/index.html'">Log In</button>
+                        onclick="window.location.href='${basePath}/sign-in/'">Log In</button>
                     <button class="signup-btn"
-                        onclick="window.location.href='../sign-up/index.html'">Sign Up</button>
+                        onclick="window.location.href='${basePath}/sign-up/'">Sign Up</button>
                 `;
                 funcBar.appendChild(btnContainer);
             }
@@ -274,16 +279,69 @@
             toast.classList.remove('show');
             setTimeout(() => {
                 toast.remove();
-                window.location.href = '../sign-in/index.html';
+                window.location.href = `${basePath}/sign-in/`;
             }, 400);
         }, 1500);
     };
 
+    function initAddons() {
+        const searchInput = document.querySelector('.search-box');
+        if (searchInput) {
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    const query = searchInput.value.trim();
+                    if (query) {
+                        window.location.href = `${basePath}/category/?search=${encodeURIComponent(query)}`;
+                    }
+                }
+            });
+        }
+
+        const cartIcon = document.querySelector('img[src*="Frame 427318762"]');
+        if (cartIcon) {
+            cartIcon.style.cursor = 'pointer';
+            cartIcon.title = 'View Shopping Cart';
+            cartIcon.addEventListener('click', () => {
+                window.location.href = `${basePath}/shopping-cart/`;
+            });
+        }
+
+        const heartIcon = document.querySelector('img[src*="heart.png"]');
+        if (heartIcon) {
+            heartIcon.style.cursor = 'pointer';
+            heartIcon.title = 'Wishlist';
+            heartIcon.addEventListener('click', () => {
+                window.location.href = `${basePath}/wishlist/`;
+            });
+        }
+
+        const notifIcon = document.querySelector('img[src*="Icon.png"]');
+        if (notifIcon) {
+            notifIcon.style.cursor = 'pointer';
+            notifIcon.title = 'Notifications';
+            notifIcon.addEventListener('click', () => {
+                window.location.href = `${basePath}/profile/profile.html`;
+            });
+        }
+
+        const logo = document.querySelector('.logo');
+        if (logo) {
+            logo.style.cursor = 'pointer';
+            logo.addEventListener('click', () => {
+                window.location.href = `${basePath}/`;
+            });
+        }
+    }
+
     // ── Run after DOM ready ───────────────────────────────
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', render);
+        document.addEventListener('DOMContentLoaded', () => {
+            render();
+            initAddons();
+        });
     } else {
         render();
+        initAddons();
     }
 
 })();
