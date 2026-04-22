@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,11 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
     <header>
         <div class="head-start">
@@ -21,7 +25,6 @@
                 <img src="./search-icon.png">
                 <input type="text" class="search-box" placeholder="Search IELTS courses">
             </div>
-            <p>Teach on BandPath</p>
         </div>
         <div class="func-bar">
             <img src="./Frame 427318762.png">
@@ -36,8 +39,10 @@
         <div class="home-page-banner">
             <div class="left-info">
                 <p>Your Path to Band 9 Starts Here</p>
-                <p>Welcome to BandPath — Vietnam's most trusted IELTS learning platform. Whether you're aiming for Band 6.5 for university, Band 7.5 for immigration, or a perfect Band 9, our expert-led courses and proven methodology will get you there. Start your IELTS journey with confidence today.</p>
-                <button>Explore IELTS Courses</button>
+                <p>Welcome to BandPath — Vietnam's most trusted IELTS learning platform. Whether you're aiming for Band
+                    6.5 for university, Band 7.5 for immigration, or a perfect Band 9, our expert-led courses and proven
+                    methodology will get you there. Start your IELTS journey with confidence today.</p>
+                <button onclick="window.location.href='./category/'">Explore IELTS Courses</button>
             </div>
             <div class="deco-right">
                 <img src="./Frame 427318990 (1).png">
@@ -83,30 +88,30 @@
             <div class="top-cat" id="topCategories">
                 <p>Top Categories</p>
                 <a href="./category/">See all</a>
-                <div class="ast">
+                <div class="ast" onclick="window.location.href='./category/?category=listening'" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
                     <div class="img-bino">
                         <img src="./Icon (3).png">
                     </div>
                     <p>IELTS Listening</p>
                     <p id="count-listening">18 Courses</p>
                 </div>
-                <div class="dev">
+                <div class="dev" onclick="window.location.href='./category/?category=reading'" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
                     <div class="img-dev">
                         <img src="./code-browser.png">
                     </div>
                     <p>IELTS Reading</p>
                     <p id="count-reading">22 Courses</p>
                 </div>
-                <div class="Market">
+                <div class="Market" onclick="window.location.href='./category/?category=writing'" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
                     <div class="mar-img">
                         <img src="./briefcase-02.png">
                     </div>
                     <p>IELTS Writing</p>
                     <p id="count-writing">20 Courses</p>
                 </div>
-                <div class="Physic">
+                <div class="Physic" onclick="window.location.href='./category/?category=speaking'" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
                     <div class="phy-img">
-                        <img src="./Icon.png">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px; color: #3b82f6; display: block; margin: auto;"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line></svg>
                     </div>
                     <p>IELTS Speaking</p>
                     <p id="count-speaking">15 Courses</p>
@@ -122,21 +127,16 @@
                 </div>
             </div>
 
-            <div class="top-ins">
-                <p>Top Instructors</p>
-                <a href="#">See all</a>
-                <div id="topInstructorsContainer" style="display: contents;">
-                    <!-- Dynamically injected -->
-                </div>
-            </div>
+
         </div>
 
         <div class="cus-rev">
-            <p>What our students say about us</p>
+            <p>What our customers say about us</p>
             <div class="lower-rev">
                 <div class="cus-box">
                     <img src="./Vector.png">
-                    <p>"BandPath completely transformed my IELTS preparation. I went from Band 5.5 to Band 7.5 in just 3 months. The structured lessons and mock tests are incredibly effective!"</p>
+                    <p>"BandPath completely transformed my IELTS preparation. I went from Band 5.5 to Band 7.5 in just 3
+                        months. The structured lessons and mock tests are incredibly effective!"</p>
                     <div class="icon-div">
                         <img src="./Ellipse 61.png">
                         <p>Minh Tran</p>
@@ -145,7 +145,8 @@
                 </div>
                 <div class="cus-box">
                     <img src="./Vector.png">
-                    <p>"The IELTS Writing masterclass on BandPath is phenomenal. My Task 2 essays improved dramatically and I finally understood what examiners are really looking for."</p>
+                    <p>"The IELTS Writing masterclass on BandPath is phenomenal. My Task 2 essays improved dramatically
+                        and I finally understood what examiners are really looking for."</p>
                     <div class="icon-div">
                         <img src="./Ellipse 61.png">
                         <p>Linh Pham</p>
@@ -154,7 +155,8 @@
                 </div>
                 <div class="cus-box">
                     <img src="./Vector.png">
-                    <p>"I was nervous about the Speaking test, but BandPath's coaches gave me real confidence. I scored Band 8 in Speaking — something I never thought was possible for me!"</p>
+                    <p>"I was nervous about the Speaking test, but BandPath's coaches gave me real confidence. I scored
+                        Band 8 in Speaking — something I never thought was possible for me!"</p>
                     <div class="icon-div">
                         <img src="./Ellipse 61.png">
                         <p>Duc Nguyen</p>
@@ -163,7 +165,8 @@
                 </div>
                 <div class="cus-box">
                     <img src="./Vector.png">
-                    <p>"BandPath's Reading strategies saved me so much time during the exam. I finished all sections with time to spare and got Band 8 in Reading. Highly recommend!"</p>
+                    <p>"BandPath's Reading strategies saved me so much time during the exam. I finished all sections
+                        with time to spare and got Band 8 in Reading. Highly recommend!"</p>
                     <div class="icon-div">
                         <img src="./Ellipse 61.png">
                         <p>Thu Ha</p>
@@ -172,7 +175,8 @@
                 </div>
                 <div class="cus-box">
                     <img src="./Vector.png">
-                    <p>"As a working professional, I needed flexible learning. BandPath's on-demand videos and live mock tests fit perfectly into my schedule. Achieved Band 7 overall!"</p>
+                    <p>"As a working professional, I needed flexible learning. BandPath's on-demand videos and live mock
+                        tests fit perfectly into my schedule. Achieved Band 7 overall!"</p>
                     <div class="icon-div">
                         <img src="./Ellipse 61.png">
                         <p>Hoang Long</p>
@@ -182,23 +186,7 @@
             </div>
         </div>
 
-        <div class="cnt-page">
-            <div class="CI">
-                <img src="./image.png">
-                <div class="CI-des">
-                    <p>Become an IELTS Instructor</p>
-                    <p>Share your IELTS expertise with thousands of students on BandPath. We provide all the tools, support, and resources you need to build your teaching career online.</p>
-                    <button>Start Your Teaching Journey</button>
-                </div>
-            </div>
-            <div class="CC">
-                <div class="CC-des">
-                    <p>Achieve your target band score today</p>
-                    <p>Thousands of students across Vietnam and the world have already hit their IELTS goals with BandPath. Your band score breakthrough is one course away.</p>
-                    <button>Browse IELTS Courses</button>
-                </div>
-                <img src="./image (1).png">
-            </div>
+
         </div>
     </section>
 
@@ -210,7 +198,8 @@
                     <span>BandPath</span>
                 </div>
                 <p>Empowering IELTS learners to achieve their dream band score.</p>
-                <p>BandPath is Vietnam's leading IELTS preparation platform, dedicated to delivering expert-led, flexible, and result-driven English language education.</p>
+                <p>BandPath is Vietnam's leading IELTS preparation platform, dedicated to delivering expert-led,
+                    flexible, and result-driven English language education.</p>
             </div>
 
             <div class="get-help">
@@ -262,4 +251,5 @@
     <script src="header-auth.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>

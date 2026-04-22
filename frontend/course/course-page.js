@@ -21,11 +21,12 @@ async function initCoursePage() {
         // ── 3. Populate Main Title block ─────────────────────────
         document.getElementById('course-title').textContent   = course.title;
         document.getElementById('course-desc').textContent    = course.description || 'No description available.';
+        const descBody = document.getElementById('desc-body');
+        if (descBody) descBody.textContent = course.description || 'No detailed description available for this course yet.';
+        
         document.getElementById('course-rating').textContent  = course.rating.toFixed(1);
         document.getElementById('course-reviews').textContent = `(${course.ratingCount.toLocaleString()} ratings)`;
-        document.getElementById('course-meta').textContent    =
-            `${course.hours} Total Hours. ${course.lectures} Lectures. ${course.level}`;
-        document.getElementById('course-author').textContent  = course.teacher.name;
+        document.getElementById('course-meta').textContent = `${course.hours} Total Hours. ${course.lectures} Lectures. ${course.level}`;
 
         // ── 4. Populate price card ────────────────────────────────
         document.getElementById('price-sale').textContent     = `$${course.price}`;
@@ -36,13 +37,6 @@ async function initCoursePage() {
             document.getElementById('price-original').style.display = 'none';
         }
 
-        // ── 5. Populate Instructor section ───────────────────────
-        document.getElementById('instructor-name').textContent    = course.teacher.name;
-        document.getElementById('instructor-title').textContent   = course.teacher.title || 'IELTS Expert';
-        document.getElementById('instructor-reviews').textContent = `${course.teacher.instructorReviews || '0'} Reviews`;
-        document.getElementById('instructor-students').textContent= `${course.teacher.instructorStudents || '0'} Students`;
-        document.getElementById('instructor-courses').textContent = `${course.teacher.instructorCourses || '0'} Courses`;
-        document.getElementById('instructor-bio').textContent     = course.teacher.bio || 'Professional IELTS Instructor.';
 
         // ── 6. Build Syllabus (Mocked mapping for now as DB doesn't have syllabus nested yet) ────────────────
         // If syllabus data is needed, we could add a Syllabus model later. 
@@ -69,7 +63,7 @@ async function loadRelatedCourses(category, currentId) {
             const related = data.courses.filter(c => c.id !== currentId).slice(0, 4);
             
             relatedContainer.innerHTML = related.map(c => `
-                <div class="course-card" onclick="window.location.href='../course/course-page.html?id=${c.id}'" style="cursor:pointer">
+                <div class="course-card" onclick="window.location.href='../course/?id=${c.id}'" style="cursor:pointer">
                     <img class="bk-card" src="./Rectangle 1080.png">
                     <div class="course-body">
                         <h3>${c.title}</h3>
@@ -145,7 +139,7 @@ function buyNow() {
     addToCart();
     
     // Redirect to checkout
-    window.location.href = '../checkout/checkout.html';
+    window.location.href = '../checkout/';
 }
 
 document.addEventListener('DOMContentLoaded', initCoursePage);

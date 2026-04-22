@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - IELTS Admin Portal</title>
+    <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+    <link rel="stylesheet" href="../admin.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .settings-grid { display: flex; flex-direction: column; gap: 1.5rem; max-width: 800px; }
+        .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--outline-variant); }
+        .setting-row:last-child { border-bottom: none; }
+        .setting-info { display: flex; flex-direction: column; gap: 0.25rem; }
+        .setting-title { font-weight: 600; font-size: 0.9375rem; }
+        .setting-desc { font-size: 0.8125rem; color: var(--on-surface-variant); }
+        input[type="text"], select { padding: 0.5rem 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--outline-variant); background: var(--surface-container-lowest); font-size: 0.875rem; min-width: 200px; }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo" style="cursor: pointer;" onclick="window.location.href='../'">
+                <img src="../../logo (1).png" alt="BandPath Logo">
+                <span>BandPath</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../" class="nav-item"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a></li>
+                    <li><a href="../users/" class="nav-item"><i data-lucide="users"></i><span>Users</span></a></li>
+                    <li><a href="../courses/" class="nav-item"><i data-lucide="book-open"></i><span>Courses</span></a></li>
+
+                    <li><a href="../settings/" class="nav-item active"><i data-lucide="settings"></i><span>Settings</span></a></li>
+                    <li><a href="#" id="logoutBtn" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="log-out" aria-hidden="true" class="lucide lucide-log-out"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg><span>Logout</span></a></li>
+                    <div class="mode-toggle-wrapper">
+                        <span class="toggle-label" id="custLabel">Customer</span>
+                        <label class="switch">
+                            <input type="checkbox" id="modeToggle" checked data-redirect="../../">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="toggle-label active" id="adminLabel">Admin</span>
+                    </div>
+                </ul>
+            </nav>
+            <div style="margin-top: auto;">
+                
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div>
+                    <h1>Settings</h1>
+                    <p style="color: var(--on-surface-variant); font-size: 0.875rem;">Configure global platform parameters and branding</p>
+                </div>
+                <div class="header-actions">
+                    <button id="saveSettingsBtn" class="btn-primary">Save Changes</button>
+                </div>
+            </header>
+
+            <section class="card">
+                <h3 class="card-title">General Configuration</h3>
+                <div class="settings-grid">
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <span class="setting-title">Platform Name</span>
+                            <span class="setting-desc">The name of your LMS platform shown in emails and titles.</span>
+                        </div>
+                        <input type="text" id="platformName" value="The Archive LMS">
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <span class="setting-title">Admin Email</span>
+                            <span class="setting-desc">The primary contact email for system notifications.</span>
+                        </div>
+                        <input type="text" id="adminEmail" value="admin@ielts-archive.edu">
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <span class="setting-title">Default Language</span>
+                            <span class="setting-desc">Set the default language for the platform.</span>
+                        </div>
+                        <select id="defaultLanguage">
+                            <option value="English (US)">English (US)</option>
+                            <option value="Vietnamese">Vietnamese</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <span class="setting-title">Maintenance Mode</span>
+                            <span class="setting-desc">Disable public access to the platform for maintenance.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="maintenanceMode">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../../auth.js"></script>
+    <script src="../common.js"></script>
+    <script src="../settings.js"></script>
+</body>
+</html>

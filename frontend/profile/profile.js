@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const firstNameEl = document.getElementById('prof-firstName');
     const lastNameEl = document.getElementById('prof-lastName');
     const emailEl = document.getElementById('prof-email');
-    const bioEl = document.getElementById('prof-bio');
     const saveBtn = document.getElementById('save-btn');
     const toast = document.getElementById('toast');
 
@@ -35,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             lastNameEl.value = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
             
             emailEl.value = user.email || '';
-            bioEl.value = user.bio || '';
+            emailEl.value = user.email || '';
         }
     } catch (e) {
         showToast('Failed to load profile.', '#dc2626');
@@ -49,13 +48,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const firstName = firstNameEl.value.trim();
             const lastName = lastNameEl.value.trim();
-            const bio = bioEl.value.trim();
             const name = `${firstName} ${lastName}`.trim();
 
             try {
                 const data = await Auth.fetchWithAuth(`/users/${userId}`, {
                     method: 'PUT',
-                    body: JSON.stringify({ name, bio })
+                    body: JSON.stringify({ name })
                 });
 
                 if (data.success) {

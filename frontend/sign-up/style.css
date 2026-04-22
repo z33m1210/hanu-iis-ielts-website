@@ -130,9 +130,9 @@ header .func-bar .button-container button.signup-btn:hover {
   align-self: center;
   justify-self: center;
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 43px 20px 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 43px auto 20px 1fr;
   grid-template-columns: 1fr 1fr;
-  grid-template-areas: "TI TI" "FN LN" "UN UN" "EM EM" "PW CP" "CA CA" "SL SL" "SIO SIO";
+  grid-template-areas: "TI TI" "FN LN" "UN UN" "EM EM" "PW CP" "CA CA" "RD RD" "SL SL" "SIO SIO";
   gap: 15px;
   /* 🔵 Click (giữ chuột) */
   /* 🟣 Focus (keyboard) */
@@ -178,6 +178,9 @@ header .func-bar .button-container button.signup-btn:hover {
 }
 .main-page .sign-up-section button {
   grid-area: CA;
+}
+.main-page .sign-up-section .redirect-text {
+  grid-area: RD;
 }
 .main-page .sign-up-section .sep-line {
   grid-area: SL;

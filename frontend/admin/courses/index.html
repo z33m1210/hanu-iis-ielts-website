@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses - IELTS Admin Portal</title>
+    <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+    <link rel="stylesheet" href="../admin.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo" style="cursor: pointer;" onclick="window.location.href='../'">
+                <img src="../../logo (1).png" alt="BandPath Logo">
+                <span>BandPath</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../" class="nav-item"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a></li>
+                    <li><a href="../users/" class="nav-item"><i data-lucide="users"></i><span>Users</span></a></li>
+                    <li><a href="../courses/" class="nav-item active"><i data-lucide="book-open"></i><span>Courses</span></a></li>
+
+                    <li><a href="../settings/" class="nav-item"><i data-lucide="settings"></i><span>Settings</span></a></li>
+                    <li><a href="#" id="logoutBtn" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="log-out" aria-hidden="true" class="lucide lucide-log-out"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg><span>Logout</span></a></li>
+                    <div class="mode-toggle-wrapper">
+                        <span class="toggle-label" id="custLabel">Customer</span>
+                        <label class="switch">
+                            <input type="checkbox" id="modeToggle" checked data-redirect="../../">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="toggle-label active" id="adminLabel">Admin</span>
+                    </div>
+                </ul>
+            </nav>
+            <div style="margin-top: auto;">
+                <a href="#" id="logoutBtn" class="nav-item"><i data-lucide="log-out"></i><span>Logout</span></a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div>
+                    <h1>Course Management</h1>
+                    <p style="color: var(--on-surface-variant); font-size: 0.875rem;">Create and manage IELTS training courses</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-primary" onclick="openCreateCourseModal()"><i data-lucide="plus"></i> Create Course</button>
+                </div>
+            </header>
+
+            <section class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Course Name</th>
+                            <th>Category</th>
+                            <th>Lectures</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="courseTableBody">
+                        <tr>
+                            <td style="font-weight: 600;">IELTS Academic Intensive</td>
+                            <td>Academic</td>
+                            <td>124</td>
+                            <td><span class="badge badge-published">Published</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button class="action-btn" title="Edit"><i data-lucide="edit-3"></i></button>
+                                    <button class="action-btn btn-delete" title="Delete"><i data-lucide="trash-2"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600;">General Training Fast Track</td>
+                            <td>General</td>
+                            <td>86</td>
+                            <td><span class="badge badge-published">Published</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button class="action-btn" title="Edit"><i data-lucide="edit-3"></i></button>
+                                    <button class="action-btn btn-delete" title="Delete"><i data-lucide="trash-2"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600;">IELTS Speaking Pro</td>
+                            <td>Speaking</td>
+                            <td>0</td>
+                            <td><span class="badge badge-draft">Draft</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button class="action-btn" title="Edit"><i data-lucide="edit-3"></i></button>
+                                    <button class="action-btn btn-delete" title="Delete"><i data-lucide="trash-2"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <!-- Create Course Modal -->
+    <div id="createCourseModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Create New Course</h2>
+                <button class="close-modal" onclick="closeCreateCourseModal()"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto; scroll-behavior: smooth;">
+                <form id="createCourseForm">
+                    <div class="form-group">
+                        <label for="createCourseTitle">Course Title</label>
+                        <input type="text" id="createCourseTitle" class="form-control" placeholder="e.g., IELTS Writing Task 2 Masterclass" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="createCourseDescription">Description</label>
+                        <textarea id="createCourseDescription" class="form-control" rows="3" placeholder="Enter course description..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="createCourseCategory">Category</label>
+                        <select id="createCourseCategory" class="form-control" required>
+                            <option value="">Select a category...</option>
+                            <option value="listening">Listening</option>
+                            <option value="reading">Reading</option>
+                            <option value="writing">Writing</option>
+                            <option value="speaking">Speaking</option>
+                            <option value="full">Full Course</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="createCourseLevel">Level</label>
+                        <select id="createCourseLevel" class="form-control">
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                            <option value="All Levels">All Levels</option>
+                        </select>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="createCoursePrice">Price ($)</label>
+                            <input type="number" id="createCoursePrice" class="form-control" min="0" step="0.01" placeholder="99.99" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="createCourseOriginalPrice">Original Price ($)</label>
+                            <input type="number" id="createCourseOriginalPrice" class="form-control" min="0" step="0.01" placeholder="Optional">
+                        </div>
+                        <div class="form-group">
+                            <label for="createCourseHours">Total Hours</label>
+                            <input type="number" id="createCourseHours" class="form-control" min="0" step="1" placeholder="e.g., 10">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="createCourseLectures">Lectures</label>
+                            <input type="number" id="createCourseLectures" class="form-control" min="1" step="1" placeholder="e.g., 20" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="createCourseChapters">Chapters</label>
+                            <input type="number" id="createCourseChapters" class="form-control" min="0" placeholder="e.g., 5">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeCreateCourseModal()">Cancel</button>
+                <button class="btn-primary" onclick="submitCreateCourse()">Create Course</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Course Modal -->
+    <div id="editCourseModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Edit Course</h2>
+                <button class="close-modal" onclick="closeCourseModal()"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto; scroll-behavior: smooth;">
+                <form id="editCourseForm">
+                    <input type="hidden" id="editCourseId">
+                    <div class="form-group">
+                        <label for="editCourseTitle">Course Title</label>
+                        <input type="text" id="editCourseTitle" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCourseDescription">Description</label>
+                        <textarea id="editCourseDescription" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCourseStatus">Publishing Status</label>
+                        <select id="editCourseStatus" class="form-control">
+                            <option value="false">Draft (Hidden)</option>
+                            <option value="true">Published (Live)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCourseCategory">Category</label>
+                        <select id="editCourseCategory" class="form-control">
+                            <option value="listening">Listening</option>
+                            <option value="reading">Reading</option>
+                            <option value="writing">Writing</option>
+                            <option value="speaking">Speaking</option>
+                            <option value="full">Full Course</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCourseLevel">Level</label>
+                        <select id="editCourseLevel" class="form-control">
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                            <option value="All Levels">All Levels</option>
+                        </select>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="editCoursePrice">Price ($)</label>
+                            <input type="number" id="editCoursePrice" class="form-control" min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label for="editCourseOriginalPrice">Original Price ($)</label>
+                            <input type="number" id="editCourseOriginalPrice" class="form-control" min="0" step="0.01" placeholder="Optional">
+                        </div>
+                        <div class="form-group">
+                            <label for="editCourseHours">Total Hours</label>
+                            <input type="number" id="editCourseHours" class="form-control" min="0" step="1">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="editCourseLectures">Lectures Count</label>
+                            <input type="number" id="editCourseLectures" class="form-control" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="editCourseChapters">Chapters</label>
+                            <input type="number" id="editCourseChapters" class="form-control" min="0">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeCourseModal()">Cancel</button>
+                <button class="btn-primary" onclick="saveCourseEdits()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal-overlay confirm-modal">
+        <div class="modal-container">
+            <div class="modal-body">
+                <div class="warning-icon">
+                    <i data-lucide="alert-triangle"></i>
+                </div>
+                <h3 id="confirmTitle">Confirm Action</h3>
+                <p id="confirmMessage">Are you sure you want to proceed? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer" style="justify-content: center; background: none; padding-top: 0;">
+                <button class="btn-secondary" onclick="Confirm.hide()">Cancel</button>
+                <button class="btn-danger" onclick="Confirm.execute()">Delete Permanently</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../auth.js"></script>
+    <script src="../common.js"></script>
+    <script src="../courses.js"></script>
+</body>
+</html>

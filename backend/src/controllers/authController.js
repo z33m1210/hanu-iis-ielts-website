@@ -4,7 +4,7 @@ const prisma = require('../models/prismaClient');
 
 exports.register = async (req, res, next) => {
   try {
-    const { email, password, name, role } = req.body;
+    const { email, password, name } = req.body;
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
@@ -12,7 +12,7 @@ exports.register = async (req, res, next) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const userRole = role === 'TEACHER' ? 'TEACHER' : 'STUDENT'; // Don't allow ADMIN registration here
+    const userRole = 'USER';
 
     const user = await prisma.user.create({
       data: {
@@ -29,7 +29,12 @@ exports.register = async (req, res, next) => {
       { expiresIn: '1d' }
     );
 
-    res.status(201).json({ success: true, token, user: { id: user.id, email, name, role: userRole } });
+    res.status(201).json({ 
+      success: true, 
+      message: 'Account created successfully',
+      token, 
+      user: { id: user.id, email, name, role: userRole } 
+    });
   } catch (error) {
     next(error);
   }
@@ -52,6 +57,11 @@ exports.login = async (req, res, next) => {
     if (!validPassword) {
       return res.status(400).json({ success: false, message: 'Invalid email or password.' });
     }
+    // Update lastActive status
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { lastActive: new Date() }
+    });
 
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
@@ -59,16 +69,36 @@ exports.login = async (req, res, next) => {
       { expiresIn: '1d' }
     );
 
-    res.json({ success: true, token, user: { id: user.id, email, name: user.name, role: user.role } });
+    const firstName = user.name ? user.name.split(' ')[0] : 'User';
+    res.json({ 
+      success: true, 
+      token, 
+      user: { 
+        id: user.id, 
+        email, 
+        name: user.name, 
+        firstName,
+        role: user.role 
+      },
+      message: `Welcome back, ${firstName}!`
+    });
   } catch (error) {
     next(error);
   }
 };
 
 exports.logout = async (req, res, next) => {
-  // Since we use stateless JWTs, the client handles logout by destroying the token
-  // A robust implementation would use a blocklist or HTTP-only cookies
-  res.json({ success: true, message: 'Logged out successfully. Please clear your token.' });
+  try {
+    if (req.user) {
+      await prisma.user.update({
+        where: { id: req.user.id },
+        data: { lastActive: new Date(0) }
+      });
+    }
+    res.json({ success: true, message: 'Logged out successfully.' });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.recoverPassword = async (req, res, next) => {

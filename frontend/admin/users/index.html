@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users - IELTS Admin Portal</title>
+    <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+    <link rel="stylesheet" href="../admin.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .user-info { display: flex; align-items: center; gap: 0.75rem; }
+        .user-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.75rem; }
+        .user-name { font-weight: 600; font-size: 0.875rem; }
+        .user-email { color: var(--on-surface-variant); font-size: 0.75rem; }
+        .actions { display: flex; gap: 0.5rem; }
+        .action-btn { background: none; border: none; cursor: pointer; color: var(--on-surface-variant); padding: 0.25rem; border-radius: 4px; transition: background 0.2s; }
+        .action-btn:hover { background: var(--surface-container-low); color: var(--primary); }
+        .btn-delete:hover { color: var(--error); background: rgba(186, 26, 26, 0.05); }
+        
+        /* Toggle Switch */
+        .switch { position: relative; display: inline-block; width: 36px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 20px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(16px); }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo" style="cursor: pointer;" onclick="window.location.href='../'">
+                <img src="../../logo (1).png" alt="BandPath Logo">
+                <span>BandPath</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../" class="nav-item"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a></li>
+                    <li><a href="../users/" class="nav-item active"><i data-lucide="users"></i><span>Users</span></a></li>
+                    <li><a href="../courses/" class="nav-item"><i data-lucide="book-open"></i><span>Courses</span></a></li>
+
+                    <li><a href="../settings/" class="nav-item"><i data-lucide="settings"></i><span>Settings</span></a></li>
+                    <li><a href="#" id="logoutBtn" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="log-out" aria-hidden="true" class="lucide lucide-log-out"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg><span>Logout</span></a></li>
+                    <div class="mode-toggle-wrapper">
+                        <span class="toggle-label" id="custLabel">Customer</span>
+                        <label class="switch">
+                            <input type="checkbox" id="modeToggle" checked data-redirect="../../">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="toggle-label active" id="adminLabel">Admin</span>
+                    </div>
+                </ul>
+            </nav>
+            <div style="margin-top: auto;">
+                <a href="#" id="logoutBtn" class="nav-item"><i data-lucide="log-out"></i><span>Logout</span></a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div>
+                    <h1>User Management</h1>
+                    <p style="color: var(--on-surface-variant); font-size: 0.875rem;">Manage platform users and permissions</p>
+                </div>
+                <div class="header-actions">
+                    <div style="position: relative;">
+                        <i data-lucide="search" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); width: 16px; color: var(--on-surface-variant);"></i>
+                        <input type="text" id="userSearch" placeholder="Search users..." style="padding: 0.625rem 1rem 0.625rem 2.5rem; border-radius: var(--radius-md); border: 1px solid var(--outline-variant); background: var(--surface-container-lowest); font-size: 0.875rem; width: 240px;">
+                    </div>
+                </div>
+            </header>
+
+            <section class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Role</th>
+                            <th>Date Joined</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <!-- Content loaded by users.js -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Edit User</h2>
+                <button class="close-modal" onclick="closeUserModal()"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm">
+                    <input type="hidden" id="editUserId">
+                    <div class="form-group">
+                        <label for="editUserName">Name</label>
+                        <input type="text" id="editUserName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editUserEmail">Email Address</label>
+                        <input type="email" id="editUserEmail" class="form-control" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeUserModal()">Cancel</button>
+                <button class="btn-primary" onclick="saveUserEdits()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal-overlay confirm-modal">
+        <div class="modal-container">
+            <div class="modal-body">
+                <div class="warning-icon">
+                    <i data-lucide="alert-triangle"></i>
+                </div>
+                <h3 id="confirmTitle">Confirm Action</h3>
+                <p id="confirmMessage">Are you sure you want to proceed? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer" style="justify-content: center; background: none; padding-top: 0;">
+                <button class="btn-secondary" onclick="Confirm.hide()">Cancel</button>
+                <button class="btn-danger" onclick="Confirm.execute()">Delete Permanently</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../auth.js"></script>
+    <script src="../common.js"></script>
+    <script src="../users.js"></script>
+</body>
+</html>

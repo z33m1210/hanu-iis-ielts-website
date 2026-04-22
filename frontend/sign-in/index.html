@@ -123,7 +123,6 @@
                 <img src="./search-icon.png">
                 <input type="text" class="search-box" placeholder="Search IELTS courses">
             </div>
-            <p>Teach on BandPath</p>
         </div>
         <div class="func-bar">
             <img src="./Frame 427318762.png">
@@ -141,7 +140,7 @@
 
             <!-- Email field -->
             <div class="email-field">
-                <p>Email or Username</p>
+                <p>Email</p>
                 <input type="text" id="identifier" placeholder="Username or Email" autocomplete="username">
                 <span class="field-error" id="err-identifier"></span>
             </div>
@@ -190,7 +189,7 @@
         // ── Redirect nếu đã đăng nhập ────────────────────
         if (Auth.isLoggedIn()) {
             const user = Auth.getSession();
-            const redirectPath = user && user.role === 'ADMIN' ? '../admin/index.html' : '../category/';
+            const redirectPath = user && user.role === 'ADMIN' ? '../admin/' : '../category/';
             window.location.href = redirectPath;
         }
 
@@ -256,10 +255,10 @@
             btn.textContent = 'Sign in';
 
             if (result.ok) {
-                showToast(`👋 Welcome back, ${result.user.firstName}!`, 'success');
-                sessionStorage.setItem('bp_welcome', `👋 Welcome back, ${result.user.name}!`);
+                showToast(result.message, 'success');
+                sessionStorage.setItem('bp_welcome', result.message);
                 setTimeout(() => {
-                    const redirectPath = result.user.role === 'ADMIN' ? '../admin/index.html' : '../category/';
+                    const redirectPath = result.user.role === 'ADMIN' ? '../admin/' : '../category/';
                     window.location.href = redirectPath;
                 }, 1200);
             } else {

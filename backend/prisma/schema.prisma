@@ -13,22 +13,17 @@ model User {
   password  String
   name      String?
   avatarUrl String?
-  role      String   @default("STUDENT") // STUDENT, TEACHER, ADMIN
+  role      String   @default("USER") // USER, ADMIN
   isActive  Boolean  @default(true)
-  
-  // Instructor specific fields
-  title              String?
-  bio                String?
-  instructorReviews  String?  @default("0")
-  instructorStudents String?  @default("0")
-  instructorCourses  String?  @default("0")
-  
+  lastActive DateTime @default(now())
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  coursesCreated Course[]
+  posts          Post[]
   enrollments    Enrollment[]
   payments       Payment[]
+  wishlist       Wishlist[]
 }
 
 model Course {
@@ -45,14 +40,12 @@ model Course {
   category      String   @default("full") // listening, reading, writing, speaking, full
   chapters      Int      @default(0)
   image         String?
-  
-  teacherId   Int
   isPublished Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  teacher     User         @relation(fields: [teacherId], references: [id])
   enrollments Enrollment[]
+  wishlist    Wishlist[]
 }
 
 model Enrollment {
@@ -80,3 +73,42 @@ model Payment {
 
   student User @relation(fields: [studentId], references: [id])
 }
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  type      String   @default("ARTICLE") // ARTICLE, BLOG, RESOURCE
+  status    String   @default("DRAFT") // DRAFT, PUBLISHED, REVIEW
+  authorId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  author    User     @relation(fields: [authorId], references: [id])
+}
+
+model Setting {
+  key   String @id
+  value String
+}
+
+model GlobalSettings {
+  id              Int     @id @default(1)
+  platformName    String  @default("BandPath IELTS")
+  adminEmail      String  @default("admin@bandpath.edu")
+  defaultLanguage String  @default("English (US)")
+  maintenanceMode Boolean @default(false)
+}
+
+model Wishlist {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  courseId  Int
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+
+  @@unique([userId, courseId])
+}
+

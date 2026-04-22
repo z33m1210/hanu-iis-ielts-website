@@ -36,8 +36,7 @@ function renderCart() {
         <div class="cart-item">
             <img src="${item.image || './image 3.png'}" alt="${item.title}" class="item-image">
             <div class="item-details">
-                <div class="item-title" style="cursor:pointer;" onclick="window.location.href='../course/course-page.html?id=${item.id}'">${item.title}</div>
-                <div class="item-author">By ${item.author || 'Instructor'}</div>
+                <div class="item-title" style="cursor:pointer;" onclick="window.location.href='../course/?id=${item.id}'">${item.title}</div>
                 <div class="item-rating">
                     <span class="rating-number">4.8</span>
                     <span class="stars">★★★★★</span>
@@ -73,7 +72,7 @@ function updateOrderDetails(subtotal, tax, total) {
             if (!Auth.isLoggedIn()) {
                 window.location.href = '../sign-in/';
             } else {
-                window.location.href = '../checkout/checkout.html';
+                window.location.href = '../checkout/';
             }
         };
     }

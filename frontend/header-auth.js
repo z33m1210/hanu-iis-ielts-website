@@ -164,6 +164,62 @@
                 pointer-events: none;
             }
             .hauth-toast.show { opacity: 1; transform: translateY(0); }
+
+            /* Mode Toggle in Header */
+            .mode-toggle-wrapper {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 6px 12px;
+                margin-right: 12px;
+                background: #f8fafc;
+                border-radius: 8px;
+                border: 1px solid #e2e8f0;
+            }
+            .mode-toggle-wrapper .toggle-label {
+                font-size: 11px;
+                font-weight: 600;
+                color: #64748b;
+                transition: color 0.2s;
+                user-select: none;
+            }
+            .mode-toggle-wrapper .toggle-label.active { color: #0f172a; }
+
+            .mode-toggle-wrapper .switch {
+                position: relative;
+                display: inline-block;
+                width: 32px;
+                height: 18px;
+            }
+            .mode-toggle-wrapper .switch input { opacity: 0; width: 0; height: 0; }
+            .mode-toggle-wrapper .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background-color: #e2e8f0;
+                transition: .3s;
+                border: 1px solid #cbd5e1;
+            }
+            .mode-toggle-wrapper .slider:before {
+                position: absolute;
+                content: "";
+                height: 12px;
+                width: 12px;
+                left: 2px;
+                bottom: 2px;
+                background-color: white;
+                transition: .3s;
+                box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            }
+            .mode-toggle-wrapper input:checked + .slider {
+                background-color: #0f172a;
+                border-color: #0f172a;
+            }
+            .mode-toggle-wrapper input:checked + .slider:before {
+                transform: translateX(14px);
+            }
+            .mode-toggle-wrapper .slider.round { border-radius: 20px; }
+            .mode-toggle-wrapper .slider.round:before { border-radius: 50%; }
         `;
         document.head.appendChild(style);
     }
@@ -188,6 +244,10 @@
             // Xóa button container cũ
             if (oldBtnContainer) oldBtnContainer.remove();
 
+            // Xóa mode-toggle cũ nếu đã có
+            const oldToggle = funcBar.querySelector('.mode-toggle-wrapper');
+            if (oldToggle) oldToggle.remove();
+
             // Xóa ava-wrapper cũ nếu đã có (tránh duplicate)
             const oldWrapper = funcBar.querySelector('.ava-wrapper');
             if (oldWrapper) oldWrapper.remove();
@@ -209,10 +269,10 @@
                             <div class="ava-dropdown-email">${session.email}</div>
                         </div>
                     </div>
-                    <a class="ava-dropdown-item" href="${basePath}/profile/profile.html">
+                    <a class="ava-dropdown-item" href="${basePath}/profile/">
                         <span class="item-icon">👤</span> My Profile
                     </a>
-                    <a class="ava-dropdown-item" href="${basePath}/profile/profile.html#enrolled-courses-section">
+                    <a class="ava-dropdown-item" href="${basePath}/profile/#enrolled-courses-section">
                         <span class="item-icon">📚</span> My Courses
                     </a>
                     <a class="ava-dropdown-item" href="${basePath}/wishlist/">
@@ -228,6 +288,39 @@
                     </div>
                 </div>
             `;
+            // ── ADMIN MODE TOGGLE ───────────────────────
+            if (session.role === 'ADMIN') {
+                const toggleWrapper = document.createElement('div');
+                toggleWrapper.className = 'mode-toggle-wrapper';
+                toggleWrapper.innerHTML = `
+                    <span class="toggle-label active" id="h-custLabel">Customer</span>
+                    <label class="switch">
+                        <input type="checkbox" id="h-modeToggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="toggle-label" id="h-adminLabel">Admin</span>
+                `;
+                funcBar.appendChild(toggleWrapper);
+
+                const hToggle = toggleWrapper.querySelector('#h-modeToggle');
+                hToggle.addEventListener('change', () => {
+                    const hCust = toggleWrapper.querySelector('#h-custLabel');
+                    const hAdmin = toggleWrapper.querySelector('#h-adminLabel');
+                    
+                    if (hToggle.checked) {
+                        hCust.classList.remove('active');
+                        hAdmin.classList.add('active');
+                        // Redirect to Admin portal
+                        setTimeout(() => {
+                            window.location.href = `${basePath}/admin/`;
+                        }, 300);
+                    } else {
+                        hCust.classList.add('active');
+                        hAdmin.classList.remove('active');
+                    }
+                });
+            }
+
             funcBar.appendChild(wrapper);
 
             // Toggle dropdown on avatar click
@@ -315,14 +408,7 @@
             });
         }
 
-        const notifIcon = document.querySelector('img[src*="Icon.png"]');
-        if (notifIcon) {
-            notifIcon.style.cursor = 'pointer';
-            notifIcon.title = 'Notifications';
-            notifIcon.addEventListener('click', () => {
-                window.location.href = `${basePath}/profile/profile.html`;
-            });
-        }
+
 
         const logo = document.querySelector('.logo');
         if (logo) {

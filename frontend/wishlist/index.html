@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BandPath – My Wishlist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../category/style.css">
+</head>
+<body>
+    <header>
+        <div class="head-start" style="cursor: pointer;" onclick="window.location.href='../'">
+            <div class="logo">
+                <img src="../logo (1).png">
+                <span>BandPath</span>
+            </div>
+            <p onclick="event.stopPropagation(); window.location.href='../category/'">IELTS Skills</p>
+            <div class="search-container">
+                <img src="../search-icon.png">
+                <input type="text" class="search-box" placeholder="Search IELTS courses">
+            </div>
+            <p>Teach on BandPath</p>
+        </div>
+        <div class="func-bar">
+            <img src="../heart.png" title="Wishlist" style="cursor: pointer;">
+            <img src="../Frame 427318762.png" title="View Shopping Cart" style="cursor: pointer;">
+            <!-- avatar inject bởi header-auth.js -->
+            <div class="ava-wrapper">
+                <div class="ava-header" id="ava-btn" style="background:#ec4899;" title="Hoàng Zeem">
+                    H
+                </div>
+                <div class="ava-dropdown" id="ava-dropdown">
+                    <div class="ava-dropdown-header">
+                        <div class="ava-dropdown-avatar" style="background:#ec4899;">H</div>
+                        <div>
+                            <div class="ava-dropdown-name">Hoàng Zeem</div>
+                            <div class="ava-dropdown-email">ghaha1210@gmail.com</div>
+                        </div>
+                    </div>
+                    <a class="ava-dropdown-item" href="../profile/">
+                        <span class="item-icon">👤</span> My Profile
+                    </a>
+                    <a class="ava-dropdown-item" href="../profile/#enrolled-courses-section">
+                        <span class="item-icon">📚</span> My Courses
+                    </a>
+                    <a class="ava-dropdown-item" href="../wishlist/">
+                        <span class="item-icon">❤️</span> Wishlist
+                    </a>
+                    <div class="ava-dropdown-divider"></div>
+                    <a class="ava-dropdown-item" href="../settings/">
+                        <span class="item-icon">⚙️</span> Settings
+                    </a>
+                    <div class="ava-dropdown-divider"></div>
+                    <div class="ava-dropdown-item logout" onclick="headerLogout()">
+                        <span class="item-icon">🚪</span> Log Out
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="main-page">
+        <div class="container">
+
+            <h1>My Wishlist</h1>
+            <p class="subtitle" id="wishlist-subtitle" style="margin-bottom: 24px;">Your Saved Courses</p>
+
+            <div class="main-content">
+                <div class="courses-grid" style="width: 100%; display: block;">
+                    <div class="grid" id="coursesGrid">
+                        <!-- Loaded via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="margin-top: 100px;">
+        <div class="footer-info">
+            <div class="footer-intro">
+                <div class="footer-logo">
+                    <img src="../logo (1).png" alt="BandPath Logo" style="width: 31px; height: 40px;">
+                    <span>BandPath</span>
+                </div>
+                <p>Empowering IELTS learners to achieve their dream band score.</p>
+                <p>BandPath is Vietnam's leading IELTS preparation platform, dedicated to delivering expert-led, flexible, and result-driven English language education.</p>
+            </div>
+
+            <div class="get-help">
+                <p class="upper-p">Get Help</p>
+                <p>Contact Us</p>
+                <p>Latest Articles</p>
+                <p>FAQ</p>
+            </div>
+
+            <div class="programs">
+                <p class="upper-p">IELTS Skills</p>
+                <p>IELTS Listening</p>
+                <p>IELTS Reading</p>
+                <p>IELTS Writing</p>
+                <p>IELTS Speaking</p>
+                <p>Full Mock Tests</p>
+            </div>
+
+            <div class="contact">
+                <div class="contact-us">
+                    <p class="upper-p">Contact Us</p>
+                    <p>Address: 45 Nguyen Hue, District 1, Ho Chi Minh City</p>
+                    <p>Tel: +(84) 028-3822-1234</p>
+                    <p>Mail: hello@bandpath.vn</p>
+                </div>
+                <div class="partner-button">
+                    <a href="#" class="icon-btn">
+                        <img src="../facebook.png" alt="Facebook">
+                    </a>
+                    <a href="#" class="icon-btn">
+                        <img src="../twitter.png" alt="Twitter">
+                    </a>
+                    <a href="#" class="icon-btn">
+                        <img src="../google.jpg" alt="Google">
+                    </a>
+                    <a href="#" class="icon-btn">
+                        <img src="../github.png" alt="GitHub">
+                    </a>
+                    <a href="#" class="icon-btn">
+                        <img src="../microsoft.png" alt="Microsoft">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../auth.js"></script>
+    <script src="../cart.js"></script>
+    <script src="../header-auth.js"></script>
+    <script src="wishlist.js"></script>
+</body>
+</html>

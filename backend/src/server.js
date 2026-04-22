@@ -9,6 +9,9 @@ const adminRoutes = require('./routes/adminRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const enrollmentRoutes = require('./routes/enrollmentRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const postRoutes = require('./routes/postRoutes');
+const settingsRoutes = require('./routes/settingsRoutes');
+const wishlistRoutes = require('./routes/wishlistRoutes');
 
 const app = express();
 
@@ -22,6 +25,9 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/wishlist', wishlistRoutes);
 
 // Static frontend files
 app.use(express.static(path.join(__dirname, '../../frontend')));

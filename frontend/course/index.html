@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BandPath – Course Detail</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <div class="head-start">
+            <div class="logo">
+                <img src="./logo (1).png">
+                <span>BandPath</span>
+            </div>
+            <p>IELTS Skills</p>
+            <div class="search-container">
+                <img src="./search-icon.png">
+                <input type="text" class="search-box" placeholder="Search IELTS courses">
+            </div>
+            <p>Teach on BandPath</p>
+        </div>
+        <div class="func-bar">
+            <img src="./heart.png">
+            <img src="./Frame 427318762.png">
+        </div>
+    </header>
+
+    <div class="background"></div>
+    <div class="background2"></div>
+
+    <div class="main-page">
+        <div class="course">
+            <!-- Breadcrumb -->
+            <div class="link">
+                <p><a href="../" style="text-decoration: none; color: inherit; cursor: pointer;">Home</a></p>
+                <img src="./Vector.png">
+                <p><a href="../category/" style="text-decoration: none; color: inherit; cursor: pointer;">IELTS Skills</a></p>
+                <img src="./Vector.png">
+                <p id="breadcrumb-title">Course</p>
+            </div>
+
+            <!-- Main title block — filled by JS -->
+            <div class="Main-title">
+                <p id="course-title">Loading...</p>
+                <p id="course-desc">Loading description...</p>
+                <div class="rating-n-details">
+                    <p id="course-rating">—</p>
+                    <img src="./Rating.png">
+                    <p id="course-reviews">—</p>
+                    <div></div>
+                    <p id="course-meta">—</p>
+                </div>
+
+                <div class="avail-language">
+                    <img src="./Icon (1).png">
+                    <p>English, Vietnamese</p>
+                </div>
+            </div>
+
+            <!-- Buy card — price filled by JS -->
+            <div class="teacher-n-buy">
+                <div class="teacher-info">
+                    <img src="./image 4.png">
+                    <div class="price">
+                        <p id="price-sale">—</p>
+                        <p id="price-original">—</p>
+                        <p>50% OFF!</p>
+                    </div>
+                    <button class="add-to-cart-button" onclick="addToCart()">Add To Cart</button>
+                    <button class="buy-now-button" onclick="buyNow()">Buy Now</button>
+                    <div class="tnb-sl"></div>
+                    <div class="share-info">
+                        <p>Share</p>
+                        <div class="share-group">
+                            <a href="#" class="shared-button1"><img src="./facebook.png" alt="Facebook"></a>
+                            <a href="#" class="shared-button2"><img src="./github.png" alt="GitHub"></a>
+                            <a href="#" class="shared-button3"><img src="./google.jpg" alt="Google"></a>
+                            <a href="#" class="shared-button4"><img src="./twitter.png" alt="X"></a>
+                            <a href="#" class="shared-button5"><img src="./microsoft.png" alt="Windows"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab navbar -->
+            <div class="course-navbar">
+                <div class="nav-bar-button2">
+                    <input type="checkbox" id="btn2" onchange="scrollToSection('course-des', this)">
+                    <label for="btn2" class="nav-btn">Description</label>
+                </div>
+                <div class="nav-bar-button3">
+                    <input type="checkbox" id="btn3" onchange="scrollToSection('reviews-section', this)">
+                    <label for="btn3" class="nav-btn">Reviews</label>
+                </div>
+                <div class="nav-bar-button4">
+                    <input type="checkbox" id="btn4" onchange="scrollToSection('faq-section', this)">
+                    <label for="btn4" class="nav-btn">FAQ</label>
+                </div>
+            </div>
+
+            <div class="sep-line1"></div>
+
+            <!-- Description -->
+            <div class="course-des" id="course-des">
+                <p>Course Description</p>
+                <p id="desc-body">This IELTS course is expertly designed to build your skills across all four test components — Listening, Reading, Writing, and Speaking. Through structured modules, real exam simulations, and personalised feedback, you will gain the confidence and strategies needed to achieve your target band score.</p>
+                <p>Certification</p>
+                <p>Upon successful completion of this BandPath course, you will receive an official certificate of achievement. BandPath certifications are recognised by language schools and employers across Vietnam and internationally, validating your English proficiency and commitment to excellence.</p>
+            </div>
+
+            <div class="sep-line2"></div>
+
+
+
+            <!-- Syllabus — filled by JS -->
+            <div class="syllabus-details" id="syllabus-details">
+                <p>Syllabus</p>
+                <div class="table-of-content" id="toc-container">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviews section -->
+        <div class="reviews" id="reviews-section">
+            <p style="font-weight:700;font-size:22px;">Student Reviews</p>
+            <div class="stars">
+                <div class="star-review">
+                    <p id="avg-rating">4.8</p>
+                    <img src="./Star 3.png">
+                    <p>Course Rating</p>
+                </div>
+                <div class="star-5"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3.png"><p>65%</p></div>
+                <div class="star-4"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3 (1).png"><p>20%</p></div>
+                <div class="star-3"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3 (1).png"><img src="./Star 3 (1).png"><p>10%</p></div>
+                <div class="star-2"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3 (1).png"><img src="./Star 3 (1).png"><img src="./Star 3 (1).png"><p>5%</p></div>
+                <div class="star-1"><img src="./Star 3.png"><img src="./Star 3 (1).png"><img src="./Star 3 (1).png"><img src="./Star 3 (1).png"><img src="./Star 3 (1).png"><p>5%</p></div>
+            </div>
+            <div class="review" id="review-list">
+                <!-- Injected by JS -->
+            </div>
+            <button id="more-reviews" onclick="loadMoreReviews()">View more Reviews</button>
+        </div>
+
+        <!-- FAQ section -->
+        <div class="faq-section" id="faq-section">
+            <p class="faq-title">Frequently Asked Questions</p>
+            <div class="faq-list" id="faq-list">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+
+        <!-- More Courses Like This -->
+        <div class="courses">
+            <h2 class="div-title">More Courses Like This</h2>
+            <div class="course-list" id="related-courses">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-info">
+            <div class="footer-intro">
+                <div class="footer-logo">
+                    <img src="./logo (1).png" alt="BandPath Logo" style="width: 31px; height: 40px;">
+                    <span>BandPath</span>
+                </div>
+                <p>Empowering IELTS learners to achieve their dream band score.</p>
+                <p>BandPath is Vietnam's leading IELTS preparation platform, dedicated to delivering expert-led, flexible, and result-driven English language education.</p>
+            </div>
+            <div class="get-help">
+                <p class="upper-p">Get Help</p>
+                <p>Contact Us</p>
+                <p>Latest Articles</p>
+                <p>FAQ</p>
+            </div>
+            <div class="programs">
+                <p class="upper-p">IELTS Skills</p>
+                <p>IELTS Listening</p>
+                <p>IELTS Reading</p>
+                <p>IELTS Writing</p>
+                <p>IELTS Speaking</p>
+                <p>Full Mock Tests</p>
+            </div>
+            <div class="contact">
+                <div class="contact-us">
+                    <p class="upper-p">Contact Us</p>
+                    <p>Address: 45 Nguyen Hue, District 1, Ho Chi Minh City</p>
+                    <p>Tel: +(84) 028-3822-1234</p>
+                    <p>Mail: hello@bandpath.vn</p>
+                </div>
+                <div class="partner-button">
+                    <a href="#" class="icon-btn"><img src="./facebook.png" alt="Facebook"></a>
+                    <a href="#" class="icon-btn"><img src="./twitter.png" alt="Twitter"></a>
+                    <a href="#" class="icon-btn"><img src="./google.jpg" alt="Google"></a>
+                    <a href="#" class="icon-btn"><img src="github.png" alt="github"></a>
+                    <a href="#" class="icon-btn"><img src="./microsoft.png" alt="Microsoft"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../auth.js"></script>
+    <script src="../cart.js"></script>
+    <script src="../header-auth.js"></script>
+    <script src="course-page.js"></script>
+</body>
+</html>

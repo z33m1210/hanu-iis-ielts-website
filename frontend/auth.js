@@ -38,7 +38,7 @@ const Auth = (() => {
                     email: email.trim().toLowerCase(), 
                     password, 
                     name, 
-                    role: 'STUDENT' // Default to student
+                    role: 'USER' // Default to user/customer
                 })
             });
 
@@ -77,7 +77,7 @@ const Auth = (() => {
             }
 
             _startSession(data.user, data.token);
-            return { ok: true, message: 'Đăng nhập thành công!', user: data.user };
+            return { ok: true, message: data.message || 'Đăng nhập thành công!', user: data.user };
         } catch (error) {
             console.error('API Error:', error);
             return { ok: false, message: 'Không thể kết nối đến máy chủ.' };
@@ -129,7 +129,21 @@ const Auth = (() => {
     }
 
     /** Đăng xuất */
-    function logout() {
+    async function logout() {
+        const token = getToken();
+        if (token) {
+            // Notify backend to mark offline
+            try {
+                await fetch(`${API_URL}/auth/logout`, {
+                    method: 'POST',
+                    headers: { 
+                        'Authorization': `Bearer ${token}` 
+                    }
+                });
+            } catch (err) {
+                console.warn('Backend logout failed:', err);
+            }
+        }
         localStorage.removeItem(SESSION_KEY);
         localStorage.removeItem(TOKEN_KEY);
     }

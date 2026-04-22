@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="head-start">
+            <div class="logo">
+                <img src="./logo (1).png">
+                <span>Byway</span>
+            </div>
+            <p>Categories</p>
+            <div class="search-container">
+                <img src="./search-icon.png">
+                <input type="text" class="search-box" placeholder="Search courses">
+            </div>
+            </div>
+        </div>
+        <div class="func-bar">
+            <img src="./heart.png">
+            <img src="./Frame 427318762.png">
+
+        </div>
+    </header>  
+    <div class="main-page">
+        <div class="profile-section">
+            <div class="profile-header">
+                <img src="./Ellipse 53.png">
+                <p>John Doe</p>
+                <button>Edit Profile</button>
+            </div>
+            <div class="sep-line1"></div>
+            <div class="profile-func">
+                <div id="func1">
+                    <p>Profile</p>
+                </div>
+                <div id="func2">
+                    <p>My Courses</p>
+                </div>
+
+                <div id="func4">
+                    <p>Message</p>
+                </div>
+                <div id="func5">
+                    <p>My Reviews</p>
+                </div>
+            </div>
+        </div>
+        <div class="basic-profile">
+            <div class="first-name">
+                <p>First Name</p>
+                <div class="form-field1">
+                <input type="text" id="prof-firstName" placeholder="First Name">
+                </div>
+            </div>
+            <div class="last-name">
+                <p>Last Name</p>
+                <div class="form-field2">
+                <input type="text" id="prof-lastName" placeholder="Last Name">
+                </div>
+            </div>
+            <div class="email">
+                <p>Email</p>
+                <div class="form-field3">
+                <input type="text" id="prof-email" placeholder="Email" readonly>
+                </div>
+            </div>
+
+            <div class="lang">
+                <p>Language</p>
+                <div class="form-field5">
+                <input type="text" placeholder="Label">
+                </div>
+            </div>
+        </div>
+        <div class="image-section">
+            <div class="img-up">
+                <p>Image Preview</p>
+                <div class="img-box">
+                    <img src="./Image.png">
+                </div>
+            </div>
+            <div class="add-change-img">
+                <p>Add or Change Image</p>
+                <div class="iac-button">
+                <input type="text" placeholder="Label">
+                </div>
+            </div>
+            <button id="upload-btn">Upload Image</button>
+            <button id="save-btn">Save Changes</button>
+        </div>
+        <div class="link-section">
+            <p>Links</p>
+            <div class="link-field1">
+                <p>Website</p>
+                <div class="lf1-input">
+                <input type="text" placeholder="Label">
+                </div>
+            </div>
+            <div class="link-field2">
+                <p>X/Twitter Profile</p>
+                <div class="lf2-input">
+                <input type="text" placeholder="Label">
+                </div>
+            </div>
+            <div class="link-field3">
+                <p>LinkedIn Profile</p>
+                <div class="lf3-input">
+                <input type="text" placeholder="Label">
+                </div>
+            </div>
+            <div class="link-field4">
+                <p>Facebook Profile</p>
+                <div class="lf4-input">
+                <input type="text" placeholder="Label">
+                </div>
+            </div>
+            <div class="link-field5">
+                <p>Youtube Profile</p>
+                <div class="lf5-input">
+                <input type="text" placeholder="Label">
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: Enrolled Courses Section -->
+        <div class="enrolled-courses-section" style="grid-column: 1 / -1; margin-top: 40px;">
+            <h2 style="font-size: 24px; margin-bottom: 20px; color: #0f172a;">My Enrolled Courses</h2>
+            <div id="enrolled-courses-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;">
+                <p style="color: #64748b;">Loading your courses...</p>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="footer-info">
+            <div class="footer-intro">
+                <div class="footer-logo">
+                    <img src="./logo (1).png" alt="Byway Logo" style="width: 31px; height: 40px;">
+                    <span>Byway</span>
+                </div>
+                <p>Empowering learners through accessible and engaging online education.</p>
+                <p>Byway is a leading online learning platform dedicated to providing high-quality, flexible, and affordable educational experiences.</p>
+            </div>
+            
+            <div class="get-help">
+                <p class="upper-p">Get Help</p>
+                <p>Contact Us</p>
+                <p>Latest Articles</p>
+                <p>FAQ</p>
+            </div>
+            
+            <div class="programs">
+                <p class="upper-p">Programs</p>
+                <p>Art & Design</p>
+                <p>Business</p>
+                <p>IT & Software</p>
+                <p>Languages</p>
+                <p>Programming</p>
+            </div>
+            
+            <div class="contact">
+                <div class="contact-us">
+                    <p class="upper-p">Contact Us</p>
+                    <p>Address: 123 Main Street, Anytown, CA 12345</p>
+                    <p>Tel: +(123) 456-7890</p>
+                    <p>Mail: bywayellu@webkul.in</p>
+                </div>
+                <div class="partner-button">
+                    <a href="#" class="icon-btn">
+                        <img src="./facebook.png" alt="Facebook">
+                    </a>
+                    <a href="#" class="icon-btn">
+                        <img src="./twitter.png" alt="Twitter">
+                    </a>
+                    <a href="#" class="icon-btn">
+                        <img src="./google.jpg" alt="Google">
+                    </a>
+                    <a href="#" class="icon-btn">
+                        <img src="github.png" alt="github">
+                    </a>
+                    <a href="#" class="icon-btn">
+                        <img src="./microsoft.png" alt="Microsoft">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast for Notifications -->
+    <div class="toast" id="toast" style="position:fixed; bottom:30px; right:30px; padding:15px; border-radius:8px; color:white; z-index:9999; display:none;"></div>
+
+    <script src="../auth.js"></script>
+    <script src="../cart.js"></script>
+    <script src="../header-auth.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>

@@ -73,7 +73,7 @@ async function handleCheckout() {
             
             // Redirect to success page
             alert('Payment Successful! Thank you for your purchase.');
-            window.location.href = '../order-completed/order_complete.html';
+            window.location.href = '../order-completed/';
         } else {
             alert(response.message || 'Payment failed. Please try again.');
             submitBtn.textContent = 'Proceed to Checkout';

@@ -34,10 +34,9 @@ async function loadTopCourses() {
         const data = await Auth.fetchWithAuth('/courses/top');
         if (data.success) {
             container.innerHTML = data.courses.map((c, i) => `
-                <div class="c${i+1}" onclick="window.location.href='./course/index.html?id=${c.id}'" style="cursor:pointer">
+                <div class="c${i+1}" onclick="window.location.href='./course/?id=${c.id}'" style="cursor:pointer">
                     <img src="./Rectangle 1080.png">
                     <p>${c.title}</p>
-                    <p>By ${c.teacher.name}</p>
                     <div class="rtin">
                         <img src="./ratings.png">
                         <p>${c.ratingCount.toLocaleString()} Ratings</p>
@@ -53,29 +52,6 @@ async function loadTopCourses() {
     }
 }
 
-async function loadTopInstructors() {
-    const container = document.getElementById('topInstructorsContainer');
-    try {
-        const data = await Auth.fetchWithAuth('/courses/instructors/top');
-        if (data.success) {
-            container.innerHTML = data.instructors.map((ins, i) => `
-                <div class="ins${i+1}">
-                    <img src="./Rectangle 1136.png">
-                    <p>${ins.name}</p>
-                    <p>${ins.title || 'IELTS Expert'}</p>
-                    <div id="sep-line-ins"></div>
-                    <div class="str-n-num">
-                        <img src="./icon-1star.png">
-                        <p>5.0</p>
-                    </div>
-                    <p>${ins.instructorStudents || '0'} students</p>
-                </div>
-            `).join('');
-        }
-    } catch (err) {
-        console.error('Failed to load top instructors:', err);
-    }
-}
 
 async function loadCounts() {
     try {
@@ -101,6 +77,5 @@ async function loadCounts() {
 document.addEventListener('DOMContentLoaded', function() {
     initGauge(document.querySelector('.gauge-box'), 87.6);
     loadTopCourses();
-    loadTopInstructors();
     loadCounts();
 });
