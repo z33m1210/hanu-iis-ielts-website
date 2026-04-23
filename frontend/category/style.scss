@@ -1,4 +1,4 @@
-*, *::before, *::after{
+*, *::before, *::after{ 
     margin:0;
     padding:0;
     box-sizing:border-box;
@@ -71,10 +71,7 @@ header {
     font-size: 15px;
     font-weight: 250;
 
-    &:nth-of-type(1) {
-      // đếm thẻ con trực tiếp không can thiệp vào thẻ con của thẻ con khác
     }
-  }
 }
 
 .logo {
@@ -380,6 +377,33 @@ header {
                 height: 100%;
                 object-fit: cover;
             }
+
+            .wishlist-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: white;
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+                font-size: 18px;
+                z-index: 5;
+                @include transition(transform 0.2s, background 0.2s);
+
+                &:hover {
+                    transform: scale(1.1);
+                    background: #f8fafc;
+                }
+                &.active {
+                    color: #ef4444;
+                }
+            }
         }
 
         .course-info {
@@ -424,10 +448,62 @@ header {
             margin-bottom: 12px;
         }
 
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
         .course-price {
             font-size: 18px;
             font-weight: 700;
             color: $text-primary;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+
+            .cart-btn {
+                background: transparent;
+                border: none;
+                color: #4f46e5;
+                cursor: pointer;
+                font-size: 18px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 8px;
+                border-radius: 12px;
+                @include transition(all 0.3s ease);
+
+                &:hover {
+                    background: #e2dfff; // primary_fixed/soft hover
+                    transform: translateY(-2px);
+                }
+            }
+
+            .buy-btn {
+                padding: 10px 20px;
+                background: linear-gradient(135deg, #3525cd 0%, #4f46e5 100%);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                font-size: 14px;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+                @include transition(all 0.3s ease);
+
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+                    background: linear-gradient(135deg, #4f46e5 0%, #3525cd 100%);
+                }
+            }
         }
 
         // Pagination
@@ -1102,5 +1178,135 @@ footer {
   .main-page .top-cour .c3 > img,
   .main-page .top-cour .c4 > img {
     object-fit: cover;
+  }
+}
+
+/* Luxury Design System - Course Card Components */
+.course-image {
+  position: relative !important;
+  overflow: hidden !important;
+  
+  .wishlist-action {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    z-index: 10 !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    border: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    color: #4b5563 !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    
+    svg {
+      width: 18px !important;
+      height: 18px !important;
+      stroke-width: 1.5 !important;
+    }
+    
+    &:hover {
+      transform: scale(1.1) !important;
+      background: #ffffff !important;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+      color: #ef4444 !important;
+    }
+    
+    &.active {
+      color: #ef4444 !important;
+      svg { 
+        fill: #ef4444 !important; 
+        path { fill: #ef4444 !important; }
+      }
+    }
+  }
+}
+
+.price-row { 
+  display: flex !important; 
+  justify-content: space-between !important; 
+  align-items: center !important; 
+  margin-top: auto !important; 
+  padding-top: 10px !important; 
+}
+
+.card-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  
+  .buy-btn {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+    padding: 9px 20px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05rem !important;
+    cursor: pointer !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    white-space: nowrap !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+    height: auto !important;
+    
+    &:hover {
+      transform: translateY(-2px) !important;
+      background: #333333 !important;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+    }
+  }
+
+  .action-icon-btn {
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 8px !important;
+    width: 38px !important;
+    height: 38px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    color: #4b5563 !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+    
+    svg {
+      width: 19px !important;
+      height: 19px !important;
+      stroke-width: 1.5 !important;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    &:hover {
+      border: 1px solid rgba(0, 0, 0, 0.05) !important;
+      background: #ffffff !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+      transform: translateY(-2px) !important;
+      color: #1a1a1a !important;
+    }
+    
+    &.cart-action.active {
+      color: #4f46e5 !important;
+      background: rgba(79, 70, 229, 0.1) !important;
+      border: 1px solid rgba(79, 70, 229, 0.2) !important;
+    }
+    
+    &.active {
+      color: #ef4444 !important;
+      svg { 
+        fill: #ef4444 !important; 
+        path { fill: #ef4444 !important; }
+      }
+    }
   }
 }

@@ -65,7 +65,9 @@ const courseSchemas = {
     hours: Joi.number().integer().min(0),
     lectures: Joi.number().integer().min(0),
     chapters: Joi.number().integer().min(0),
-    isPublished: Joi.boolean()
+    isPublished: Joi.boolean(),
+    thumbnail: Joi.string().allow('', null),
+    syllabus: Joi.string().allow('', null)
   })
 };
 

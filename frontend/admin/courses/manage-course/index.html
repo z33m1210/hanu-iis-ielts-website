@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Course - IELTS Admin Portal</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../admin.css">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .manage-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .level-btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--outline-variant);
+            background: var(--surface-container-lowest);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .level-btn:hover {
+            background-color: var(--surface-container-low);
+        }
+
+        .level-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .curriculum-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .lesson-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--surface-container-lowest);
+            padding: 1.25rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--outline-variant);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .lesson-card:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-ambient);
+        }
+
+        .thumbnail-preview-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: var(--surface-container-high);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 2px dashed var(--surface-container-highest);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .thumbnail-preview-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #1e293b;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-success { border-left: 4px solid #10b981; }
+        .toast-error { border-left: 4px solid #ef4444; }
+
+        /* Material symbols adjustment */
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-card {
+            background: var(--surface-container-lowest);
+            width: 100%;
+            max-width: 450px;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-deep);
+            padding: 2rem;
+            animation: modalSlide 0.3s ease-out;
+        }
+
+        @keyframes modalSlide {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo" style="cursor: pointer;" onclick="window.location.href='../../'">
+                <img src="../../../logo (1).png" alt="BandPath Logo">
+                <span>BandPath</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../../" class="nav-item"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a></li>
+                    <li><a href="../../users/" class="nav-item"><i data-lucide="users"></i><span>Users</span></a></li>
+                    <li><a href="../../courses/" class="nav-item active"><i data-lucide="book-open"></i><span>Courses</span></a></li>
+                    <li><a href="../../settings/" class="nav-item"><i data-lucide="settings"></i><span>Settings</span></a></li>
+                    <li><a href="#" id="logoutBtn" class="nav-item"><i data-lucide="log-out"></i><span>Logout</span></a></li>
+                </ul>
+            </nav>
+            
+            <div style="margin-top: 2rem; border-top: 1px solid var(--outline-variant); padding-top: 1.5rem;">
+                <p style="font-size: 0.75rem; font-weight: 700; color: var(--on-surface-variant); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em;">Management</p>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-item active" data-tab="general"><span class="material-symbols-outlined" style="font-size: 20px; margin-right: 1rem;">info</span><span>General Info</span></a></li>
+                    <li><a href="#" class="nav-item" data-tab="curriculum"><span class="material-symbols-outlined" style="font-size: 20px; margin-right: 1rem;">menu_book</span><span>Course Content</span></a></li>
+                    <li><a href="#" class="nav-item" data-tab="media"><span class="material-symbols-outlined" style="font-size: 20px; margin-right: 1rem;">perm_media</span><span>Media</span></a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; cursor: pointer; color: var(--on-surface-variant);" onclick="window.location.href='../'">
+                        <i data-lucide="arrow-left" style="width: 16px;"></i>
+                        <span style="font-size: 0.875rem; font-weight: 600;">Back to Courses</span>
+                    </div>
+                    <h1 id="pageTitle">Course Details</h1>
+                    <p style="color: var(--on-surface-variant); font-size: 0.875rem;" id="headerSubtitle">Manage course metadata and content</p>
+                </div>
+                <div class="header-actions">
+                    <span id="statusBadge" class="badge badge-published" style="margin-right: 0.5rem;">Published</span>
+                    <button class="btn-primary" onclick="saveAllChanges()">
+                        <i data-lucide="save" style="width: 18px;"></i>
+                        <span>Save Changes</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Tab: General Info -->
+            <div id="general" class="tab-content active">
+                <div class="manage-grid">
+                    <div class="space-y-6">
+                        <section class="card">
+                            <h3 class="card-title">Basic Information</h3>
+                            <div class="form-group">
+                                <label>Course Title</label>
+                                <input type="text" id="courseTitle" class="form-control" style="font-size: 1.125rem; font-weight: 600; padding: 1rem;">
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="courseDesc" class="form-control" rows="6" style="resize: vertical;"></textarea>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select id="courseCategory" class="form-control">
+                                        <option value="listening">Listening</option>
+                                        <option value="reading">Reading</option>
+                                        <option value="writing">Writing</option>
+                                        <option value="speaking">Speaking</option>
+                                        <option value="full">Full Course</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Price (USD)</label>
+                                    <div style="position: relative;">
+                                        <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--on-surface-variant); font-weight: 600;">$</span>
+                                        <input type="number" id="coursePrice" class="form-control" style="padding-left: 2rem;">
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="card">
+                            <h3 class="card-title">Academic Level</h3>
+                            <div style="display: flex; gap: 1rem;" id="levelContainer">
+                                <button class="level-btn" data-level="Beginner">Beginner</button>
+                                <button class="level-btn" data-level="Intermediate">Intermediate</button>
+                                <button class="level-btn" data-level="Advanced">Advanced</button>
+                            </div>
+                        </section>
+
+                        <section class="card">
+                            <h3 class="card-title">Visibility</h3>
+                            <div style="display: flex; align-items: center; gap: 1rem; padding: 0.5rem 0;">
+                                <label class="switch">
+                                    <input type="checkbox" id="courseIsPublished">
+                                    <span class="slider round"></span>
+                                </label>
+                                <span style="font-weight: 600; font-size: 0.9375rem;">Publish this course on the storefront</span>
+                            </div>
+                        </section>
+                    </div>
+
+                    <aside class="space-y-6">
+                        <section class="card">
+                            <h3 class="card-title">Course Stats</h3>
+                            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+                                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--outline-variant); padding-bottom: 0.75rem; align-items: center;">
+                                    <span style="font-size: 0.8125rem; color: var(--on-surface-variant);">Lectures</span>
+                                    <input type="number" id="statLectures" style="font-weight: 700; width: 60px; text-align: center; border: 1px solid var(--outline-variant); background: var(--surface-container-low); color: var(--on-surface); border-radius: 6px; padding: 0.25rem;">
+                                </div>
+                                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--outline-variant); padding-bottom: 0.75rem; align-items: center;">
+                                    <span style="font-size: 0.8125rem; color: var(--on-surface-variant);">Chapters</span>
+                                    <input type="number" id="statChapters" style="font-weight: 700; width: 60px; text-align: center; border: 1px solid var(--outline-variant); background: var(--surface-container-low); color: var(--on-surface); border-radius: 6px; padding: 0.25rem;">
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 0.8125rem; color: var(--on-surface-variant);">Total Hours</span>
+                                    <input type="number" id="statHours" style="font-weight: 700; width: 60px; text-align: center; border: 1px solid var(--outline-variant); background: var(--surface-container-low); color: var(--primary); border-radius: 6px; padding: 0.25rem;">
+                                </div>
+                            </div>
+                        </section>
+
+                    </aside>
+                </div>
+            </div>
+
+            <!-- Tab: Course Content -->
+            <div id="curriculum" class="tab-content">
+                <section class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h3 class="card-title" style="margin-bottom: 0;">Course Content Management</h3>
+                        <button class="btn-primary" onclick="addLesson()">
+                            <i data-lucide="plus"></i>
+                            <span>Add Lesson</span>
+                        </button>
+                    </div>
+                    <div id="lessonList" class="curriculum-list">
+                        <!-- Lessons injected here -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Tab: Media -->
+            <div id="media" class="tab-content">
+                <section class="card" style="max-width: 800px; margin: 0 auto;">
+                    <h3 class="card-title">Course Thumbnail</h3>
+                    <div class="thumbnail-preview-container">
+                        <img id="thumbnailPreview" src="" alt="Thumbnail" style="display: none;">
+                        <div id="thumbnailPlaceholder" style="text-align: center; color: var(--on-surface-variant);">
+                            <span class="material-symbols-outlined" style="font-size: 48px; margin-bottom: 1rem; opacity: 0.3;">image</span>
+                            <p style="font-size: 0.875rem; font-weight: 500;">No thumbnail provided</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Thumbnail URL</label>
+                        <input type="text" id="courseThumbnailUrl" class="form-control" placeholder="e.g. /course/thumbnail.png">
+                        <p style="font-size: 0.75rem; color: var(--on-surface-variant); margin-top: 0.75rem;">Recommended size: 1280x720px (.jpg, .webp)</p>
+                    </div>
+                    <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--outline-variant); text-align: center;">
+                        <button class="btn-primary" style="margin: 0 auto; display: inline-flex;">
+                            <i data-lucide="upload-cloud"></i>
+                            <span>Upload New Asset</span>
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Modal: Add Lesson -->
+    <div id="lessonModal" class="modal-overlay">
+        <div class="modal-card">
+            <h3 class="card-title" style="margin-bottom: 1.5rem;">Add New Lesson</h3>
+            <div class="form-group">
+                <label>Lesson Title</label>
+                <input type="text" id="newLessonTitle" class="form-control" placeholder="e.g. Introduction to IELTS">
+            </div>
+            <div class="form-group">
+                <label>Duration (MM:SS)</label>
+                <input type="text" id="newLessonDuration" class="form-control" placeholder="10:00" value="10:00">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem;">
+                <button class="btn-primary" style="background: var(--surface-container-high); color: var(--on-surface); border: 1px solid var(--outline-variant);" onclick="closeLessonModal()">Cancel</button>
+                <button class="btn-primary" onclick="confirmAddLesson()">Add Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast" class="toast">
+        <i id="toastIcon" data-lucide="check-circle" style="width: 20px;"></i>
+        <span id="toastMessage">Changes saved successfully!</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../../auth.js"></script>
+    <script src="manage-course.js"></script>
+    <script>
+        // Initialize Lucide icons
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

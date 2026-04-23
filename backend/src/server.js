@@ -12,6 +12,7 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const postRoutes = require('./routes/postRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
 const wishlistRoutes = require('./routes/wishlistRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // Static frontend files
 app.use(express.static(path.join(__dirname, '../../frontend')));
@@ -41,10 +43,9 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-}
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log('✅ Prisma connected to database');
+});
 
 module.exports = app;

@@ -20,10 +20,11 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  posts          Post[]
   enrollments    Enrollment[]
   payments       Payment[]
   wishlist       Wishlist[]
+  reviews        Review[]
+  posts          Post[]
 }
 
 model Course {
@@ -40,12 +41,15 @@ model Course {
   category      String   @default("full") // listening, reading, writing, speaking, full
   chapters      Int      @default(0)
   image         String?
-  isPublished Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  syllabus      String?  @default("[]") // JSON string storage
+  isPublished   Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   enrollments Enrollment[]
   wishlist    Wishlist[]
+  reviews     Review[]
+  faqs        FAQ[]
 }
 
 model Enrollment {
@@ -60,6 +64,30 @@ model Enrollment {
   course  Course @relation(fields: [courseId], references: [id])
 
   @@unique([studentId, courseId])
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  courseId  Int
+  rating    Int      @default(5)
+  comment   String?
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+
+  @@unique([userId, courseId])
+}
+
+model FAQ {
+  id        Int      @id @default(autoincrement())
+  courseId  Int
+  question  String
+  answer    String
+  createdAt DateTime @default(now())
+
+  course Course @relation(fields: [courseId], references: [id])
 }
 
 model Payment {
@@ -78,26 +106,13 @@ model Post {
   id        Int      @id @default(autoincrement())
   title     String
   content   String?
-  type      String   @default("ARTICLE") // ARTICLE, BLOG, RESOURCE
-  status    String   @default("DRAFT") // DRAFT, PUBLISHED, REVIEW
+  type      String   @default("ARTICLE")
+  status    String   @default("DRAFT")
   authorId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
   author    User     @relation(fields: [authorId], references: [id])
-}
-
-model Setting {
-  key   String @id
-  value String
-}
-
-model GlobalSettings {
-  id              Int     @id @default(1)
-  platformName    String  @default("BandPath IELTS")
-  adminEmail      String  @default("admin@bandpath.edu")
-  defaultLanguage String  @default("English (US)")
-  maintenanceMode Boolean @default(false)
 }
 
 model Wishlist {
@@ -112,3 +127,15 @@ model Wishlist {
   @@unique([userId, courseId])
 }
 
+model GlobalSettings {
+  id              Int     @id @default(1)
+  platformName    String  @default("BandPath IELTS")
+  adminEmail      String  @default("admin@bandpath.edu")
+  defaultLanguage String  @default("English (US)")
+  maintenanceMode Boolean @default(false)
+}
+
+model Setting {
+  key   String @id
+  value String
+}

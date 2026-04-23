@@ -4,5 +4,6 @@ const enrollmentController = require('../controllers/enrollmentController');
 const { authenticateToken } = require('../middlewares/authMiddleware');
 
 router.get('/my', authenticateToken, enrollmentController.getMyEnrollments);
+router.get('/check/:courseId', authenticateToken, enrollmentController.checkEnrollment);
 
 module.exports = router;

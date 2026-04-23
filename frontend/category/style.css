@@ -954,4 +954,168 @@ footer {
     -o-object-fit: cover;
        object-fit: cover;
   }
-}/*# sourceMappingURL=style.css.map */
+}
+
+/* Luxury Design System - Course Card Components */
+.course-card .course-image .wishlist-btn { 
+  position: absolute !important; 
+  top: 10px !important; 
+  right: 10px !important; 
+  width: 34px !important; 
+  height: 34px !important; 
+  border-radius: 50% !important; 
+  background: rgba(255, 255, 255, 0.95) !important; 
+  border: none !important; 
+  display: flex !important; 
+  align-items: center !important; 
+  justify-content: center !important; 
+  cursor: pointer !important; 
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12) !important; 
+  font-size: 20px !important; 
+  z-index: 5 !important; 
+  transition: all 0.3s ease !important; 
+}
+
+.course-card .course-image .wishlist-btn:hover { 
+  transform: scale(1.1) !important; 
+  background: white !important; 
+} 
+
+.course-card .course-image .wishlist-btn.active { 
+  color: #ef4444 !important; 
+} 
+
+.course-card .course-image .wishlist-btn.active svg { 
+  fill: #ef4444 !important; 
+}
+
+.course-image {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.course-image .wishlist-action {
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  z-index: 10 !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  color: #4b5563 !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.course-image .wishlist-action svg {
+  width: 18px !important;
+  height: 18px !important;
+  stroke-width: 1.5 !important;
+}
+
+.course-image .wishlist-action:hover {
+  transform: scale(1.1) !important;
+  background: #ffffff !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+  color: #ef4444 !important;
+}
+
+.course-image .wishlist-action.active {
+  color: #ef4444 !important;
+}
+
+.course-image .wishlist-action.active svg,
+.wishlist-action.active svg path {
+  fill: #ef4444 !important;
+  stroke: #ef4444 !important;
+}
+
+/* Luxury Design System - Course Card Actions */
+.card-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.card-actions .buy-btn {
+  background: #1a1a1a !important;
+  color: #ffffff !important;
+  padding: 9px 20px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05rem !important;
+  cursor: pointer !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  white-space: nowrap !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+  height: auto !important;
+}
+
+.card-actions .buy-btn:hover {
+  transform: translateY(-2px) !important;
+  background: #333333 !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+}
+
+.card-actions .buy-btn:active {
+  transform: translateY(0) !important;
+}
+
+.card-actions .action-icon-btn {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 8px !important;
+  width: 38px !important;
+  height: 38px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  color: #4b5563 !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.card-actions .action-icon-btn svg {
+  width: 19px !important;
+  height: 19px !important;
+  pointer-events: none !important;
+  stroke-width: 1.5 !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.card-actions .action-icon-btn:hover {
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-2px) !important;
+  color: #1a1a1a !important;
+}
+
+.card-actions .action-icon-btn.cart-action.active {
+  color: #4f46e5 !important;
+  background: rgba(79, 70, 229, 0.1) !important;
+  border: 1px solid rgba(79, 70, 229, 0.2) !important;
+}
+
+.card-actions .action-icon-btn.wishlist-action.active {
+  color: #ef4444 !important;
+}
+
+.card-actions .action-icon-btn.wishlist-action.active svg,
+.wishlist-action.active svg path {
+  fill: #ef4444 !important;
+  stroke: #ef4444 !important;
+}
+
+/*# sourceMappingURL=style.css.map */

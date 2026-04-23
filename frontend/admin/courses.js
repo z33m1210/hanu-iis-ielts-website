@@ -37,15 +37,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         tbody.innerHTML = courses.map(c => `
-            <tr>
+            <tr onclick="handleEdit('${c.id}')" style="cursor: pointer;">
                 <td style="font-weight: 600;">${c.title}</td>
                 <td>${CATEGORY_MAP[c.category.toLowerCase()] || c.category}</td>
                 <td>${c.lectures || 0} Lectures</td>
                 <td><span class="badge ${c.isPublished ? 'badge-published' : 'badge-draft'}">${c.isPublished ? 'Published' : 'Draft'}</span></td>
                 <td>
                     <div class="actions">
-                        <button class="action-btn" title="Edit" onclick="handleEdit('${c.id}')"><i data-lucide="edit-3"></i></button>
-                        <button class="action-btn btn-delete" title="Delete" onclick="handleDelete('${c.id}')"><i data-lucide="trash-2"></i></button>
+                        <button class="action-btn" title="Edit" onclick="event.stopPropagation(); handleEdit('${c.id}')"><i data-lucide="edit-3"></i></button>
+                        <button class="action-btn btn-delete" title="Delete" onclick="event.stopPropagation(); handleDelete('${c.id}')"><i data-lucide="trash-2"></i></button>
                     </div>
                 </td>
             </tr>
@@ -124,23 +124,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     window.handleEdit = (courseId) => {
-        const c = allCourses.find(course => course.id == courseId);
-        if (!c) return;
-
-        document.getElementById('editCourseId').value = c.id;
-        document.getElementById('editCourseTitle').value = c.title;
-        document.getElementById('editCourseDescription').value = c.description || '';
-        document.getElementById('editCourseCategory').value = c.category;
-        document.getElementById('editCourseStatus').value = c.isPublished ? 'true' : 'false';
-        document.getElementById('editCourseLevel').value = c.level || 'Beginner';
-        document.getElementById('editCoursePrice').value = c.price || 0;
-        document.getElementById('editCourseOriginalPrice').value = c.originalPrice || '';
-        document.getElementById('editCourseHours').value = c.hours || 0;
-        document.getElementById('editCourseLectures').value = c.lectures || 0;
-        document.getElementById('editCourseChapters').value = c.chapters || 0;
-
-        document.getElementById('editCourseModal').classList.add('active');
-        if (window.lucide) lucide.createIcons();
+        window.location.href = `./manage-course/?id=${courseId}`;
     };
 
     window.saveCourseEdits = async () => {

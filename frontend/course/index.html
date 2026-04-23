@@ -12,151 +12,202 @@
 <body>
     <header>
         <div class="head-start">
-            <div class="logo">
+            <div class="logo" style="cursor: pointer;" onclick="window.location.href='../'">
                 <img src="./logo (1).png">
                 <span>BandPath</span>
             </div>
-            <p>IELTS Skills</p>
+            <p style="cursor: pointer;">IELTS Skills</p>
             <div class="search-container">
                 <img src="./search-icon.png">
                 <input type="text" class="search-box" placeholder="Search IELTS courses">
             </div>
-            <p>Teach on BandPath</p>
+            <p style="cursor: pointer;">Teach on BandPath</p>
         </div>
         <div class="func-bar">
-            <img src="./heart.png">
-            <img src="./Frame 427318762.png">
+            <div class="badge-wrapper" id="wishlist-badge-wrapper">
+                <img src="../heart.png" title="Wishlist" style="cursor: pointer;">
+                <span class="badge-count show" id="wishlist-count">1</span>
+            </div>
+            <div class="badge-wrapper" id="cart-badge-wrapper" onclick="window.location.href='../shopping-cart/'">
+                <img src="./Frame 427318762.png" title="View Shopping Cart" style="cursor: pointer;">
+                <span class="badge-count show" id="cart-count">1</span>
+            </div>
+            <!-- avatar inject bởi header-auth.js -->
+            <div class="ava-wrapper">
+                <div class="ava-header" id="ava-btn" style="background:#ec4899;" title="Hoàng Zeem">
+                    H
+                </div>
+                <div class="ava-dropdown" id="ava-dropdown">
+                    <div class="ava-dropdown-header">
+                        <div class="ava-dropdown-avatar" style="background:#ec4899;">H</div>
+                        <div>
+                            <div class="ava-dropdown-name">Hoàng Zeem</div>
+                            <div class="ava-dropdown-email">ghaha1210@gmail.com</div>
+                        </div>
+                    </div>
+                    <a class="ava-dropdown-item" href="../profile/">
+                        <span class="item-icon">👤</span> My Profile
+                    </a>
+                    <a class="ava-dropdown-item" href="../profile/#enrolled-courses-section">
+                        <span class="item-icon">📚</span> My Courses
+                    </a>
+                    <a class="ava-dropdown-item" href="../wishlist/">
+                        <span class="item-icon">❤️</span> Wishlist
+                    </a>
+                    <div class="ava-dropdown-divider"></div>
+                    <a class="ava-dropdown-item" href="../settings/">
+                        <span class="item-icon">⚙️</span> Settings
+                    </a>
+                    <div class="ava-dropdown-divider"></div>
+                    <div class="ava-dropdown-item logout" onclick="headerLogout()">
+                        <span class="item-icon">🚪</span> Log Out
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
-    <div class="background"></div>
-    <div class="background2"></div>
-
     <div class="main-page">
-        <div class="course">
-            <!-- Breadcrumb -->
-            <div class="link">
-                <p><a href="../" style="text-decoration: none; color: inherit; cursor: pointer;">Home</a></p>
-                <img src="./Vector.png">
-                <p><a href="../category/" style="text-decoration: none; color: inherit; cursor: pointer;">IELTS Skills</a></p>
-                <img src="./Vector.png">
-                <p id="breadcrumb-title">Course</p>
-            </div>
-
-            <!-- Main title block — filled by JS -->
-            <div class="Main-title">
-                <p id="course-title">Loading...</p>
-                <p id="course-desc">Loading description...</p>
-                <div class="rating-n-details">
-                    <p id="course-rating">—</p>
-                    <img src="./Rating.png">
-                    <p id="course-reviews">—</p>
-                    <div></div>
-                    <p id="course-meta">—</p>
+        <div class="master-layout">
+            <!-- Left Column: Primary Content -->
+            <div class="content-main">
+                <div class="breadcrumb-nav">
+                    <a href="../">Home</a>
+                    <span>/</span>
+                    <a href="../category/">category</a>
+                    <span>/</span>
+                    <span id="breadcrumb-title" style="color: #1e293b; font-weight: 600;">Course</span>
                 </div>
 
-                <div class="avail-language">
-                    <img src="./Icon (1).png">
-                    <p>English, Vietnamese</p>
+                <div class="video-hero">
+                    <img id="course-banner" src="./Rectangle 1080.png" alt="Course Banner">
                 </div>
-            </div>
 
-            <!-- Buy card — price filled by JS -->
-            <div class="teacher-n-buy">
-                <div class="teacher-info">
-                    <img src="./image 4.png">
-                    <div class="price">
-                        <p id="price-sale">—</p>
-                        <p id="price-original">—</p>
-                        <p>50% OFF!</p>
+                <div class="course-metadata-block">
+                    <div class="course-header">
+                        <h1 id="course-title">Loading...</h1>
+                        <p id="course-desc" style="color: #64748b; margin-top: 8px;">Loading description...</p>
                     </div>
-                    <button class="add-to-cart-button" onclick="addToCart()">Add To Cart</button>
-                    <button class="buy-now-button" onclick="buyNow()">Buy Now</button>
-                    <div class="tnb-sl"></div>
-                    <div class="share-info">
-                        <p>Share</p>
-                        <div class="share-group">
-                            <a href="#" class="shared-button1"><img src="./facebook.png" alt="Facebook"></a>
-                            <a href="#" class="shared-button2"><img src="./github.png" alt="GitHub"></a>
-                            <a href="#" class="shared-button3"><img src="./google.jpg" alt="Google"></a>
-                            <a href="#" class="shared-button4"><img src="./twitter.png" alt="X"></a>
-                            <a href="#" class="shared-button5"><img src="./microsoft.png" alt="Windows"></a>
+                    <div class="course-meta-row">
+                        <div class="rating-pill">
+                            <span id="course-rating">0.0</span>
+                            <img src="./Star 3.png" style="width: 14px; height: 14px; margin-top: -2px;">
+                        </div>
+                        <span id="course-reviews">(0 ratings)</span>
+                        <span id="course-meta">30h • 20 Lectures • Beginner</span>
+                    </div>
+                    <div class="instructor-mini-row">
+                        <img src="./image 4.png" alt="Instructor">
+                        <div>
+                            <p>Academic Staff</p>
+                            <span style="font-size: 12px; color: #94a3b8;">Course Instructor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-navbar">
+                    <input type="radio" name="tabs" id="tab1" checked style="display:none">
+                    <label for="tab1" onclick="scrollToSection('course-des')">Description</label>
+                    <input type="radio" name="tabs" id="tab2" style="display:none">
+                    <label for="tab2" onclick="scrollToSection('reviews-section')">Reviews</label>
+                    <input type="radio" name="tabs" id="tab3" style="display:none">
+                    <label for="tab3" onclick="scrollToSection('faq-section')">FAQ</label>
+                </div>
+
+                <div class="content-section" id="course-des" style="display: block;">
+                    <h2>Course Overview</h2>
+                    <p id="desc-body">This IELTS course is expertly designed to build your skills across all four test components — Listening, Reading, Writing, and Speaking.</p>
+                    <h2 style="margin-top: 32px;">Certification</h2>
+                    <p>Upon successful completion of this BandPath course, you will receive an official certificate of achievement recognized by language schools and employers globally, validating your proficiency.</p>
+                </div>
+
+                <div class="content-section" id="reviews-section">
+                    <h2>Student Feedback</h2>
+                    <div style="display: flex; gap: 40px; margin: 24px 0; align-items: center; background: #f8fafc; padding: 32px; border-radius: 12px; border: 1px solid #f1f5f9;">
+                        <div style="text-align: center; min-width: 120px;">
+                            <p id="avg-rating" style="font-size: 56px; font-weight: 800; color: #1e293b; margin: 0; line-height: 1;">4.8</p>
+                            <div style="color: #fbbf24; font-size: 20px; margin: 8px 0;">★★★★★</div>
+                            <p style="font-size: 14px; color: #64748b; font-weight: 700;">Course Rating</p>
+                        </div>
+                        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="flex: 1; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden;">
+                                    <div style="width: 65%; height: 100%; background: #4f46e5;"></div>
+                                </div>
+                                <span style="font-size: 13px; color: #64748b; font-weight: 600; width: 30px;">5★</span>
+                                <span style="font-size: 13px; color: #94a3b8; width: 40px;">65%</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="flex: 1; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden;">
+                                    <div style="width: 20%; height: 100%; background: #4f46e5;"></div>
+                                </div>
+                                <span style="font-size: 13px; color: #64748b; font-weight: 600; width: 30px;">4★</span>
+                                <span style="font-size: 13px; color: #94a3b8; width: 40px;">20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="review-form-container" style="margin-bottom: 32px; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; display: none;">
+                        <p style="font-weight: 700; font-size: 18px; margin-bottom: 16px;">Leave an Academic Review</p>
+                        <div class="rating-input" style="display: flex; gap: 8px; margin-bottom: 16px; font-size: 32px; cursor: pointer;">
+                            <span data-v="1">☆</span><span data-v="2">☆</span><span data-v="3">☆</span><span data-v="4">☆</span><span data-v="5">☆</span>
+                        </div>
+                        <textarea id="review-comment" placeholder="Share your learning experience..." style="width: 100%; height: 120px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 16px; font-family: inherit; font-size: 15px; resize: none; outline: none;"></textarea>
+                        <button onclick="submitReview()" style="background: #4f46e5; color: white; border: none; padding: 12px 32px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Post Review</button>
+                    </div>
+
+                    <div id="review-list">
+                        <!-- Injected by JS -->
+                    </div>
+                    <button id="more-reviews" onclick="loadMoreReviews()" style="width: 100%; margin-top: 24px; padding: 14px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; font-weight: 700; color: #1e293b; cursor: pointer; transition: all 0.2s;">Load More Reviews</button>
+                </div>
+
+                <div class="content-section" id="faq-section">
+                    <h2>Frequently Asked Questions</h2>
+                    <div id="faq-list" style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Actions & Curriculum -->
+            <div class="content-sidebar">
+                <div class="sidebar-card">
+                    <div class="price-display">
+                        <span id="price-sale" style="font-size: 36px; font-weight: 800; color: #1e293b;">$0</span>
+                        <span id="price-original" style="text-decoration: line-through; color: #94a3b8; font-size: 18px; margin-left: 8px;">$0</span>
+                    </div>
+                    <div class="sidebar-actions" style="display: flex; flex-direction: column; gap: 12px;">
+                        <button class="add-to-cart-button" onclick="addToCart()" style="width: 100%; height: 52px; background: #4f46e5; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.2s;">Add to Cart</button>
+                        <button class="buy-now-button" onclick="buyNow()" style="width: 100%; height: 52px; background: white; color: #4f46e5; border: 2px solid #4f46e5; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Buy Now</button>
+                    </div>
+                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #f1f5f9; display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #475569;">
+                            <span style="font-size: 16px;">⏱️</span> Full Lifetime Access
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #475569;">
+                            <span style="font-size: 16px;">📱</span> Access on Mobile and TV
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #475569;">
+                            <span style="font-size: 16px;">🎓</span> Certificate of Completion
+                        </div>
+                    </div>
+                </div>
+
+                <div class="curriculum-sidebar">
+                    <div class="curriculum-header">Course Content</div>
+                    <div class="curriculum-content">
+                        <div class="table-of-content" id="toc-container">
+                            <!-- Injected by JS -->
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Tab navbar -->
-            <div class="course-navbar">
-                <div class="nav-bar-button2">
-                    <input type="checkbox" id="btn2" onchange="scrollToSection('course-des', this)">
-                    <label for="btn2" class="nav-btn">Description</label>
-                </div>
-                <div class="nav-bar-button3">
-                    <input type="checkbox" id="btn3" onchange="scrollToSection('reviews-section', this)">
-                    <label for="btn3" class="nav-btn">Reviews</label>
-                </div>
-                <div class="nav-bar-button4">
-                    <input type="checkbox" id="btn4" onchange="scrollToSection('faq-section', this)">
-                    <label for="btn4" class="nav-btn">FAQ</label>
-                </div>
-            </div>
-
-            <div class="sep-line1"></div>
-
-            <!-- Description -->
-            <div class="course-des" id="course-des">
-                <p>Course Description</p>
-                <p id="desc-body">This IELTS course is expertly designed to build your skills across all four test components — Listening, Reading, Writing, and Speaking. Through structured modules, real exam simulations, and personalised feedback, you will gain the confidence and strategies needed to achieve your target band score.</p>
-                <p>Certification</p>
-                <p>Upon successful completion of this BandPath course, you will receive an official certificate of achievement. BandPath certifications are recognised by language schools and employers across Vietnam and internationally, validating your English proficiency and commitment to excellence.</p>
-            </div>
-
-            <div class="sep-line2"></div>
-
-
-
-            <!-- Syllabus — filled by JS -->
-            <div class="syllabus-details" id="syllabus-details">
-                <p>Syllabus</p>
-                <div class="table-of-content" id="toc-container">
-                    <!-- Injected by JS -->
-                </div>
-            </div>
         </div>
 
-        <!-- Reviews section -->
-        <div class="reviews" id="reviews-section">
-            <p style="font-weight:700;font-size:22px;">Student Reviews</p>
-            <div class="stars">
-                <div class="star-review">
-                    <p id="avg-rating">4.8</p>
-                    <img src="./Star 3.png">
-                    <p>Course Rating</p>
-                </div>
-                <div class="star-5"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3.png"><p>65%</p></div>
-                <div class="star-4"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3 (1).png"><p>20%</p></div>
-                <div class="star-3"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3 (1).png"><img src="./Star 3 (1).png"><p>10%</p></div>
-                <div class="star-2"><img src="./Star 3.png"><img src="./Star 3.png"><img src="./Star 3 (1).png"><img src="./Star 3 (1).png"><img src="./Star 3 (1).png"><p>5%</p></div>
-                <div class="star-1"><img src="./Star 3.png"><img src="./Star 3 (1).png"><img src="./Star 3 (1).png"><img src="./Star 3 (1).png"><img src="./Star 3 (1).png"><p>5%</p></div>
-            </div>
-            <div class="review" id="review-list">
-                <!-- Injected by JS -->
-            </div>
-            <button id="more-reviews" onclick="loadMoreReviews()">View more Reviews</button>
-        </div>
-
-        <!-- FAQ section -->
-        <div class="faq-section" id="faq-section">
-            <p class="faq-title">Frequently Asked Questions</p>
-            <div class="faq-list" id="faq-list">
-                <!-- Injected by JS -->
-            </div>
-        </div>
-
-        <!-- More Courses Like This -->
-        <div class="courses">
-            <h2 class="div-title">More Courses Like This</h2>
+        <!-- Related Courses -->
+        <div class="courses-section" style="margin-top: 80px; border-top: 1px solid #e2e8f0; padding-top: 60px;">
+            <h2 style="font-size: 24px; font-weight: 800; color: #1e293b; margin-bottom: 32px;">Recommended for You</h2>
             <div class="course-list" id="related-courses">
                 <!-- Injected by JS -->
             </div>
@@ -167,39 +218,40 @@
         <div class="footer-info">
             <div class="footer-intro">
                 <div class="footer-logo">
-                    <img src="./logo (1).png" alt="BandPath Logo" style="width: 31px; height: 40px;">
-                    <span>BandPath</span>
+                    <img src="./logo (1).png" alt="BandPath Logo" style="width: 32px;">
+                    <span style="font-weight: 800; font-size: 24px; color: #fff;">BandPath</span>
                 </div>
-                <p>Empowering IELTS learners to achieve their dream band score.</p>
-                <p>BandPath is Vietnam's leading IELTS preparation platform, dedicated to delivering expert-led, flexible, and result-driven English language education.</p>
+                <p style="margin-top: 16px; font-size: 14px; line-height: 1.6;">Empowering IELTS learners to achieve their dream band score through expert-led, result-driven education.</p>
             </div>
             <div class="get-help">
-                <p class="upper-p">Get Help</p>
-                <p>Contact Us</p>
-                <p>Latest Articles</p>
-                <p>FAQ</p>
+                <p class="upper-p" style="color: #fff; font-weight: 700; margin-bottom: 20px;">Resources</p>
+                <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
+                    <a href="#" style="color: inherit; text-decoration: none;">Help Center</a>
+                    <a href="#" style="color: inherit; text-decoration: none;">Teaching Center</a>
+                    <a href="#" style="color: inherit; text-decoration: none;">Mobile App</a>
+                    <a href="#" style="color: inherit; text-decoration: none;">Academic Calendar</a>
+                </div>
             </div>
             <div class="programs">
-                <p class="upper-p">IELTS Skills</p>
-                <p>IELTS Listening</p>
-                <p>IELTS Reading</p>
-                <p>IELTS Writing</p>
-                <p>IELTS Speaking</p>
-                <p>Full Mock Tests</p>
-            </div>
-            <div class="contact">
-                <div class="contact-us">
-                    <p class="upper-p">Contact Us</p>
-                    <p>Address: 45 Nguyen Hue, District 1, Ho Chi Minh City</p>
-                    <p>Tel: +(84) 028-3822-1234</p>
-                    <p>Mail: hello@bandpath.vn</p>
+                <p class="upper-p" style="color: #fff; font-weight: 700; margin-bottom: 20px;">Company</p>
+                <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
+                    <a href="#" style="color: inherit; text-decoration: none;">About Us</a>
+                    <a href="#" style="color: inherit; text-decoration: none;">Careers</a>
+                    <a href="#" style="color: inherit; text-decoration: none;">Blog</a>
+                    <a href="#" style="color: inherit; text-decoration: none;">Contact Us</a>
                 </div>
-                <div class="partner-button">
-                    <a href="#" class="icon-btn"><img src="./facebook.png" alt="Facebook"></a>
-                    <a href="#" class="icon-btn"><img src="./twitter.png" alt="Twitter"></a>
-                    <a href="#" class="icon-btn"><img src="./google.jpg" alt="Google"></a>
-                    <a href="#" class="icon-btn"><img src="github.png" alt="github"></a>
-                    <a href="#" class="icon-btn"><img src="./microsoft.png" alt="Microsoft"></a>
+            </div>
+            <div class="contact-us">
+                <p class="upper-p" style="color: #fff; font-weight: 700; margin-bottom: 20px;">Legal</p>
+                <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
+                    <a href="#" style="color: inherit; text-decoration: none;">Terms of Service</a>
+                    <a href="#" style="color: inherit; text-decoration: none;">Privacy Policy</a>
+                    <a href="#" style="color: inherit; text-decoration: none;">Cookie Settings</a>
+                </div>
+                <div class="partner-button" style="margin-top: 32px; display: flex; gap: 12px;">
+                    <a class="icon-btn" href="#"><img src="./facebook.png" alt="FB" style="width: 20px;"></a>
+                    <a class="icon-btn" href="#"><img src="./twitter (1).png" alt="TW" style="width: 20px;"></a>
+                    <a class="icon-btn" href="#"><img src="./Circle.png" alt="IG" style="width: 20px;"></a>
                 </div>
             </div>
         </div>
@@ -207,6 +259,7 @@
 
     <script src="../auth.js"></script>
     <script src="../cart.js"></script>
+    <script src="../wishlist-service.js"></script>
     <script src="../header-auth.js"></script>
     <script src="course-page.js"></script>
 </body>

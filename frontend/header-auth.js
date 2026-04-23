@@ -220,6 +220,40 @@
             }
             .mode-toggle-wrapper .slider.round { border-radius: 20px; }
             .mode-toggle-wrapper .slider.round:before { border-radius: 50%; }
+
+            /* Badge styles */
+            .badge-wrapper {
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+            .badge-count {
+                position: absolute;
+                top: -6px;
+                right: -6px;
+                background: #4f46e5; /* Scholar Indigo */
+                color: white;
+                font-size: 10px;
+                font-weight: 800;
+                min-width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0 4px;
+                border: 2px solid white;
+                opacity: 0;
+                transform: scale(0.5);
+                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                pointer-events: none;
+            }
+            .badge-count.show {
+                opacity: 1;
+                transform: scale(1);
+            }
         `;
         document.head.appendChild(style);
     }
@@ -377,7 +411,51 @@
         }, 1500);
     };
 
+    // ── Badge Counter Logic ───────────────────────────
+    window.updateHeaderBadges = function() {
+        const cartCount = (typeof Cart !== 'undefined') ? Cart.getItems().length : 0;
+        const wishlistCount = (typeof Wishlist !== 'undefined') ? Wishlist._wishlist.size : 0;
+        
+        const cartBadge = document.getElementById('cart-count');
+        const wishlistBadge = document.getElementById('wishlist-count');
+        
+        if (cartBadge) {
+            cartBadge.textContent = cartCount;
+            cartBadge.classList.toggle('show', cartCount > 0);
+        }
+        if (wishlistBadge) {
+            wishlistBadge.textContent = wishlistCount;
+            wishlistBadge.classList.toggle('show', wishlistCount > 0);
+        }
+    };
+
     function initAddons() {
+        // Auto-wrap icons in badge-wrapper if missing
+        const iconsToWrap = [
+            { src: 'heart.png', id: 'wishlist' },
+            { src: 'Frame 427318762.png', id: 'cart' }
+        ];
+
+        iconsToWrap.forEach(icon => {
+            const img = document.querySelector(`img[src*="${icon.src}"]`);
+            if (img && !img.closest('.badge-wrapper')) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'badge-wrapper';
+                wrapper.id = `${icon.id}-badge-wrapper`;
+                
+                const badge = document.createElement('span');
+                badge.className = 'badge-count';
+                badge.id = `${icon.id}-count`;
+                badge.textContent = '0';
+                
+                img.parentNode.insertBefore(wrapper, img);
+                wrapper.appendChild(img);
+                wrapper.appendChild(badge);
+            }
+        });
+
+        if (window.updateHeaderBadges) window.updateHeaderBadges();
+
         const searchInput = document.querySelector('.search-box');
         if (searchInput) {
             searchInput.addEventListener('keydown', (e) => {
@@ -429,5 +507,10 @@
         render();
         initAddons();
     }
+    
+    // Initial badge update
+    setTimeout(() => {
+        if (window.updateHeaderBadges) window.updateHeaderBadges();
+    }, 500);
 
 })();
