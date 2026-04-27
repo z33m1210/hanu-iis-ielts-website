@@ -36,7 +36,58 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // 4. Load Data
+    // 4. Thumbnail Real-time Preview
+    const urlInput = document.getElementById('courseThumbnailUrl');
+    const previewImg = document.getElementById('thumbnailPreview');
+    const placeholder = document.getElementById('thumbnailPlaceholder');
+
+    urlInput.addEventListener('input', () => {
+        const url = urlInput.value.trim();
+        if (url) {
+            previewImg.src = url;
+            previewImg.style.display = 'block';
+            placeholder.style.display = 'none';
+        } else {
+            previewImg.style.display = 'none';
+            placeholder.style.display = 'block';
+        }
+    });
+
+    // 5. Image Upload Logic
+    const imageInput = document.getElementById('imageInput');
+    imageInput.addEventListener('change', async () => {
+        const file = imageInput.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+            showToast('Uploading asset...', 'success');
+            const response = await Auth.fetchWithAuth('/upload/course', {
+                method: 'POST',
+                // FormData automatically sets the correct Content-Type with boundary
+                body: formData
+            });
+
+            if (response.success) {
+                urlInput.value = response.imageUrl;
+                // Manually trigger the 'input' event to update the preview
+                urlInput.dispatchEvent(new Event('input'));
+                showToast('Asset uploaded successfully!', 'success');
+            } else {
+                throw new Error(response.message || 'Upload failed');
+            }
+        } catch (err) {
+            console.error('Upload error:', err);
+            showToast('Upload failed: ' + err.message, 'error');
+        } finally {
+            // Clear input so same file can be re-selected
+            imageInput.value = '';
+        }
+    });
+
+    // 6. Load Data
     const params = new URLSearchParams(window.location.search);
     const courseId = params.get('id');
 
@@ -184,13 +235,13 @@ async function saveAllChanges() {
     const selectedLevelBtn = document.querySelector('.level-btn.active');
     
     const body = {
-        title: document.getElementById('courseTitle').value,
-        description: document.getElementById('courseDesc').value,
+        title: document.getElementById('courseTitle').value.trim(),
+        description: document.getElementById('courseDesc').value.trim(),
         category: document.getElementById('courseCategory').value,
-        price: parseFloat(document.getElementById('coursePrice').value),
+        price: parseFloat(document.getElementById('coursePrice').value) || 0,
         isPublished: document.getElementById('courseIsPublished').checked,
-        level: selectedLevelBtn ? selectedLevelBtn.getAttribute('data-level') : currentCourse.level,
-        thumbnail: document.getElementById('courseThumbnailUrl').value,
+        level: selectedLevelBtn ? selectedLevelBtn.getAttribute('data-level') : 'Beginner',
+        thumbnail: document.getElementById('courseThumbnailUrl').value.trim(),
         syllabus: JSON.stringify(currentCourse.syllabus || []),
         lectures: parseInt(document.getElementById('statLectures').value) || 0,
         chapters: parseInt(document.getElementById('statChapters').value) || 0,
@@ -205,12 +256,17 @@ async function saveAllChanges() {
 
         if (response.success) {
             showToast('Changes saved successfully!', 'success');
-            loadCourseData(currentCourse.id);
+            // Refresh local state
+            currentCourse = response.course;
+            if (currentCourse.syllabus && typeof currentCourse.syllabus === 'string') {
+                currentCourse.syllabus = JSON.parse(currentCourse.syllabus);
+            }
+            populateForm(currentCourse);
         } else {
-            throw new Error(response.message);
+            throw new Error(response.message || 'Update failed');
         }
     } catch (err) {
-        console.error(err);
+        console.error('Save error:', err);
         showToast('Failed to save changes: ' + err.message, 'error');
     }
 }

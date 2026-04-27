@@ -2,7 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. RBAC Check
     const user = Auth.getUser();
     if (!user || user.role !== 'ADMIN') {
-        window.location.href = '../sign-in/';
+        const isSubdir = window.location.pathname.includes('/users/') || 
+                         window.location.pathname.includes('/courses/') || 
+                         window.location.pathname.includes('/settings/') ||
+                         window.location.pathname.includes('/orders/');
+        window.location.href = isSubdir ? '../../sign-in/' : '../sign-in/';
+
         return;
     }
 
@@ -14,14 +19,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (adminInitialEl) adminInitialEl.textContent = (user.fullName || user.username).charAt(0).toUpperCase();
 
     // 3. Logout Logic
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', (e) => {
+    const logoutBtns = document.querySelectorAll('#logoutBtn');
+    logoutBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
             e.preventDefault();
             Auth.logout();
-            window.location.href = '../sign-in/';
+            const isSubdir = window.location.pathname.includes('/users/') || 
+                             window.location.pathname.includes('/courses/') || 
+                             window.location.pathname.includes('/settings/') ||
+                             window.location.pathname.includes('/orders/');
+            window.location.href = isSubdir ? '../../sign-in/' : '../sign-in/';
+
         });
-    }
+    });
 
     // 4. Mode Toggle Logic
     const modeToggle = document.getElementById('modeToggle');
@@ -32,8 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (!modeToggle.checked) {
                 // Change classes for visual feedback
-                custLabel.classList.add('active');
-                adminLabel.classList.remove('active');
+                if (custLabel) custLabel.classList.add('active');
+                if (adminLabel) adminLabel.classList.remove('active');
                 
                 // Redirect to Customer page
                 const redirectPath = modeToggle.getAttribute('data-redirect') || '../';
@@ -41,18 +51,42 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.href = redirectPath;
                 }, 300); // Small delay for visual feedback
             } else {
-                custLabel.classList.remove('active');
-                adminLabel.classList.add('active');
+                if (custLabel) custLabel.classList.remove('active');
+                if (adminLabel) adminLabel.classList.add('active');
             }
         });
     }
 
-    // 5. lucide Icons
+    // 5. Active State Logic
+    const updateActiveNavItem = () => {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-item');
+        
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (!href || href === '#') return;
+
+            // Resolve relative paths for comparison
+            const linkPath = new URL(href, window.location.origin + window.location.pathname).pathname;
+            
+            // Normalize paths (remove trailing slashes and index.html)
+            const normalize = (p) => p.replace(/\/$/, '').replace(/\/index\.html$/, '');
+            
+            if (normalize(currentPath) === normalize(linkPath)) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    };
+    updateActiveNavItem();
+
+    // 6. lucide Icons
     if (window.lucide) {
         lucide.createIcons();
     }
 
-    // 5. Shared Confirmation Modal Helper
+    // 7. Shared Confirmation Modal Helper
     window.Confirm = {
         callback: null,
         modal: null,
@@ -72,8 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!this.modal) this.init();
             if (!this.modal) return;
 
-            document.getElementById('confirmTitle').textContent = title || 'Confirm Action';
-            document.getElementById('confirmMessage').textContent = message || 'Are you sure you want to proceed?';
+            const titleEl = document.getElementById('confirmTitle');
+            const messageEl = document.getElementById('confirmMessage');
+            if (titleEl) titleEl.textContent = title || 'Confirm Action';
+            if (messageEl) messageEl.textContent = message || 'Are you sure you want to proceed?';
             this.callback = onConfirm;
 
             this.modal.classList.add('active');
@@ -90,6 +126,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // 8. Unread Orders Badge Logic
+    window.updateUnreadBadge = async () => {
+        const badge = document.getElementById('unreadOrdersBadge');
+        if (!badge) return;
+
+        try {
+            const data = await Auth.fetchWithAuth('/admin/unread-orders-count');
+            if (data.success && data.count > 0) {
+                badge.textContent = data.count;
+                badge.style.display = 'inline-flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        } catch (err) {
+            console.warn('Failed to fetch unread orders count');
+        }
+    };
+
+    updateUnreadBadge();
+    setInterval(updateUnreadBadge, 30000); // Check every 30 seconds
+
     // Ensure Confirm is initialized if it's already in the DOM
     window.Confirm.init();
 });
+

@@ -85,15 +85,19 @@ exports.updateUserStatus = async (req, res, next) => {
 exports.deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const userId = parseInt(id);
 
-    // Optional: Check if user has associated enrollments/courses before deleting
-    // In a real system, you might do a cascading delete or soft delete
+    // Perform cascading delete in a transaction to handle foreign key constraints
+    await prisma.$transaction([
+      prisma.review.deleteMany({ where: { userId: userId } }),
+      prisma.wishlist.deleteMany({ where: { userId: userId } }),
+      // Delete enrollments first as they may reference payments
+      prisma.enrollment.deleteMany({ where: { studentId: userId } }),
+      prisma.payment.deleteMany({ where: { studentId: userId } }),
+      prisma.user.delete({ where: { id: userId } }),
+    ]);
 
-    await prisma.user.delete({
-      where: { id: parseInt(id) }
-    });
-
-    res.json({ success: true, message: 'User deleted successfully.' });
+    res.json({ success: true, message: 'User and all associated data deleted successfully.' });
   } catch (error) {
     next(error);
   }
@@ -163,7 +167,8 @@ exports.getDashboardStats = async (req, res, next) => {
         totalUsers,
         activeUsers,
         totalCourses,
-        performance: 99 // Mocked system health percentage
+        unreadOrders: await prisma.payment.count({ where: { isRead: false } }),
+        performance: 99 
       },
       enrollmentTrends,
       recentActivity: {
@@ -171,6 +176,102 @@ exports.getDashboardStats = async (req, res, next) => {
         enrollments: recentEnrollments
       }
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const emailService = require('../services/emailService');
+
+exports.getOrders = async (req, res, next) => {
+  try {
+    const { status } = req.query;
+    
+    const where = {};
+    if (status) {
+      where.status = status.toUpperCase();
+    }
+
+    const orders = await prisma.payment.findMany({
+      where,
+      include: {
+        student: { select: { name: true, email: true } },
+        enrollments: {
+          include: { course: { select: { title: true } } }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    res.json({ success: true, orders });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.fulfillOrder = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { driveLink } = req.body;
+
+    if (!driveLink) {
+      return res.status(400).json({ success: false, message: 'Drive link is required.' });
+    }
+
+    const order = await prisma.payment.findUnique({
+      where: { id: parseInt(id) },
+      include: { student: { select: { email: true, name: true } } }
+    });
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found.' });
+    }
+
+    // Send fulfillment email
+    const emailRes = await emailService.sendEmail(
+      order.student.email,
+      "Your Course Access: BandPath IELTS",
+      `Hello ${order.student.name || 'Student'},\n\nYour order #${order.id} has been fulfilled! You can access your materials here:\n\n${driveLink}\n\nHappy studying!`
+    );
+
+    if (!emailRes.success) {
+      return res.status(500).json({ success: false, message: 'Failed to send fulfillment email.' });
+    }
+
+    // Update status to FULFILLED and mark as read
+    await prisma.payment.update({
+      where: { id: parseInt(id) },
+      data: { 
+        status: 'FULFILLED',
+        isRead: true
+      }
+    });
+
+    res.json({ success: true, message: 'Order fulfilled successfully.' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getUnreadOrdersCount = async (req, res, next) => {
+  try {
+    const count = await prisma.payment.count({
+      where: { isRead: false }
+    });
+    res.json({ success: true, count });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.markOrderAsRead = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await prisma.payment.update({
+      where: { id: parseInt(id) },
+      data: { isRead: true }
+    });
+    res.json({ success: true });
   } catch (error) {
     next(error);
   }

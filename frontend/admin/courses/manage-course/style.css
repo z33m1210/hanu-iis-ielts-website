@@ -1,0 +1,99 @@
+/* manage-course/style.css */
+
+.thumbnail-preview-container {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--surface-container-low);
+    border-radius: var(--radius-lg);
+    border: 2px dashed var(--outline-variant);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+#thumbnailPreview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.thumbnail-placeholder {
+    text-align: center;
+    color: var(--on-surface-variant);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Tab Management */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Badge Styles */
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.badge-published {
+    background: #e6f4ea;
+    color: #1e7e34;
+}
+
+.badge-draft {
+    background: var(--surface-container-high);
+    color: var(--on-surface-variant);
+}
+
+/* Level Buttons */
+.level-selection {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.level-btn {
+    padding: 1rem;
+    border: 1px solid var(--outline-variant);
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.level-btn:hover {
+    background: var(--surface-container-low);
+}
+
+.level-btn.active {
+    border-color: var(--primary);
+    background: var(--primary-container);
+    color: var(--primary);
+}
+
+/* Lesson Cards */
+.lesson-card {
+    background: var(--surface);
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.5rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

@@ -4,8 +4,7 @@ const authSchemas = {
   register: Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
-    name: Joi.string().min(2).required(),
-    role: Joi.string().valid('USER').optional()
+    name: Joi.string().min(2).required()
   }),
   login: Joi.object({
     email: Joi.string().required(),
@@ -13,20 +12,6 @@ const authSchemas = {
   })
 };
 
-const postSchemas = {
-  create: Joi.object({
-    title: Joi.string().min(5).max(200).required(),
-    content: Joi.string().min(10).required(),
-    type: Joi.string().valid('ARTICLE', 'BLOG', 'RESOURCE'),
-    status: Joi.string().valid('DRAFT', 'PUBLISHED', 'REVIEW')
-  }),
-  update: Joi.object({
-    title: Joi.string().min(5).max(200),
-    content: Joi.string().min(10),
-    type: Joi.string().valid('ARTICLE', 'BLOG', 'RESOURCE'),
-    status: Joi.string().valid('DRAFT', 'PUBLISHED', 'REVIEW')
-  })
-};
 
 const userSchemas = {
   updateStatus: Joi.object({
@@ -53,7 +38,8 @@ const courseSchemas = {
     level: Joi.string().valid('Beginner', 'Intermediate', 'Advanced', 'All Levels'),
     hours: Joi.number().integer().min(0),
     lectures: Joi.number().integer().min(0),
-    chapters: Joi.number().integer().min(0)
+    chapters: Joi.number().integer().min(0),
+    previewVideoUrl: Joi.string().uri().allow('', null)
   }),
   update: Joi.object({
     title: Joi.string().min(5).max(100),
@@ -67,6 +53,7 @@ const courseSchemas = {
     chapters: Joi.number().integer().min(0),
     isPublished: Joi.boolean(),
     thumbnail: Joi.string().allow('', null),
+    previewVideoUrl: Joi.string().uri().allow('', null),
     syllabus: Joi.string().allow('', null)
   })
 };
@@ -82,7 +69,6 @@ const settingsSchemas = {
 
 module.exports = {
   authSchemas,
-  postSchemas,
   userSchemas,
   courseSchemas,
   settingsSchemas

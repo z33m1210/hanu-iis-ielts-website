@@ -93,30 +93,91 @@ header {
   border-radius: 50px;
 }
 
+/* ── Profile page main layout ─────────────────────────────── */
 .main-page {
   padding: 50px;
   display: grid;
-  gap: 30px;
-  grid-template-columns: 20% 1fr;
-  grid-template-rows: 1fr 36% 1.1fr;
-  grid-template-areas: "PS BP" "PS IS" "PS LS";
+  gap: 40px;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: auto;
+  align-items: start;
 }
 .main-page .profile-section {
-  grid-area: PS;
+  /* stays in column 1, spans all rows */
+  grid-column: 1;
+  grid-row: 1;
+  position: sticky;
+  top: 20px;
 }
-.main-page .basic-profile {
-  grid-area: BP;
+/* Tab panels sit in column 2 */
+#tab-profile,
+#tab-purchases,
+#tab-reviews {
+  grid-column: 2;
+  grid-row: 1;
+  display: none;
+  flex-direction: column;
+  gap: 30px;
 }
-.main-page .image-section {
-  grid-area: IS;
+#tab-profile.active,
+#tab-purchases.active,
+#tab-reviews.active {
+  display: flex;
 }
-.main-page .link-section {
-  grid-area: LS;
+/* Remove old named grid-area assignments */
+.main-page .basic-profile  { grid-area: unset; }
+.main-page .image-section  { grid-area: unset; }
+.main-page .link-section   { grid-area: unset; }
+/* Remove old grid-column span from purchases section */
+.main-page .enrolled-courses-section {
+  grid-column: unset;
+  margin-top: 0;
 }
+
+/* ── Tab panels ───────────────────────────────────────────── */
+.tab-panel {
+  display: none;
+  flex-direction: column;
+  gap: 30px;
+}
+.tab-panel.active {
+  display: flex;
+}
+
+/* ── Sidebar avatar circle ────────────────────────────────── */
+#prof-avatar-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+}
+
+/* ── Sidebar tab active states ────────────────────────────── */
+.main-page .profile-section .profile-func > div {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.main-page .profile-section .profile-func > div:hover {
+  background: #f1f5f9;
+}
+.main-page .profile-section .profile-func > div.active-tab p {
+  color: #4f46e5;
+  font-weight: 700;
+}
+.main-page .profile-section .profile-func > div.active-tab {
+  background: #eef2ff;
+}
+
 .main-page .profile-section {
   background-color: #F8FAFC;
   width: 100%;
-  height: 40%;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -149,7 +210,7 @@ header {
   transition: all 0.2s ease;
 }
 .main-page .profile-section .sep-line1 {
-  width: 90%;
+  width: 100%;
   height: 1px;
   background-color: black;
 }
@@ -161,11 +222,6 @@ header {
   justify-content: center;
   gap: 0px;
 }
-.main-page .profile-section .profile-func #func1 {
-  border-top: 0.5px solid #E2E8F0;
-  background-color: black;
-  color: white;
-}
 .main-page .profile-section .profile-func #func1, .main-page .profile-section .profile-func #func2, .main-page .profile-section .profile-func #func3, .main-page .profile-section .profile-func #func4 {
   height: 54px;
   width: 100%;
@@ -173,6 +229,7 @@ header {
   align-items: center;
   border-bottom: 0.5px solid #E2E8F0;
   padding-left: 30px;
+   border-top: 0.5px solid #E2E8F0;
 }
 .main-page .profile-section .profile-func #func5 {
   height: 54px;
@@ -339,42 +396,65 @@ header {
   grid-template-areas: "iup iup" "iac ub" "sb sb";
   gap: 20px;
 }
-.main-page .image-section .img-up {
-  grid-area: iup;
+.main-page .image-section {
+  padding: 25px;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  overflow: hidden;
+  max-width: 300px;
 }
-.main-page .image-section .add-change-img {
-  grid-area: iac;
-}
-.main-page .image-section #upload-btn {
-  grid-area: ub;
-}
-.main-page .image-section #save-btn {
-  grid-area: sb;
+.main-page .image-section #prof-imgPreview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .main-page .image-section .img-up {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  align-items: center;
+  width: 100%;
 }
 .main-page .image-section .img-up p {
   font-size: 18px;
   font-weight: 600;
+  width: 100%;
+  text-align: center;
 }
 .main-page .image-section .img-up .img-box {
-  width: 425px;
-  height: 255px;
-  border: 1px solid #E5E7EB;
-  border-radius: 8px;
-  padding: 15.92px;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8fafc;
 }
 .main-page .image-section .add-change-img {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 13px;
+  align-items: center;
+}
+.main-page .image-section .add-change-img p {
+  font-size: 14px;
+  width: 100%;
+  text-align: center;
+}
+.main-page .image-section .add-change-img .iac-button {
+  width: 100%;
 }
 .main-page .image-section .add-change-img .iac-button > input {
-  width: 426px;
+  width: 100%;
   height: 58px;
   padding: 12px 14px;
   border: 1px solid #e5e7eb;
@@ -392,7 +472,7 @@ header {
   border-color: #3b82f6;
 }
 .main-page .image-section #upload-btn {
-  width: 141px;
+  width: 100%;
   height: 58px;
   padding: 10px 18px;
   background-color: #ffffff;
@@ -403,8 +483,6 @@ header {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  align-self: end;
-  margin-top: 1px;
 }
 .main-page .image-section #upload-btn:hover {
   background-color: white;
@@ -414,7 +492,7 @@ header {
   transform: scale(0.97);
 }
 .main-page .image-section #save-btn {
-  width: 200px;
+  width: 100%;
   height: 48px;
   padding: 12px 20px;
   background-color: #3b82f6;
@@ -432,60 +510,6 @@ header {
 }
 .main-page .image-section #save-btn:active {
   transform: scale(0.97);
-}
-.main-page .link-section {
-  border: 1px solid #E5E7EB;
-  border-radius: 16px;
-  padding: 25px;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr 1fr 1fr 1fr;
-  grid-template-areas: "title" "ff1" "ff2" "ff3" "ff4" "ff5";
-  gap: 10px;
-}
-.main-page .link-section > p {
-  grid-area: title;
-}
-.main-page .link-section .form-field1 {
-  grid-area: ff1;
-}
-.main-page .link-section .form-field2 {
-  grid-area: ff2;
-}
-.main-page .link-section .form-field3 {
-  grid-area: ff3;
-}
-.main-page .link-section .form-field4 {
-  grid-area: ff4;
-}
-.main-page .link-section .form-field5 {
-  grid-area: ff5;
-}
-.main-page .link-section > p {
-  font-size: 18px;
-  font-weight: 600;
-}
-.main-page .link-section .link-field1, .main-page .link-section .link-field2, .main-page .link-section .link-field3, .main-page .link-section .link-field4, .main-page .link-section .link-field5 {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.main-page .link-section .link-field1 input, .main-page .link-section .link-field2 input, .main-page .link-section .link-field3 input, .main-page .link-section .link-field4 input, .main-page .link-section .link-field5 input {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-}
-.main-page .link-section .link-field1 input::-moz-placeholder, .main-page .link-section .link-field2 input::-moz-placeholder, .main-page .link-section .link-field3 input::-moz-placeholder, .main-page .link-section .link-field4 input::-moz-placeholder, .main-page .link-section .link-field5 input::-moz-placeholder {
-  color: #9ca3af;
-}
-.main-page .link-section .link-field1 input::placeholder, .main-page .link-section .link-field2 input::placeholder, .main-page .link-section .link-field3 input::placeholder, .main-page .link-section .link-field4 input::placeholder, .main-page .link-section .link-field5 input::placeholder {
-  color: #9ca3af;
-}
-.main-page .link-section .link-field1 input:focus, .main-page .link-section .link-field2 input:focus, .main-page .link-section .link-field3 input:focus, .main-page .link-section .link-field4 input:focus, .main-page .link-section .link-field5 input:focus {
-  border-color: #3b82f6;
 }
 
 footer {
@@ -610,4 +634,67 @@ footer {
 .icon-btn img {
   width: 20px;
   height: 20px;
-}/*# sourceMappingURL=style.css.map */
+}
+
+/* ── Responsive: stack sidebar + content on mobile ─────────── */
+@media (max-width: 768px) {
+  .main-page {
+    grid-template-columns: 1fr;
+    padding: 20px;
+    gap: 24px;
+  }
+  .main-page .profile-section {
+    grid-column: 1;
+    grid-row: 1;
+    position: static;     /* no sticky on mobile */
+    width: 100%;
+  }
+  #tab-profile,
+  #tab-purchases,
+  #tab-reviews {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .main-page .basic-profile {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "first" "last" "email" "des" "lang";
+  }
+}
+
+/* ── Review Modal ─────────────────────────────────────────── */
+.modal {
+  display: flex;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.star-selector span {
+  transition: all 0.2s ease;
+}
+
+.star-selector span:hover {
+  transform: scale(1.2);
+}
+
+#submit-review-btn:hover {
+  background: #4338ca !important;
+}
+
+#submit-review-btn:active {
+  transform: scale(0.98);
+}
+/*# sourceMappingURL=style.css.map */

@@ -37,8 +37,7 @@ const Auth = (() => {
                 body: JSON.stringify({ 
                     email: email.trim().toLowerCase(), 
                     password, 
-                    name, 
-                    role: 'USER' // Default to user/customer
+                    name
                 })
             });
 
@@ -153,14 +152,37 @@ const Auth = (() => {
         return getSession() !== null && getToken() !== null;
     }
 
+    let _initialized = false;
+    let _initPromise = null;
+
+    /** Khởi tạo service - trả về promise */
+    function init() {
+        if (_initPromise) return _initPromise;
+        
+        _initPromise = new Promise((resolve) => {
+            // Simulate any necessary async initialization (e.g. checking token validity)
+            setTimeout(() => {
+                _initialized = true;
+                resolve();
+            }, 100);
+        });
+        
+        return _initPromise;
+    }
+
+    function isReady() {
+        return _initialized;
+    }
+
     /** Utility func to make authenticated requests */
     async function fetchWithAuth(endpoint, options = {}) {
         const token = getToken();
-        // Allow public routes (e.g. /courses) without redirection to login
-        const headers = {
-            'Content-Type': 'application/json',
-            ...(options.headers || {})
-        };
+        const headers = { ...options.headers };
+
+        // Only set application/json if body is not FormData
+        if (!(options.body instanceof FormData)) {
+            headers['Content-Type'] = 'application/json';
+        }
 
         if (token) {
             headers['Authorization'] = `Bearer ${token}`;
@@ -170,9 +192,19 @@ const Auth = (() => {
             const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
             
             if (res.status === 401 || res.status === 403) {
-                logout();
-                window.location.href = '../sign-in/';
-                throw new Error('Unauthorized');
+                console.warn('Session expired or unauthorized');
+                
+                // User-friendly notification before logout
+                const message = res.status === 401 ? 'Session Expired' : 'Unauthorized Access';
+                alert(`${message}: Please log in again.`);
+                
+                await logout();
+                
+                // Redirect to login if not already there
+                if (!window.location.pathname.includes('/sign-in/')) {
+                    window.location.href = '/sign-in/';
+                }
+                throw new Error(message);
             }
 
             // Check content type before parsing
@@ -184,7 +216,6 @@ const Auth = (() => {
                 }
                 return data;
             } else {
-                // Not JSON (could be a 500 HTML error or something else)
                 const text = await res.text();
                 console.error(`API Non-JSON Response [${res.status}]:`, text.substring(0, 200));
                 return { 
@@ -194,6 +225,9 @@ const Auth = (() => {
             }
         } catch (error) {
             console.error('Fetch error:', error);
+            if (error.message === 'Session Expired' || error.message === 'Unauthorized Access') {
+                throw error; // Re-throw to be handled by caller if needed
+            }
             return { 
                 success: false, 
                 message: 'Không thể kết nối đến máy chủ.' 
@@ -201,5 +235,5 @@ const Auth = (() => {
         }
     }
 
-    return { register, login, logout, getSession, getUser, getToken, isLoggedIn, fetchWithAuth, API_URL };
+    return { init, isReady, register, login, logout, getSession, getUser, getToken, isLoggedIn, fetchWithAuth, API_URL };
 })();

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Order Confirmed – BandPath IELTS</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,7 +18,7 @@
         <div class="head-start">
             <div class="logo">
                 <img src="./logo (1).png">
-                <span>Byway</span>
+                <span>BandPath</span>
             </div>
             <p>Categories</p>
             <div class="search-container">
@@ -36,15 +36,39 @@
         </div>
     </header>  
     <!-- MAIN CONTENT -->
-    <div class="main-page">
-        <div class="green-n-tick">
-            <div class="green-circle">
-                <img src="./Vector (1).png" alt="Tick Icon">
+    <main class="success-container">
+        <div class="success-card">
+            <div class="success-animation">
+                <div class="check-icon">
+                    <svg viewBox="0 0 52 52">
+                        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                        <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    </svg>
+                </div>
+            </div>
+            <h1>Order Confirmed!</h1>
+            <p class="subtitle">Thank you for choosing BandPath IELTS. Your journey to a higher band score starts now.</p>
+            
+            <div class="fulfillment-notice">
+                <div class="notice-icon">📧</div>
+                <div class="notice-text">
+                    <strong>Check your Gmail</strong>
+                    <p>We've sent a confirmation receipt. Your exclusive Google Drive access link will be delivered to the same email address within 24 hours.</p>
+                </div>
+            </div>
+
+            <!-- Order Summary (populated from sessionStorage) -->
+            <div id="orderSummary" class="order-summary" style="display:none; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:24px; text-align:left;">
+                <p style="margin:0; font-size:14px; color:#64748b;"><strong>Customer:</strong> <span id="successCustomerName" style="color:#1e293b; font-weight:600;"></span></p>
+                <p style="margin:4px 0 0; font-size:14px; color:#64748b;"><strong>Course:</strong> <span id="successCourseTitle" style="color:#1e293b; font-weight:600;"></span></p>
+            </div>
+
+            <div class="action-buttons">
+                <button id="primaryActionBtn" onclick="window.location.href='../category/'" class="btn-primary">Continue Buying</button>
+                <button onclick="window.location.href='../profile/'" class="btn-secondary">My Purchases</button>
             </div>
         </div>
-        <p>Order Complete</p>
-        <p>You Will Receive a confirmation email soon!</p>
-    </div>
+    </main>
 
     <!-- FOOTER -->
     <footer>
@@ -101,5 +125,10 @@
             </div>
         </div>
     </footer>
+    <script src="../auth.js"></script>
+    <script src="../cart.js"></script>
+    <script src="../wishlist-service.js"></script>
+    <script src="../header-auth.js"></script>
+    <script src="order-completed.js"></script>
   </body>
 </html>

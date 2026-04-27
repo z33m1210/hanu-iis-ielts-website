@@ -24,9 +24,7 @@ header {
     font-size: 15px;
     font-weight: 250;
 
-    &:nth-of-type(1) {
-      // đếm thẻ con trực tiếp không can thiệp vào thẻ con của thẻ con khác
-    }
+   
   }
 }
 
@@ -106,28 +104,27 @@ header {
     padding:50px;
     display:grid;
     gap:30px;
-    grid-template-columns: 20% 1fr;
-    grid-template-rows:1fr 36% 1.1fr;
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: auto auto;
     grid-template-areas:
     "PS BP"
-    "PS IS"
-    "PS LS";
+    "PS IS";
     
     .profile-section{grid-area:PS;}
     .basic-profile{grid-area:BP;}
     .image-section{grid-area:IS;}
-    .link-section{grid-area:LS;}
     
     // phần profile người dùng
     .profile-section{
         background-color:#F8FAFC;
         width:100%;
-        height:40%;
+        height: fit-content;
         display:flex;
         flex-direction: column;
         align-items: center;
         gap:20px;
         border-radius:8px;
+        padding-bottom: 20px;
         
         // thao tác icon người dùng 
         .profile-header{
@@ -316,18 +313,23 @@ header {
         gap: 8px;
         }
     } // Đóng .basic-profile
-    .image-section{
-        padding:25px;
-        border:1px solid #E5E7EB;
+    .image-section {
+        padding: 25px;
+        border: 1px solid #E5E7EB;
         border-radius: 16px;
-        display:grid;
-        grid-template-columns: 40.5% 60%;
-        grid-template-rows:auto auto 24%;
-        grid-template-areas:
-        "iup iup"
-        "iac ub"
-        "sb sb";
-        gap:20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        overflow: hidden;
+        max-width: 300px;
+
+        #prof-imgPreview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
 
         @mixin input-base2 {
             padding: 12px 14px;
@@ -344,6 +346,7 @@ header {
                 border-color: #3b82f6;
             }
         }
+
         @mixin button-base(
             $width: auto,
             $height: auto,
@@ -353,7 +356,7 @@ header {
             $border-color: #9ca3af,
             $bg: #ffffff,
             $color: #000000
-            ) {
+        ) {
             width: $width;
             height: $height;
             padding: $padding;
@@ -365,7 +368,7 @@ header {
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
-            
+
             &:hover {
                 background-color: lighten($bg, 3%);
                 border-color: darken($border-color, 10%);
@@ -374,42 +377,63 @@ header {
             &:active {
                 transform: scale(0.97);
             }
-            }
-        .img-up{grid-area:iup;}
-        .add-change-img{grid-area:iac;}
-        #upload-btn{grid-area:ub;}
-        #save-btn{grid-area:sb;}
-        .img-up{
-            display:flex;
-            flex-direction: column;
-            gap:10px;
-            p{
-                font-size:18px;
-                font-weight:600;
-            }
-            .img-box{
-                width:425px;
-                height:255px;
-                border:1px solid #E5E7EB;
-                border-radius:8px;
-                padding:15.92px;
-            }
         }
-        .add-change-img{
+
+        .img-up {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
             width: 100%;
-            display:flex;
-            flex-direction: column;
-            gap:13px;
-            .iac-button > input{
-                width:426px;
-                height:58px;
-                @include input-base2;
-            }  
+
+            p {
+                font-size: 18px;
+                font-weight: 600;
+                width: 100%;
+                text-align: center;
+            }
+
+            .img-box {
+                width: 200px;
+                height: 200px;
+                overflow: hidden;
+                border-radius: 12px;
+                border: 1px solid #e2e8f0;
+                margin: 10px 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #f8fafc;
+            }
         }
+
+        .add-change-img {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            align-items: center;
+
+            p {
+                font-size: 14px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .iac-button {
+                width: 100%;
+                input {
+                    width: 100%;
+                    height: 58px;
+                    @include input-base2;
+                }
+            }
+        }
+
         #upload-btn {
             @include button-base(
-                $width:141px,
-                $height:58px,
+                $width: 100%,
+                $height: 58px,
                 $padding: 10px 18px,
                 $radius: 8px,
                 $font-size: 14px,
@@ -417,13 +441,12 @@ header {
                 $bg: #ffffff,
                 $color: #000000
             );
-            align-self: end;
-            margin-top:1px;
         }
+
         #save-btn {
             @include button-base(
-                $width: 200px, /* ✅ */
-                $height:48px,
+                $width: 100%,
+                $height: 48px,
                 $padding: 12px 20px,
                 $radius: 8px,
                 $font-size: 16px,
@@ -431,61 +454,6 @@ header {
                 $bg: #3b82f6,
                 $color: #ffffff
             );
-            
-        }
-    }
-    .link-section{
-        border:1px solid #E5E7EB;
-        border-radius:16px;
-        padding:25px;
-        display:grid;
-        grid-template-columns: 1fr;
-        grid-template-rows:auto 1fr 1fr 1fr 1fr;
-        grid-template-areas:
-        "title"
-        "ff1"
-        "ff2"
-        "ff3"
-        "ff4"
-        "ff5";
-        gap:10px;
-
-        @mixin input-base {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 14px;
-            outline: none;
-
-            &::placeholder {
-                color: #9ca3af;
-            }
-
-            &:focus {
-                border-color: #3b82f6;
-            }
-        }
-
-        > p{grid-area:title;}
-        .form-field1{grid-area:ff1;}
-        .form-field2{grid-area:ff2;}
-        .form-field3{grid-area:ff3;}
-        .form-field4{grid-area:ff4;}
-        .form-field5{grid-area:ff5;}
-
-        > p{
-            font-size:18px;
-            font-weight: 600;
-        }
-
-        .link-field1, .link-field2, .link-field3, .link-field4, .link-field5 {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            input {
-                @include input-base;
-            }
         }
     }
 } // Đóng .main-page

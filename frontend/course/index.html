@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BandPath – Course Detail</title>
+    <link rel="stylesheet" href="../toast.css">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,58 +12,29 @@
 </head>
 <body>
     <header>
-        <div class="head-start">
-            <div class="logo" style="cursor: pointer;" onclick="window.location.href='../'">
+        <div class="header-container">
+            <div class="logo">
                 <img src="./logo (1).png">
                 <span>BandPath</span>
             </div>
-            <p style="cursor: pointer;">IELTS Skills</p>
+            <p>IELTS Skills</p>
             <div class="search-container">
                 <img src="./search-icon.png">
                 <input type="text" class="search-box" placeholder="Search IELTS courses">
             </div>
-            <p style="cursor: pointer;">Teach on BandPath</p>
         </div>
-        <div class="func-bar">
+        <div class="nav-links">
             <div class="badge-wrapper" id="wishlist-badge-wrapper">
-                <img src="../heart.png" title="Wishlist" style="cursor: pointer;">
-                <span class="badge-count show" id="wishlist-count">1</span>
+                <img src="../heart.png" title="Wishlist">
+                <span class="badge-count" id="wishlist-count">0</span>
             </div>
-            <div class="badge-wrapper" id="cart-badge-wrapper" onclick="window.location.href='../shopping-cart/'">
-                <img src="./Frame 427318762.png" title="View Shopping Cart" style="cursor: pointer;">
-                <span class="badge-count show" id="cart-count">1</span>
+            <div class="badge-wrapper" id="cart-badge-wrapper">
+                <img src="./Frame 427318762.png" title="View Shopping Cart">
+                <span class="badge-count" id="cart-count">0</span>
             </div>
-            <!-- avatar inject bởi header-auth.js -->
-            <div class="ava-wrapper">
-                <div class="ava-header" id="ava-btn" style="background:#ec4899;" title="Hoàng Zeem">
-                    H
-                </div>
-                <div class="ava-dropdown" id="ava-dropdown">
-                    <div class="ava-dropdown-header">
-                        <div class="ava-dropdown-avatar" style="background:#ec4899;">H</div>
-                        <div>
-                            <div class="ava-dropdown-name">Hoàng Zeem</div>
-                            <div class="ava-dropdown-email">ghaha1210@gmail.com</div>
-                        </div>
-                    </div>
-                    <a class="ava-dropdown-item" href="../profile/">
-                        <span class="item-icon">👤</span> My Profile
-                    </a>
-                    <a class="ava-dropdown-item" href="../profile/#enrolled-courses-section">
-                        <span class="item-icon">📚</span> My Courses
-                    </a>
-                    <a class="ava-dropdown-item" href="../wishlist/">
-                        <span class="item-icon">❤️</span> Wishlist
-                    </a>
-                    <div class="ava-dropdown-divider"></div>
-                    <a class="ava-dropdown-item" href="../settings/">
-                        <span class="item-icon">⚙️</span> Settings
-                    </a>
-                    <div class="ava-dropdown-divider"></div>
-                    <div class="ava-dropdown-item logout" onclick="headerLogout()">
-                        <span class="item-icon">🚪</span> Log Out
-                    </div>
-                </div>
+            <div class="button-container">
+                <button onclick="window.location.href='../sign-in/'" class="login-btn">Log In</button>
+                <button onclick="window.location.href='../sign-up/'" class="signup-btn">Sign Up</button>
             </div>
         </div>
     </header>
@@ -74,13 +46,13 @@
                 <div class="breadcrumb-nav">
                     <a href="../">Home</a>
                     <span>/</span>
-                    <a href="../category/">category</a>
+                    <a href="../category/">Category</a>
                     <span>/</span>
                     <span id="breadcrumb-title" style="color: #1e293b; font-weight: 600;">Course</span>
                 </div>
 
                 <div class="video-hero">
-                    <img id="course-banner" src="./Rectangle 1080.png" alt="Course Banner">
+                    <img id="course-banner" src="" alt="Course Banner" style="background: #f1f5f9; min-height: 400px; width: 100%; object-fit: cover; display: block;">
                 </div>
 
                 <div class="course-metadata-block">
@@ -96,13 +68,6 @@
                         <span id="course-reviews">(0 ratings)</span>
                         <span id="course-meta">30h • 20 Lectures • Beginner</span>
                     </div>
-                    <div class="instructor-mini-row">
-                        <img src="./image 4.png" alt="Instructor">
-                        <div>
-                            <p>Academic Staff</p>
-                            <span style="font-size: 12px; color: #94a3b8;">Course Instructor</span>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="tab-navbar">
@@ -110,8 +75,6 @@
                     <label for="tab1" onclick="scrollToSection('course-des')">Description</label>
                     <input type="radio" name="tabs" id="tab2" style="display:none">
                     <label for="tab2" onclick="scrollToSection('reviews-section')">Reviews</label>
-                    <input type="radio" name="tabs" id="tab3" style="display:none">
-                    <label for="tab3" onclick="scrollToSection('faq-section')">FAQ</label>
                 </div>
 
                 <div class="content-section" id="course-des" style="display: block;">
@@ -126,24 +89,11 @@
                     <div style="display: flex; gap: 40px; margin: 24px 0; align-items: center; background: #f8fafc; padding: 32px; border-radius: 12px; border: 1px solid #f1f5f9;">
                         <div style="text-align: center; min-width: 120px;">
                             <p id="avg-rating" style="font-size: 56px; font-weight: 800; color: #1e293b; margin: 0; line-height: 1;">4.8</p>
-                            <div style="color: #fbbf24; font-size: 20px; margin: 8px 0;">★★★★★</div>
+                            <div id="avg-rating-stars" style="color: #fbbf24; font-size: 20px; margin: 8px 0;">☆☆☆☆☆</div>
                             <p style="font-size: 14px; color: #64748b; font-weight: 700;">Course Rating</p>
                         </div>
-                        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 10px;">
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <div style="flex: 1; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden;">
-                                    <div style="width: 65%; height: 100%; background: #4f46e5;"></div>
-                                </div>
-                                <span style="font-size: 13px; color: #64748b; font-weight: 600; width: 30px;">5★</span>
-                                <span style="font-size: 13px; color: #94a3b8; width: 40px;">65%</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <div style="flex: 1; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden;">
-                                    <div style="width: 20%; height: 100%; background: #4f46e5;"></div>
-                                </div>
-                                <span style="font-size: 13px; color: #64748b; font-weight: 600; width: 30px;">4★</span>
-                                <span style="font-size: 13px; color: #94a3b8; width: 40px;">20%</span>
-                            </div>
+                        <div id="rating-distribution" style="flex-grow: 1; display: flex; flex-direction: column; gap: 10px;">
+                            <!-- Injected by JS -->
                         </div>
                     </div>
                     
@@ -162,12 +112,6 @@
                     <button id="more-reviews" onclick="loadMoreReviews()" style="width: 100%; margin-top: 24px; padding: 14px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; font-weight: 700; color: #1e293b; cursor: pointer; transition: all 0.2s;">Load More Reviews</button>
                 </div>
 
-                <div class="content-section" id="faq-section">
-                    <h2>Frequently Asked Questions</h2>
-                    <div id="faq-list" style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
-                        <!-- Injected by JS -->
-                    </div>
-                </div>
             </div>
 
             <!-- Right Column: Actions & Curriculum -->

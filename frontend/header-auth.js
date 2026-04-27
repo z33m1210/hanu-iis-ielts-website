@@ -44,10 +44,26 @@
                 transition: box-shadow 0.2s, transform 0.15s;
                 flex-shrink: 0;
             }
+            /* Expand hit area for easier clicking */
+            .ava-header::before {
+                content: "";
+                position: absolute;
+                top: -8px; left: -8px; right: -8px; bottom: -8px;
+                border-radius: 50%;
+            }
             .ava-header:hover {
                 box-shadow: 0 4px 14px rgba(0,0,0,0.25);
                 transform: scale(1.06);
             }
+            .ava-info:hover .ava-name-text {
+                color: #4f46e5 !important;
+            }
+            .ava-info:hover .ava-chevron {
+                transform: translateY(1px);
+                color: #4f46e5 !important;
+            }
+            .ava-info .ava-chevron { transition: transform 0.2s, color 0.2s; }
+            .ava-info .ava-name-text { transition: color 0.2s; }
 
             /* Dropdown menu */
             .ava-dropdown {
@@ -92,11 +108,14 @@
                 font-weight: 600; font-size: 14px;
                 color: #0f172a;
                 white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+                max-width: 150px;
             }
             .ava-dropdown-email {
                 font-size: 12px; color: #64748b;
                 white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+                max-width: 150px;
             }
+            .ava-dropdown-info-text { min-width: 0; flex: 1; }
 
             /* Dropdown items */
             .ava-dropdown-item {
@@ -254,14 +273,72 @@
                 opacity: 1;
                 transform: scale(1);
             }
+
+            /* Live Search Dropdown */
+            .search-dropdown {
+                position: absolute;
+                top: calc(100% + 6px);
+                left: 0;
+                right: 0;
+                background: white;
+                border: 1px solid #e2e8f0;
+                border-radius: 14px;
+                box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+                z-index: 2000;
+                overflow: hidden;
+                max-height: 320px;
+                opacity: 0;
+                transform: translateY(-8px);
+                pointer-events: none;
+                transition: opacity 0.2s ease, transform 0.2s ease;
+            }
+            .search-dropdown.open {
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: all;
+            }
+            .search-result-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 16px;
+                cursor: pointer;
+                border-bottom: 1px solid #f8fafc;
+                transition: background 0.15s;
+                gap: 12px;
+            }
+            .search-result-item:last-child { border-bottom: none; }
+            .search-result-item:hover { background: #f8fafc; }
+            .search-result-title {
+                font-size: 13px;
+                font-weight: 600;
+                color: #1e293b;
+                flex: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .search-result-price {
+                font-size: 13px;
+                font-weight: 700;
+                color: #4f46e5;
+                flex-shrink: 0;
+            }
+            .search-no-results {
+                padding: 20px 16px;
+                text-align: center;
+                color: #94a3b8;
+                font-size: 13px;
+            }
+            .search-container { position: relative; }
         `;
         document.head.appendChild(style);
     }
 
     // ── Render header user zone ───────────────────────────
     function render() {
-        // Tìm .func-bar hoặc .button-container để thay thế
-        const funcBar = document.querySelector('.func-bar');
+        // Tìm .nav-links hoặc .func-bar để thay thế
+        const funcBar = document.querySelector('.nav-links') || document.querySelector('.func-bar');
         if (!funcBar) return;
 
         // Xóa button-container cũ (Login/Signup) nếu có
@@ -290,15 +367,16 @@
             const wrapper = document.createElement('div');
             wrapper.className = 'ava-wrapper';
             wrapper.innerHTML = `
-                <div class="ava-header" id="ava-btn"
-                     style="background:${color};"
-                     title="${fullName}">
+                <div class="ava-header" id="ava-btn" style="background:${color};" title="${fullName}">
                     ${initial}
+                </div>
+                <div class="ava-info" id="ava-info-btn" style="display:flex; align-items:center; cursor:pointer; gap:6px; padding: 5px 0 5px 8px; user-select:none;">
+                    <span class="ava-chevron" style="font-size:9px; color:#64748b;">▼</span>
                 </div>
                 <div class="ava-dropdown" id="ava-dropdown">
                     <div class="ava-dropdown-header">
                         <div class="ava-dropdown-avatar" style="background:${color};">${initial}</div>
-                        <div>
+                        <div class="ava-dropdown-info-text">
                             <div class="ava-dropdown-name">${fullName}</div>
                             <div class="ava-dropdown-email">${session.email}</div>
                         </div>
@@ -307,17 +385,14 @@
                         <span class="item-icon">👤</span> My Profile
                     </a>
                     <a class="ava-dropdown-item" href="${basePath}/profile/#enrolled-courses-section">
-                        <span class="item-icon">📚</span> My Courses
+                        <span class="item-icon">🛍️</span> My Purchases
                     </a>
                     <a class="ava-dropdown-item" href="${basePath}/wishlist/">
                         <span class="item-icon">❤️</span> Wishlist
                     </a>
                     <div class="ava-dropdown-divider"></div>
-                    <a class="ava-dropdown-item" href="${basePath}/settings/">
-                        <span class="item-icon">⚙️</span> Settings
-                    </a>
-                    <div class="ava-dropdown-divider"></div>
                     <div class="ava-dropdown-item logout" onclick="headerLogout()">
+
                         <span class="item-icon">🚪</span> Log Out
                     </div>
                 </div>
@@ -359,12 +434,16 @@
 
             // Toggle dropdown on avatar click
             const avaBtn  = wrapper.querySelector('#ava-btn');
+            const infoBtn = wrapper.querySelector('#ava-info-btn');
             const dropdown = wrapper.querySelector('#ava-dropdown');
 
-            avaBtn.addEventListener('click', (e) => {
+            const toggleDropdown = (e) => {
                 e.stopPropagation();
                 dropdown.classList.toggle('open');
-            });
+            };
+
+            avaBtn.addEventListener('click', toggleDropdown);
+            if (infoBtn) infoBtn.addEventListener('click', toggleDropdown);
 
             // Close dropdown on outside click
             document.addEventListener('click', () => {
@@ -458,12 +537,73 @@
 
         const searchInput = document.querySelector('.search-box');
         if (searchInput) {
+            // ── Create live dropdown ──────────────────────────────────
+            let dropdown = document.getElementById('live-search-dropdown');
+            if (!dropdown) {
+                dropdown = document.createElement('div');
+                dropdown.id = 'live-search-dropdown';
+                dropdown.className = 'search-dropdown';
+                const container = searchInput.closest('.search-container');
+                if (container) container.appendChild(dropdown);
+            }
+
+            // ── Debounce utility ─────────────────────────────────────
+            function debounce(fn, delay) {
+                let timer;
+                return (...args) => {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => fn(...args), delay);
+                };
+            }
+
+            function closeDropdown() {
+                dropdown.classList.remove('open');
+            }
+
+            function renderDropdown(courses) {
+                if (!courses || courses.length === 0) {
+                    dropdown.innerHTML = '<div class="search-no-results">No courses found</div>';
+                } else {
+                    dropdown.innerHTML = courses.map(c => `
+                        <div class="search-result-item" onclick="window.location.href='${basePath}/course/?id=${c.id}'">
+                            <span class="search-result-title">${c.title}</span>
+                            <span class="search-result-price">$${c.price}</span>
+                        </div>
+                    `).join('');
+                }
+                dropdown.classList.add('open');
+            }
+
+            const doLiveSearch = debounce(async (query) => {
+                if (!query) { closeDropdown(); return; }
+                try {
+                    const data = await Auth.fetchWithAuth(`/courses?search=${encodeURIComponent(query)}&live=true`);
+                    if (data.success) renderDropdown(data.courses);
+                } catch (e) { closeDropdown(); }
+            }, 300);
+
+            // ── Input listener (live) ─────────────────────────────────
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.trim();
+                doLiveSearch(query);
+            });
+
+            // ── Enter → full search redirect ──────────────────────────
             searchInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
                     const query = searchInput.value.trim();
+                    closeDropdown();
                     if (query) {
                         window.location.href = `${basePath}/category/?search=${encodeURIComponent(query)}`;
                     }
+                }
+                if (e.key === 'Escape') closeDropdown();
+            });
+
+            // ── Click outside closes dropdown ─────────────────────────
+            document.addEventListener('click', (e) => {
+                if (!searchInput.closest('.search-container')?.contains(e.target)) {
+                    closeDropdown();
                 }
             });
         }
@@ -488,7 +628,7 @@
 
 
 
-        const logo = document.querySelector('.logo');
+        const logo = document.querySelector('.logo') || document.querySelector('.header-container .logo');
         if (logo) {
             logo.style.cursor = 'pointer';
             logo.addEventListener('click', () => {

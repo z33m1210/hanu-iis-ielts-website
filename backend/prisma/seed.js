@@ -7,7 +7,7 @@ const coursesData = [
     {
         title: "IELTS Writing Task 2 Masterclass",
         author: "Sarah Mitchell",
-        rating: 4.9, ratingCount: 3450,
+        rating: 0.0, ratingCount: 0,
         hours: 30, lectures: 210, level: "All Levels",
         price: 129.9, originalPrice: 259.9,
         chapters: 20, category: "writing",
@@ -19,7 +19,7 @@ const coursesData = [
     {
         title: "IELTS Writing Task 1 – Graphs & Charts",
         author: "Sarah Mitchell",
-        rating: 4.8, ratingCount: 2100,
+        rating: 0.0, ratingCount: 0,
         hours: 18, lectures: 130, level: "Intermediate",
         price: 99.9, originalPrice: 199.9,
         chapters: 14, category: "writing",
@@ -28,7 +28,7 @@ const coursesData = [
     {
         title: "IELTS Academic Writing Band 7+ Guide",
         author: "Emily Nguyen",
-        rating: 4.7, ratingCount: 1800,
+        rating: 0.0, ratingCount: 0,
         hours: 22, lectures: 160, level: "Intermediate",
         price: 109.9, originalPrice: 219.9,
         chapters: 17, category: "writing",
@@ -40,7 +40,7 @@ const coursesData = [
     {
         title: "IELTS Speaking Band 7+ Blueprint",
         author: "James Whitfield",
-        rating: 4.8, ratingCount: 2810,
+        rating: 0.0, ratingCount: 0,
         hours: 18, lectures: 140, level: "Intermediate",
         price: 109.9, originalPrice: 219.9,
         chapters: 16, category: "speaking",
@@ -52,7 +52,7 @@ const coursesData = [
     {
         title: "IELTS Speaking Part 2 Cue Cards Bootcamp",
         author: "James Whitfield",
-        rating: 4.7, ratingCount: 1560,
+        rating: 0.0, ratingCount: 0,
         hours: 12, lectures: 95, level: "Beginner",
         price: 79.9, originalPrice: 159.9,
         chapters: 10, category: "speaking",
@@ -61,7 +61,7 @@ const coursesData = [
     {
         title: "Fluent English for IELTS Speaking",
         author: "Anna Petrova",
-        rating: 4.6, ratingCount: 1200,
+        rating: 0.0, ratingCount: 0,
         hours: 15, lectures: 110, level: "All Levels",
         price: 89.9, originalPrice: 179.9,
         chapters: 12, category: "speaking",
@@ -73,7 +73,7 @@ const coursesData = [
     {
         title: "IELTS Reading Speed & Strategies",
         author: "David Chen",
-        rating: 4.7, ratingCount: 1980,
+        rating: 0.0, ratingCount: 0,
         hours: 12, lectures: 95, level: "Beginner",
         price: 89.9, originalPrice: 179.9,
         chapters: 11, category: "reading",
@@ -85,7 +85,7 @@ const coursesData = [
     {
         title: "IELTS Reading: True/False/Not Given Drills",
         author: "David Chen",
-        rating: 4.6, ratingCount: 1340,
+        rating: 0.0, ratingCount: 0,
         hours: 10, lectures: 80, level: "Intermediate",
         price: 69.9, originalPrice: 139.9,
         chapters: 9, category: "reading",
@@ -94,7 +94,7 @@ const coursesData = [
     {
         title: "Academic Reading Comprehension for IELTS",
         author: "Emily Nguyen",
-        rating: 4.8, ratingCount: 2200,
+        rating: 0.0, ratingCount: 0,
         hours: 16, lectures: 120, level: "Intermediate",
         price: 99.9, originalPrice: 199.9,
         chapters: 13, category: "reading",
@@ -103,7 +103,7 @@ const coursesData = [
     {
         title: "IELTS Listening: Sections 1–4 Full Prep",
         author: "Anna Petrova",
-        rating: 4.8, ratingCount: 2600,
+        rating: 0.0, ratingCount: 0,
         hours: 14, lectures: 105, level: "All Levels",
         price: 94.9, originalPrice: 189.9,
         chapters: 12, category: "listening",
@@ -112,7 +112,7 @@ const coursesData = [
     {
         title: "IELTS Listening Shortcuts & Note-Taking",
         author: "Anna Petrova",
-        rating: 4.7, ratingCount: 1450,
+        rating: 0.0, ratingCount: 0,
         hours: 10, lectures: 78, level: "Beginner",
         price: 69.9, originalPrice: 139.9,
         chapters: 9, category: "listening",
@@ -121,7 +121,7 @@ const coursesData = [
     {
         title: "Accent Training for IELTS Listening",
         author: "James Whitfield",
-        rating: 4.6, ratingCount: 980,
+        rating: 0.0, ratingCount: 0,
         hours: 8, lectures: 60, level: "Beginner",
         price: 49.9, originalPrice: 99.9,
         chapters: 7, category: "listening",
@@ -130,7 +130,7 @@ const coursesData = [
     {
         title: "Complete IELTS Academic Prep – Band 7+",
         author: "Emily Nguyen",
-        rating: 4.9, ratingCount: 4200,
+        rating: 0.0, ratingCount: 0,
         hours: 45, lectures: 320, level: "All Levels",
         price: 189.9, originalPrice: 379.9,
         chapters: 30, category: "full",
@@ -139,7 +139,7 @@ const coursesData = [
     {
         title: "IELTS General Training Full Course",
         author: "Sarah Mitchell",
-        rating: 4.8, ratingCount: 3100,
+        rating: 0.0, ratingCount: 0,
         hours: 40, lectures: 280, level: "All Levels",
         price: 169.9, originalPrice: 339.9,
         chapters: 26, category: "full",
@@ -148,7 +148,7 @@ const coursesData = [
     {
         title: "IELTS Band 6.5 to Band 8 Accelerator",
         author: "David Chen",
-        rating: 4.7, ratingCount: 2400,
+        rating: 0.0, ratingCount: 0,
         hours: 35, lectures: 240, level: "Advanced",
         price: 159.9, originalPrice: 319.9,
         chapters: 24, category: "full",
@@ -163,61 +163,46 @@ async function main() {
   await prisma.enrollment.deleteMany({});
   await prisma.payment.deleteMany({});
   await prisma.course.deleteMany({});
+  await prisma.user.deleteMany({});
   console.log('🗑️ Database cleared.');
 
   // 1. Create Admins & Students
-  const adminEmail = 'admin';
-  const hashedAdminPassword = await bcrypt.hash('123456', 10);
-  const admin = await prisma.user.upsert({
-    where: { email: adminEmail },
-    update: {},
-    create: {
-      email: adminEmail,
-      password: hashedAdminPassword,
+  const hashedUserPassword = await bcrypt.hash('123456', 10);
+
+  // Default Admin
+  await prisma.user.create({
+    data: {
+      email: 'admin',
+      password: hashedUserPassword,
       name: 'Administrator',
       role: 'ADMIN',
     },
   });
   console.log('✅ Admin account created: admin / 123456');
 
-  // 2. Create Instructors (Teachers)
-  // Extract unique authors and map to teacher objects
-  const authors = [...new Set(coursesData.map(c => c.author))];
-  const teacherMap = {};
+  // Requested User 1
+  await prisma.user.create({
+    data: {
+      email: 'ghaha1210@gmail.com',
+      password: hashedUserPassword,
+      name: 'Hoang Zeem',
+      role: 'USER',
+    },
+  });
+  console.log('✅ User 1 created: ghaha1210@gmail.com / 123456');
 
-  for (const authorName of authors) {
-    const email = authorName.toLowerCase().replace(/\s/g, '.') + '@bandpath.edu';
-    const hashedPassword = await bcrypt.hash('teacher123', 10);
-    
-    // Find metadata for this instructor from the first course they are mentioned in
-    const meta = coursesData.find(c => c.author === authorName);
+  // Requested User 2
+  await prisma.user.create({
+    data: {
+      email: 'hoanganhghaha@gmail.com',
+      password: hashedUserPassword,
+      name: 'Hoang Anh',
+      role: 'USER',
+    },
+  });
+  console.log('✅ User 2 created: hoanganhghaha@gmail.com / 123456');
 
-    const teacher = await prisma.user.upsert({
-      where: { email },
-      update: {
-        title: meta.instructorTitle,
-        bio: meta.instructorBio,
-        instructorReviews: meta.instructorReviews,
-        instructorStudents: meta.instructorStudents,
-        instructorCourses: meta.instructorCourses,
-      },
-      create: {
-        email,
-        password: hashedPassword,
-        name: authorName,
-        role: 'TEACHER',
-        title: meta.instructorTitle,
-        bio: meta.instructorBio,
-        instructorReviews: meta.instructorReviews,
-        instructorStudents: meta.instructorStudents,
-        instructorCourses: meta.instructorCourses,
-      },
-    });
-    teacherMap[authorName] = teacher.id;
-    console.log(`✅ Teacher created: ${authorName} (${email})`);
-  }
-
-  // 3. Create Courses
+  // 2. Create Courses
   for (const c of coursesData) {
     await prisma.course.create({
       data: {
@@ -232,7 +217,6 @@ async function main() {
         level: c.level,
         category: c.category,
         chapters: c.chapters,
-        teacherId: teacherMap[c.author],
         isPublished: true,
       }
     });

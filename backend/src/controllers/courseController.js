@@ -2,7 +2,7 @@ const prisma = require('../models/prismaClient');
 
 exports.getCourses = async (req, res, next) => {
   try {
-    const { category, search, level, sortBy, admin, exclude, limit } = req.query;
+    const { category, search, level, sortBy, admin, exclude, limit, live } = req.query;
 
     const where = {};
     if (admin !== 'true') {
@@ -16,10 +16,7 @@ exports.getCourses = async (req, res, next) => {
     }
 
     if (search) {
-      where.OR = [
-        { title: { contains: search } },
-        { description: { contains: search } },
-      ];
+      where.title = { contains: search };
     }
     if (level) where.level = level;
 
@@ -28,10 +25,13 @@ exports.getCourses = async (req, res, next) => {
     if (sortBy === 'price-high') orderBy = { price: 'desc' };
     if (sortBy === 'rating') orderBy = { rating: 'desc' };
 
+    // live=true → cap at 5 results for the search dropdown
+    const takeCount = live === 'true' ? 5 : (limit ? parseInt(limit) : undefined);
+
     const courses = await prisma.course.findMany({
       where,
       orderBy,
-      take: limit ? parseInt(limit) : undefined,
+      take: takeCount,
     });
 
     res.json({ success: true, courses });
@@ -113,6 +113,7 @@ exports.createCourse = async (req, res, next) => {
         lectures: parseInt(lectures) || 0,
         chapters: parseInt(chapters) || 0,
         image: thumbnail, // Map thumbnail to image
+        previewVideoUrl: req.body.previewVideoUrl,
         syllabus: syllabus || "[]",
         isPublished: false
       }
@@ -143,9 +144,12 @@ exports.updateCourse = async (req, res, next) => {
     if (data.lectures !== undefined) data.lectures = parseInt(data.lectures);
     if (data.chapters !== undefined) data.chapters = parseInt(data.chapters);
     
-    // Explicitly ensure syllabus is included
+    // Explicitly ensure syllabus and previewVideoUrl are included
     if (body.syllabus !== undefined) {
       data.syllabus = body.syllabus;
+    }
+    if (body.previewVideoUrl !== undefined) {
+      data.previewVideoUrl = body.previewVideoUrl;
     }
 
     const course = await prisma.course.update({

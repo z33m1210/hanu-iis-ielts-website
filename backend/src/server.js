@@ -9,12 +9,28 @@ const adminRoutes = require('./routes/adminRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const enrollmentRoutes = require('./routes/enrollmentRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
-const postRoutes = require('./routes/postRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
 const wishlistRoutes = require('./routes/wishlistRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
+const quizRoutes = require('./routes/quizRoutes');
 
 const app = express();
+
+// Startup Directory Check
+const fs = require('fs');
+const requiredDirs = [
+  path.join(__dirname, '../../public/uploads/audio'),
+  path.join(__dirname, '../../public/uploads/documents'),
+  path.join(__dirname, '../../public/uploads/courses'),
+];
+
+requiredDirs.forEach(dir => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+    console.log(`Created directory: ${dir}`);
+  }
+});
 
 app.use(cors());
 app.use(express.json());
@@ -26,13 +42,18 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/payments', paymentRoutes);
-app.use('/api/posts', postRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/quiz', quizRoutes);
+
 
 // Static frontend files
 app.use(express.static(path.join(__dirname, '../../frontend')));
+
+// Serve uploaded avatars at /uploads/avatars/
+app.use('/uploads', express.static(path.join(__dirname, '../../public/uploads')));
 
 // Root route redirects to the home page
 app.get('/', (req, res) => {

@@ -7,7 +7,14 @@ exports.getMyEnrollments = async (req, res, next) => {
     const enrollments = await prisma.enrollment.findMany({
       where: { studentId },
       include: {
-        course: true
+        course: {
+          include: {
+            reviews: {
+              where: { userId: studentId }
+            }
+          }
+        },
+        payment: { select: { status: true } }
       },
       orderBy: { createdAt: 'desc' }
     });

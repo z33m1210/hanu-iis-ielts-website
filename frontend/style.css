@@ -148,26 +148,59 @@ header .func-bar .button-container button.signup-btn:hover {
   color: #64748B;
   font-size: 16px;
 }
+.main-page .home-page-banner .left-info .hero-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+}
 .main-page .home-page-banner .left-info button {
-  width: 249px;
-  height: 51px;
-  background-color: #2563EB;
+  padding: 0 32px;
+  height: 54px;
   font-size: 16px;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+.main-page .home-page-banner .left-info .btn-primary {
+  background-color: #4f46e5;
   color: white;
   border: none;
-  border-radius: 8px;
-  transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), color 0.35s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
 }
-.main-page .home-page-banner .left-info button:hover {
-  background-color: #fff;
-  color: #2563eb;
-  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+.main-page .home-page-banner .left-info .btn-primary:hover {
+  background-color: #4338ca;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+}
+.main-page .home-page-banner .left-info .btn-secondary {
+  background-color: transparent;
+  color: #4f46e5;
+  border: 2px solid #4f46e5;
+}
+.main-page .home-page-banner .left-info .btn-secondary:hover {
+  background-color: rgba(79, 70, 229, 0.05);
   transform: translateY(-2px);
 }
 .main-page .home-page-banner .left-info button:active {
   transform: translateY(0) scale(0.98);
-  box-shadow: 0 5px 12px rgba(37, 99, 235, 0.2);
 }
+
+@media (max-width: 768px) {
+  .main-page .home-page-banner .left-info .hero-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .main-page .home-page-banner .left-info button {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
 .main-page .home-page-banner .deco-right {
   position: relative;
 }
@@ -244,8 +277,8 @@ header .func-bar .button-container button.signup-btn:hover {
   display: grid;
   width: 97%;
   grid-template-rows: 1fr;
-  grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr;
-  grid-template-areas: "first line1 second line2 third line3 fourth";
+  grid-template-columns: 1fr 1px 1fr 1px 1fr 1px;
+  grid-template-areas: "first line1 second line2 third line3 ";
   align-items: center;
 }
 .main-page .mass-counter .inside-text .first {
@@ -288,56 +321,43 @@ header .func-bar .button-container button.signup-btn:hover {
   gap: 50px;
 }
 .main-page .top-field .top-cat {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 45px 1fr;
-  grid-template-areas: "title title lk lk" "ast dev mar phy";
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
   gap: 20px;
-}
-.main-page .top-field .top-cat p {
-  grid-area: title;
-}
-.main-page .top-field .top-cat a {
-  grid-area: lk;
 }
 .main-page .top-field .top-cat > p {
   font-weight: 700;
   font-size: 20px;
+  margin: 0;
 }
 .main-page .top-field .top-cat a {
   font-size: 16px;
   color: #3B82F6;
 }
-.main-page .top-field .top-cat .ast {
-  grid-area: ast;
-}
-.main-page .top-field .top-cat .dev {
-  grid-area: dev;
-}
-.main-page .top-field .top-cat .Market {
-  grid-area: mar;
-}
-.main-page .top-field .top-cat .Physic {
-  grid-area: phy;
-}
-.main-page .top-field .top-cat p {
-  align-self: center;
-}
-.main-page .top-field .top-cat a {
-  align-self: center;
-  justify-self: end;
+.main-page .top-field .top-cat .cat-grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
 }
 .main-page .top-field .top-cat .ast, .main-page .top-field .top-cat .dev, .main-page .top-field .top-cat .Market, .main-page .top-field .top-cat .Physic {
   padding: 35px 0px 35px 0px;
   border: 1px solid #E2E8F0;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
-  justify-self: center;
   display: flex;
   gap: 5px;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  background: white;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.main-page .top-field .top-cat .ast:hover, .main-page .top-field .top-cat .dev:hover, .main-page .top-field .top-cat .Market:hover, .main-page .top-field .top-cat .Physic:hover {
+  transform: translateY(-4px);
 }
 .main-page .top-field .top-cat .ast .img-bino, .main-page .top-field .top-cat .ast .img-dev, .main-page .top-field .top-cat .ast .mar-img, .main-page .top-field .top-cat .ast .phy-img, .main-page .top-field .top-cat .dev .img-bino, .main-page .top-field .top-cat .dev .img-dev, .main-page .top-field .top-cat .dev .mar-img, .main-page .top-field .top-cat .dev .phy-img, .main-page .top-field .top-cat .Market .img-bino, .main-page .top-field .top-cat .Market .img-dev, .main-page .top-field .top-cat .Market .mar-img, .main-page .top-field .top-cat .Market .phy-img, .main-page .top-field .top-cat .Physic .img-bino, .main-page .top-field .top-cat .Physic .img-dev, .main-page .top-field .top-cat .Physic .mar-img, .main-page .top-field .top-cat .Physic .phy-img {
   width: 100px;
@@ -349,74 +369,181 @@ header .func-bar .button-container button.signup-btn:hover {
   justify-content: center;
 }
 .main-page .top-field .top-cour {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 45px 1fr;
-  grid-template-areas: "title title lk lk" "c1 c2 c3 c4";
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
   gap: 20px;
 }
 .main-page .top-field .top-cour > p {
-  align-self: center;
-  justify-self: start;
   font-weight: 700;
   font-size: 20px;
+  margin: 0;
 }
 .main-page .top-field .top-cour a {
-  align-self: center;
-  justify-self: end;
   font-size: 16px;
   color: #3B82F6;
 }
-.main-page .top-field .top-cour .c1 > img, .main-page .top-field .top-cour .c2 > img, .main-page .top-field .top-cour .c3 > img, .main-page .top-field .top-cour .c4 > img {
+.main-page .top-field .top-cour #topCoursesContainer {
+  display: grid;
   width: 100%;
-  height: 139px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
 }
-.main-page .top-field .top-cour p {
-  grid-area: title;
-}
-.main-page .top-field .top-cour a {
-  grid-area: lk;
-}
-.main-page .top-field .top-cour .c1 {
-  grid-area: c1;
-}
-.main-page .top-field .top-cour .c2 {
-  grid-area: c2;
-}
-.main-page .top-field .top-cour .c3 {
-  grid-area: c3;
-}
-.main-page .top-field .top-cour .c4 {
-  grid-area: c4;
-}
-.main-page .top-field .top-cour .c1, .main-page .top-field .top-cour .c2, .main-page .top-field .top-cour .c3, .main-page .top-field .top-cour .c4 {
-  border: 0.5px solid #E2E8F0;
+.course-card {
+  border: 1px solid #f1f5f9;
   border-radius: 16px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
   display: flex;
-  padding: 16px;
   flex-direction: column;
-  gap: 9px;
+  overflow: hidden;
+  background: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
 }
-.main-page .top-field .top-cour .c1 .rtin, .main-page .top-field .top-cour .c2 .rtin, .main-page .top-field .top-cour .c3 .rtin, .main-page .top-field .top-cour .c4 .rtin {
+.course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+.course-card .course-image {
+  width: 100%;
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+}
+.course-card .course-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.course-card:hover .course-image img {
+  transform: scale(1.05);
+}
+
+/* Badges */
+.course-card .badge-group {
+  position: absolute;
+  top: 12px;
+  left: 12px;
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 2;
+}
+.course-card .badge-floating {
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.9);
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #1e293b;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.course-card .badge-level {
+  background: #4f46e5;
+  color: white;
+}
+
+/* Quick Add Button */
+.course-card .quick-add-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(10px);
 }
-.main-page .top-field .top-cour .c1 .rtin p, .main-page .top-field .top-cour .c2 .rtin p, .main-page .top-field .top-cour .c3 .rtin p, .main-page .top-field .top-cour .c4 .rtin p {
-  font-weight: 300;
+.course-card:hover .quick-add-btn {
+  opacity: 1;
+  transform: translateY(0);
 }
-.main-page .top-field .top-cour .c1 > p:nth-of-type(1), .main-page .top-field .top-cour .c2 > p:nth-of-type(1), .main-page .top-field .top-cour .c3 > p:nth-of-type(1), .main-page .top-field .top-cour .c4 > p:nth-of-type(1) {
+.course-card .quick-add-btn:hover {
+  background: #4f46e5;
+  color: white;
+  transform: scale(1.1);
+}
+
+.course-card .course-info {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
+  position: relative;
+  padding-bottom: 75px;
+}
+.course-card .course-title {
   font-weight: 600;
-  font-size: 18px;
+  font-size: 17px;
+  color: #0f172a;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 3em;
 }
-.main-page .top-field .top-cour .c1 > p:nth-of-type(2), .main-page .top-field .top-cour .c1 > p:nth-of-type(3), .main-page .top-field .top-cour .c2 > p:nth-of-type(2), .main-page .top-field .top-cour .c2 > p:nth-of-type(3), .main-page .top-field .top-cour .c3 > p:nth-of-type(2), .main-page .top-field .top-cour .c3 > p:nth-of-type(3), .main-page .top-field .top-cour .c4 > p:nth-of-type(2), .main-page .top-field .top-cour .c4 > p:nth-of-type(3) {
-  font-weight: 200;
+.course-card .course-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.course-card .rating-stars {
+  color: #fbbf24;
   font-size: 14px;
 }
-.main-page .top-field .top-cour .c1 > p:nth-of-type(4), .main-page .top-field .top-cour .c2 > p:nth-of-type(4), .main-page .top-field .top-cour .c3 > p:nth-of-type(4), .main-page .top-field .top-cour .c4 > p:nth-of-type(4) {
-  font-weight: 600;
-  font-size: 23px;
+.course-card .rating-count {
+  color: #64748b;
+  font-size: 13px;
+}
+.course-card .course-details {
+  font-size: 13px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.course-card .price-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+}
+.course-card .price-container {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.course-card .course-price {
+  font-weight: 800;
+  font-size: 20px;
+  color: #0f172a;
+}
+.course-card .original-price {
+  font-size: 14px;
+  color: #94a3b8;
+  text-decoration: line-through;
 }
 .main-page .top-field .top-ins {
   display: grid;
@@ -899,46 +1026,11 @@ footer .icon-btn img {
   .main-page .top-field .top-cat .ast p, .main-page .top-field .top-cat .dev p, .main-page .top-field .top-cat .Market p, .main-page .top-field .top-cat .Physic p {
     font-size: 14px;
   }
-  .main-page .top-field .top-cour {
-    gap: 15px;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 35px 1fr 1fr;
-    grid-template-areas: "title lk" "c1 c2" "c3 c4";
-  }
   .main-page .top-field .top-cour > p {
     font-size: 18px;
   }
   .main-page .top-field .top-cour a {
     font-size: 14px;
-  }
-  .main-page .top-field .top-cour .c1, .main-page .top-field .top-cour .c2, .main-page .top-field .top-cour .c3, .main-page .top-field .top-cour .c4 {
-    padding: 12px;
-    gap: 6px;
-  }
-  .main-page .top-field .top-cour .c1 > img, .main-page .top-field .top-cour .c2 > img, .main-page .top-field .top-cour .c3 > img, .main-page .top-field .top-cour .c4 > img {
-    height: 110px;
-  }
-  .main-page .top-field .top-cour .c1 > p:nth-of-type(1), .main-page .top-field .top-cour .c2 > p:nth-of-type(1), .main-page .top-field .top-cour .c3 > p:nth-of-type(1), .main-page .top-field .top-cour .c4 > p:nth-of-type(1) {
-    font-size: 16px;
-  }
-  .main-page .top-field .top-cour .c1 > p:nth-of-type(2),
-  .main-page .top-field .top-cour .c1 > p:nth-of-type(3), .main-page .top-field .top-cour .c2 > p:nth-of-type(2),
-  .main-page .top-field .top-cour .c2 > p:nth-of-type(3), .main-page .top-field .top-cour .c3 > p:nth-of-type(2),
-  .main-page .top-field .top-cour .c3 > p:nth-of-type(3), .main-page .top-field .top-cour .c4 > p:nth-of-type(2),
-  .main-page .top-field .top-cour .c4 > p:nth-of-type(3) {
-    font-size: 13px;
-  }
-  .main-page .top-field .top-cour .c1 > p:nth-of-type(4), .main-page .top-field .top-cour .c2 > p:nth-of-type(4), .main-page .top-field .top-cour .c3 > p:nth-of-type(4), .main-page .top-field .top-cour .c4 > p:nth-of-type(4) {
-    font-size: 20px;
-  }
-  .main-page .top-field .top-cour .c1 .rtin, .main-page .top-field .top-cour .c2 .rtin, .main-page .top-field .top-cour .c3 .rtin, .main-page .top-field .top-cour .c4 .rtin {
-    gap: 8px;
-  }
-  .main-page .top-field .top-cour .c1 .rtin img, .main-page .top-field .top-cour .c2 .rtin img, .main-page .top-field .top-cour .c3 .rtin img, .main-page .top-field .top-cour .c4 .rtin img {
-    width: 80px;
-  }
-  .main-page .top-field .top-cour .c1 .rtin p, .main-page .top-field .top-cour .c2 .rtin p, .main-page .top-field .top-cour .c3 .rtin p, .main-page .top-field .top-cour .c4 .rtin p {
-    font-size: 13px;
   }
   .main-page .top-field .top-ins {
     grid-template-columns: repeat(3, 1fr);
@@ -1330,3 +1422,5 @@ footer .icon-btn img {
 }
 
 /*# sourceMappingURL=style.css.map */
+/* Toast Notification System */
+/* Toast styles moved to toast.css */

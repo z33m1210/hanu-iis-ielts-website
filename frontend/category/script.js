@@ -4,17 +4,40 @@ let currentPage = 1;
 const coursesPerPage = 9;
 const COURSE_PAGE_PATH = '../course/';
 
-// ── Fetch all courses from API ─────────────────────────────
+// ── Read URL params once at load ──────────────────────────
+const _urlParams = new URLSearchParams(window.location.search);
+const _searchTerm = _urlParams.get('search') || '';
+const _categoryParam = _urlParams.get('category') || '';
+
+// ── Fetch courses from API (with optional search) ─────────
 async function fetchAllCourses() {
     try {
-        const data = await Auth.fetchWithAuth('/courses');
+        // Build API URL — pass search term directly to backend for server-side filtering
+        let apiPath = '/courses';
+        const queryParts = [];
+        if (_searchTerm) queryParts.push(`search=${encodeURIComponent(_searchTerm)}`);
+        if (_categoryParam) queryParts.push(`category=${encodeURIComponent(_categoryParam)}`);
+        if (queryParts.length > 0) apiPath += '?' + queryParts.join('&');
+
+        const data = await Auth.fetchWithAuth(apiPath);
         if (data.success) {
             allCourses = data.courses;
             applyFilters();
             renderTopItems();
+            updateSearchHeading();
         }
     } catch (err) {
         console.error('Failed to fetch courses:', err);
+    }
+}
+
+// ── Update heading for active search ──────────────────────
+function updateSearchHeading() {
+    const heading = document.getElementById('categoryHeading');
+    if (!heading) return;
+    if (_searchTerm) {
+        heading.textContent = `Showing results for: "${_searchTerm}"`;
+        heading.style.color = '#4f46e5';
     }
 }
 
@@ -36,7 +59,7 @@ function renderCourses() {
     grid.innerHTML = coursesToShow.map(course => `
         <div class="course-card" onclick="goToCourse(${course.id})" style="cursor:pointer;">
             <div class="course-image">
-                <img src="./Rectangle 1080.png" alt="${course.title}">
+                <img src="${course.image || './Rectangle 1080.png'}" alt="${course.title}">
                 <button class="wishlist-action ${window.Wishlist && window.Wishlist.isWishlisted(course.id) ? 'active' : ''}" onclick="event.stopPropagation(); if(window.toggleWishlist) toggleWishlist(${course.id}, this)" title="Add to Wishlist">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
                 </button>
@@ -47,7 +70,7 @@ function renderCourses() {
                     <span class="rating-stars">${'★'.repeat(Math.round(course.rating || 0))}${'☆'.repeat(5 - Math.round(course.rating || 0))}</span>
                     <span class="rating-count">(${course.ratingCount ? course.ratingCount.toLocaleString() : 0} Ratings)</span>
                 </div>
-                <p class="course-details">${course.hours || 0} Total Hours. ${course.lectures || 0} Lectures. ${course.level || 'Beginner'}</p>
+                <p class="course-details">${course.hours || 0} Total Hours. ${course.lectures || 0} Modules. ${course.level || 'Beginner'}</p>
                 <div class="price-row">
                     <p class="course-price">$${course.price}</p>
                     <div class="card-actions">
@@ -74,7 +97,7 @@ async function renderTopItems() {
             const coursesHtml = data.courses.map((c, i) => `
                 <div class="c${i+1} course-card" onclick="goToCourse(${c.id})" style="cursor:pointer;">
                     <div class="course-image">
-                        <img src="./Rectangle 1080.png" alt="${c.title}">
+                        <img src="${c.image || './Rectangle 1080.png'}" alt="${c.title}">
                         <button class="wishlist-action ${window.Wishlist && window.Wishlist.isWishlisted(c.id) ? 'active' : ''}" onclick="event.stopPropagation(); if(window.toggleWishlist) toggleWishlist(${c.id}, this)" title="Add to Wishlist">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
                         </button>
@@ -85,7 +108,7 @@ async function renderTopItems() {
                             <span class="rating-stars">${'★'.repeat(Math.round(c.rating || 0))}${'☆'.repeat(5 - Math.round(c.rating || 0))}</span>
                             <span class="rating-count">(${c.ratingCount ? c.ratingCount.toLocaleString() : 0} Ratings)</span>
                         </div>
-                        <p class="course-details">${c.hours || 0} Total Hours. ${c.lectures || 0} Lectures. ${c.level || 'Beginner'}</p>
+                        <p class="course-details">${c.hours || 0} Total Hours. ${c.lectures || 0} Modules. ${c.level || 'Beginner'}</p>
                         <div class="price-row">
                             <p class="course-price">$${c.price}</p>
                             <div class="card-actions">
@@ -198,14 +221,54 @@ function toggleMobileFilters() {
 
 // ── Init ──────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const targetCat = urlParams.get('category');
-    if (targetCat) {
-        const checkbox = document.querySelector(`input[id^="cat"][value="${targetCat}"]`);
+    // Pre-check category filter if ?category= is in URL
+    if (_categoryParam) {
+        const checkbox = document.querySelector(`input[id^="cat"][value="${_categoryParam}"]`);
         if (checkbox) checkbox.checked = true;
     }
+
+    // Pre-fill search box & show X button if ?search= is in URL
+    const searchBox = document.querySelector('.search-box');
+    const clearBtn  = document.getElementById('searchClearBtn');
+
+    if (searchBox && _searchTerm) {
+        searchBox.value = _searchTerm;
+        if (clearBtn) clearBtn.style.display = 'block';
+    }
+
+    // Show/hide X button while typing
+    if (searchBox && clearBtn) {
+        searchBox.addEventListener('input', () => {
+            clearBtn.style.display = searchBox.value ? 'block' : 'none';
+        });
+    }
+
     fetchAllCourses();
 });
+
+// ── Clear search & restore all courses ────────────────────
+window.clearCategorySearch = function() {
+    const searchBox = document.querySelector('.search-box');
+    const clearBtn  = document.getElementById('searchClearBtn');
+    const heading   = document.getElementById('categoryHeading');
+    const subtitle  = document.getElementById('categorySubtitle');
+
+    if (searchBox) searchBox.value = '';
+    if (clearBtn)  clearBtn.style.display = 'none';
+    if (heading)   { heading.textContent = 'IELTS Courses'; heading.style.color = ''; }
+    if (subtitle)  subtitle.textContent = 'All IELTS Preparation Courses';
+
+    // Remove ?search= from URL bar without reloading
+    window.history.replaceState({}, '', window.location.pathname);
+
+    // Re-fetch the full published course list
+    Auth.fetchWithAuth('/courses').then(data => {
+        if (data.success) {
+            allCourses = data.courses;
+            applyFilters();
+        }
+    }).catch(() => {});
+};
 
 function syncWishlistUI() {
     renderCourses();

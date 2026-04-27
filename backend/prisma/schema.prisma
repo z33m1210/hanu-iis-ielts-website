@@ -24,7 +24,6 @@ model User {
   payments       Payment[]
   wishlist       Wishlist[]
   reviews        Review[]
-  posts          Post[]
 }
 
 model Course {
@@ -41,6 +40,7 @@ model Course {
   category      String   @default("full") // listening, reading, writing, speaking, full
   chapters      Int      @default(0)
   image         String?
+  previewVideoUrl String?
   syllabus      String?  @default("[]") // JSON string storage
   isPublished   Boolean  @default(false)
   createdAt     DateTime @default(now())
@@ -62,6 +62,9 @@ model Enrollment {
 
   student User   @relation(fields: [studentId], references: [id])
   course  Course @relation(fields: [courseId], references: [id])
+
+  paymentId Int?
+  payment   Payment? @relation(fields: [paymentId], references: [id])
 
   @@unique([studentId, courseId])
 }
@@ -94,26 +97,23 @@ model Payment {
   id        Int      @id @default(autoincrement())
   studentId Int
   amount    Float
-  status    String   @default("PENDING") // PENDING, COMPLETED, FAILED
-  provider  String? // VNPay, MoMo
+  status    String   @default("PENDING") // PENDING, COMPLETED, FAILED, FULFILLED
+  provider  String   @default("MOMO") // MOMO, VNPay, etc.
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // MoMo Specific Tracking
+  orderId   String   @unique
+  requestId String
+  transId   String?
+  payUrl    String?
 
   student User @relation(fields: [studentId], references: [id])
+
+  isRead      Boolean      @default(false)
+  enrollments Enrollment[]
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  type      String   @default("ARTICLE")
-  status    String   @default("DRAFT")
-  authorId  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  author    User     @relation(fields: [authorId], references: [id])
-}
 
 model Wishlist {
   id        Int      @id @default(autoincrement())
@@ -139,3 +139,20 @@ model Setting {
   key   String @id
   value String
 }
+
+model QuizQuestion {
+  id            Int      @id @default(autoincrement())
+  type          String   // 'MCQ' or 'SHORT_ANSWER'
+  category      String   @default("LISTENING") // 'LISTENING' or 'READING'
+  questionText  String
+  options       String?  // JSON string storage for MCQ options
+  correctAnswer String
+  audioUrl      String?  // URL to audio file for listening questions
+  documentUrl   String?  // URL to PDF/Passage for reading questions
+  sectionId     String?  // To group multiple questions into one section
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+
+

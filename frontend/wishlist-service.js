@@ -16,7 +16,6 @@ const Wishlist = {
             if (data.success) {
                 this._wishlist = new Set((data.courses || []).map(c => Number(c.id)));
                 this._initialized = true;
-                console.log('Wishlist initialized with', this._wishlist.size, 'items');
                 if (window.updateHeaderBadges) window.updateHeaderBadges();
                 document.dispatchEvent(new CustomEvent('wishlistLoaded'));
             }

@@ -12,3 +12,15 @@ backend/prisma/*.db
 backend/prisma/*.sqlite-journal
 backend/*.db
 backend/*.sqlite*
+
+# Uploads (Keep structure, ignore content)
+public/uploads/audio/*
+public/uploads/documents/*
+public/uploads/courses/*
+!public/uploads/**/.gitkeep
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/

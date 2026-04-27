@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details - BandPath IELTS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="course-detail.css">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="course-detail-container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="course-info">
+                    <div class="meta-item" style="display:inline-flex; background:rgba(37, 99, 235, 0.2); color:#60a5fa; margin-bottom:16px;">
+                        <i data-lucide="award"></i> Verified Course
+                    </div>
+                    <h1 id="courseTitle">Loading Course...</h1>
+                    <p class="subtitle" id="courseSubtitle"></p>
+                    
+                    <div class="meta-grid">
+                        <div class="meta-item">
+                            <i data-lucide="star" style="fill:#f59e0b; color:#f59e0b;"></i>
+                            <span id="courseRating">0.0</span> (<span id="courseReviewCount">0</span> reviews)
+                        </div>
+                        <div class="meta-item">
+                            <i data-lucide="users"></i> <span id="courseStudents">0</span> Students
+                        </div>
+                        <div class="meta-item">
+                            <i data-lucide="clock"></i> <span id="courseDuration">0h</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-container" id="videoWrapper">
+                    <!-- Video player injected by JS -->
+                    <div class="video-fallback">
+                        <i data-lucide="video-off"></i>
+                        <p>Preview Video Unavailable</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust Section: Reviews -->
+        <section class="reviews-section">
+            <div class="container">
+                <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:40px;">
+                    <div>
+                        <h2 style="font-family:'Outfit'; font-size:2rem; margin-bottom:8px;">Student Feedback</h2>
+                        <p style="color:var(--detail-text-muted);">Trusted by thousands of IELTS candidates worldwide.</p>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-size:3rem; font-weight:800; color:var(--detail-primary); line-height:1;" id="avgRatingBig">0.0</div>
+                        <div style="color:#f59e0b;" id="starSummary"></div>
+                    </div>
+                </div>
+
+                <div class="review-grid" id="reviewsGrid">
+                    <!-- Reviews injected by JS -->
+                </div>
+
+                <!-- Review Form (Only for verified buyers) -->
+                <div id="reviewFormSection" style="display:none;">
+                    <div class="review-form-container">
+                        <h3 style="font-family:'Outfit'; font-size:1.5rem; margin-bottom:24px;">Share your experience</h3>
+                        <div class="form-group">
+                            <label>Rating</label>
+                            <div style="display:flex; gap:8px; color:#cbd5e1; font-size:1.5rem; cursor:pointer;" id="ratingSelector">
+                                <i data-lucide="star" data-value="1"></i>
+                                <i data-lucide="star" data-value="2"></i>
+                                <i data-lucide="star" data-value="3"></i>
+                                <i data-lucide="star" data-value="4"></i>
+                                <i data-lucide="star" data-value="5"></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Comment</label>
+                            <textarea id="reviewComment" placeholder="What did you think of the course?"></textarea>
+                        </div>
+                        <button class="buy-button" id="submitReviewBtn" style="width:100%;">Submit Review</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sticky Purchase Bar -->
+        <div class="sticky-purchase-bar">
+            <div class="price-info">
+                <div class="label">One-time Investment</div>
+                <div class="price" id="stickyPrice">$0.00</div>
+            </div>
+            <button class="buy-button" id="buyNowBtn">Buy Course Now</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../auth.js"></script>
+    <script src="../cart.js"></script>
+    <script src="course-page.js"></script>
+</body>
+</html>

@@ -47,7 +47,8 @@ body {
 .admin-layout {
     display: grid;
     grid-template-columns: 280px 1fr;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
 }
 
 /* --- Sidebar --- */
@@ -58,6 +59,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
+    height: 100vh;
+    overflow-y: auto;
 }
 
 .sidebar-logo {
@@ -115,6 +118,16 @@ body {
     font-weight: 600;
 }
 
+.nav-item .badge {
+    background-color: var(--error);
+    color: white;
+    font-size: 0.625rem;
+    padding: 0.125rem 0.375rem;
+    border-radius: 100px;
+    margin-left: auto;
+    font-weight: 700;
+}
+
 /* --- Main Content --- */
 
 .main-content {
@@ -123,6 +136,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    height: 100vh;
+    overflow-y: auto;
 }
 
 header {

@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BandPath – Your Path to Band 9</title>
+    <link rel="icon" type="image/png" href="logo (1).png">
+    <link rel="stylesheet" href="toast.css">
     <link rel="stylesheet" href="style.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -49,7 +52,10 @@
                 <p>Welcome to BandPath — Vietnam's most trusted IELTS Course's Selling platform. Whether you're aiming for Band
                     6.5 for university, Band 7.5 for immigration, or a perfect Band 9, our expert-led courses and proven
                     methodology will get you there. Start your IELTS journey with confidence today.</p>
-                <button onclick="window.location.href='./category/'">Explore IELTS Courses</button>
+                <div class="hero-buttons">
+                    <button onclick="window.location.href='./category/'" class="btn-primary">Explore IELTS Courses</button>
+                    <button onclick="window.location.href='./free-trial/'" class="btn-secondary">Try Free Placement Quiz</button>
+                </div>
             </div>
             <div class="deco-right">
                 <img src="./Frame 427318990 (1).png">
@@ -80,7 +86,7 @@
                 </div>
                 <span id="sep-line2"></span>
 
-                <div class="fourth">
+                <div class="third">
                     <p>Band 7.5</p>
                     <p>Average score of our graduates</p>
                 </div>
@@ -91,44 +97,39 @@
             <div class="top-cat" id="topCategories">
                 <p>Top Categories</p>
                 <a href="./category/">See all</a>
-                <div class="ast" onclick="window.location.href='./category/?category=listening'" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-                    <div class="img-bino">
-                        <img src="./Icon (3).png">
+                <div class="cat-grid">
+                    <div class="ast" onclick="window.location.href='./category/?category=listening'" style="cursor: pointer;">
+                        <div class="img-bino">
+                            <img src="./Icon (3).png">
+                        </div>
+                        <p>IELTS Listening</p>
+                        <p id="count-listening">18 Courses</p>
                     </div>
-                    <p>IELTS Listening</p>
-                    <p id="count-listening">18 Courses</p>
-                </div>
-                <div class="dev" onclick="window.location.href='./category/?category=reading'" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-                    <div class="img-dev">
-                        <img src="./code-browser.png">
+                    <div class="dev" onclick="window.location.href='./category/?category=reading'" style="cursor: pointer;">
+                        <div class="img-dev">
+                            <img src="./code-browser.png">
+                        </div>
+                        <p>IELTS Reading</p>
+                        <p id="count-reading">22 Courses</p>
                     </div>
-                    <p>IELTS Reading</p>
-                    <p id="count-reading">22 Courses</p>
-                </div>
-                <div class="Market" onclick="window.location.href='./category/?category=writing'" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-                    <div class="mar-img">
-                        <img src="./briefcase-02.png">
+                    <div class="Market" onclick="window.location.href='./category/?category=writing'" style="cursor: pointer;">
+                        <div class="mar-img">
+                            <img src="./briefcase-02.png">
+                        </div>
+                        <p>IELTS Writing</p>
+                        <p id="count-writing">20 Courses</p>
                     </div>
-                    <p>IELTS Writing</p>
-                    <p id="count-writing">20 Courses</p>
-                </div>
-                <div class="Physic" onclick="window.location.href='./category/?category=speaking'" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-                    <div class="phy-img">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px; color: #3b82f6; display: block; margin: auto;"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line></svg>
+                    <div class="Physic" onclick="window.location.href='./category/?category=speaking'" style="cursor: pointer;">
+                        <div class="phy-img">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px; color: #3b82f6; display: block; margin: auto;"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line></svg>
+                        </div>
+                        <p>IELTS Speaking</p>
+                        <p id="count-speaking">15 Courses</p>
                     </div>
-                    <p>IELTS Speaking</p>
-                    <p id="count-speaking">15 Courses</p>
                 </div>
             </div>
 
-            <div class="top-cour">
-                <p>Top Courses</p>
-                <a href="./category/">See all</a>
-                <div id="topCoursesContainer" style="display: contents;">
-                    <!-- Dynamically injected -->
-                    <p style="grid-column: 1/-1; text-align: center; padding: 20px;">Loading courses...</p>
-                </div>
-            </div>
+
 
 
         </div>

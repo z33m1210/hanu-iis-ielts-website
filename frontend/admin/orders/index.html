@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders - IELTS Admin Portal</title>
+    <link rel="stylesheet" href="../admin.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo" style="cursor: pointer;" onclick="window.location.href='../'">
+                <img src="../../logo (1).png" alt="BandPath Logo">
+                <span>BandPath</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../" class="nav-item"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a></li>
+                    <li><a href="../users/" class="nav-item"><i data-lucide="users"></i><span>Users</span></a></li>
+                    <li><a href="../courses/" class="nav-item"><i data-lucide="book-open"></i><span>Courses</span></a></li>
+                    <li>
+                        <a href="./" class="nav-item">
+                            <i data-lucide="shopping-cart"></i>
+                            <span>Orders</span>
+                            <span id="unreadOrdersBadge" class="badge" style="display: none;">0</span>
+                        </a>
+                    </li>
+                    <li><a href="../quiz/" class="nav-item"><i data-lucide="help-circle"></i><span>Free Trial Quiz</span></a></li>
+                    <li><a href="../settings/" class="nav-item"><i data-lucide="settings"></i><span>Settings</span></a></li>
+
+                    <li><a href="#" id="logoutBtn" class="nav-item"><i data-lucide="log-out"></i><span>Logout</span></a></li>
+                    <div class="mode-toggle-wrapper">
+                        <span class="toggle-label" id="custLabel">Customer</span>
+                        <label class="switch">
+                            <input type="checkbox" id="modeToggle" checked data-redirect="../../">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="toggle-label active" id="adminLabel">Admin</span>
+                    </div>
+                </ul>
+            </nav>
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <div>
+                    <h1>Order Fulfillment</h1>
+                    <p style="color: var(--on-surface-variant); font-size: 0.875rem;">Manage and track course sales</p>
+                </div>
+            </header>
+
+            <div class="tab-container" style="display: flex; gap: 20px; border-bottom: 1px solid var(--surface-variant); margin-bottom: 24px;">
+                <button id="tabPending" class="tab-item active" style="padding: 12px 24px; border: none; background: none; cursor: pointer; border-bottom: 2px solid var(--primary); color: var(--primary); font-weight: 600;">Pending</button>
+                <button id="tabFulfilled" class="tab-item" style="padding: 12px 24px; border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; color: var(--on-surface-variant); font-weight: 600;">Fulfilled</button>
+            </div>
+
+            <section class="card">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Courses</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <!-- Orders will be injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../../auth.js"></script>
+    <script src="../common.js"></script>
+    <script src="../orders.js"></script>
+</body>
+</html>

@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Fetch Stats
     async function fetchStats() {
         try {
-            const data = await Auth.fetchWithAuth('/admin/stats');
+            const data = await Auth.fetchWithAuth('/admin/dashboard-stats');
             if (data.success) {
                 const { stats, recentActivity, enrollmentTrends } = data;
                 
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 countUp('totalUsersCount', stats.totalUsers);
                 countUp('activeUsersCount', stats.activeUsers);
                 countUp('coursesCount', stats.totalCourses);
-                countUp('systemPerformance', stats.performance);
+                countUp('unreadOrdersCount', stats.unreadOrders);
 
                 // Update Visualizations
                 renderRecentActivity(recentActivity);

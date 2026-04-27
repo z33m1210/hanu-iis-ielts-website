@@ -42,18 +42,17 @@ exports.createReview = async (req, res, next) => {
         const { courseId, rating, comment } = req.body;
         const userId = req.user.id;
 
-        // Check if user is enrolled
-        const enrollment = await prisma.enrollment.findUnique({
+        // Check if user has a completed purchase (enrollment linked to a payment)
+        const enrollment = await prisma.enrollment.findFirst({
             where: {
-                studentId_courseId: {
-                    studentId: userId,
-                    courseId: parseInt(courseId)
-                }
+                studentId: userId,
+                courseId: parseInt(courseId),
+                paymentId: { not: null }
             }
         });
 
         if (!enrollment && req.user.role !== 'ADMIN') {
-            return res.status(403).json({ success: false, message: 'You must be enrolled to review this course.' });
+            return res.status(403).json({ success: false, message: 'Only verified buyers can review this course.' });
         }
 
         const review = await prisma.review.upsert({
@@ -89,6 +88,73 @@ exports.createReview = async (req, res, next) => {
         });
 
         res.json({ success: true, review });
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.checkCanReview = async (req, res, next) => {
+    try {
+        const { courseId } = req.params;
+        const userId = req.user.id;
+
+        // 1. Check Enrollment & Payment
+        const enrollment = await prisma.enrollment.findFirst({
+            where: {
+                studentId: userId,
+                courseId: parseInt(courseId),
+                paymentId: { not: null }
+            }
+        });
+
+        if (!enrollment && req.user.role !== 'ADMIN') {
+            return res.json({ 
+                success: true, 
+                canReview: false, 
+                reason: 'NOT_ENROLLED',
+                message: 'Only verified buyers can review this course.' 
+            });
+        }
+
+        // 2. Check for Existing Review
+        const existingReview = await prisma.review.findUnique({
+            where: {
+                userId_courseId: {
+                    userId,
+                    courseId: parseInt(courseId)
+                }
+            }
+        });
+
+        if (existingReview) {
+            return res.json({ 
+                success: true, 
+                canReview: false, 
+                reason: 'ALREADY_REVIEWED',
+                message: 'You have already reviewed this course.',
+                review: existingReview
+            });
+        }
+
+        res.json({ success: true, canReview: true });
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.getMyReviews = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+        const reviews = await prisma.review.findMany({
+            where: { userId },
+            include: {
+                course: {
+                    select: { id: true, title: true, image: true }
+                }
+            },
+            orderBy: { createdAt: 'desc' }
+        });
+        res.json({ success: true, reviews });
     } catch (error) {
         next(error);
     }

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Management | BandPath Admin</title>
+    <link rel="stylesheet" href="../admin.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .category-selection-admin {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .admin-cat-card {
+            background: white; border-radius: 16px; padding: 3rem;
+            border: 1px solid var(--outline-variant); cursor: pointer;
+            text-align: center; transition: all 0.2s;
+        }
+        .admin-cat-card:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); transform: translateY(-4px); }
+        .admin-cat-card i { width: 48px; height: 48px; margin-bottom: 1.5rem; }
+
+        .quiz-container { background: white; padding: 2rem; border-radius: 16px; box-shadow: var(--shadow-sm); display: none; }
+        .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+
+        .section-group { margin-bottom: 3rem; border: 1px solid var(--outline-variant); border-radius: 12px; overflow: hidden; }
+        .section-header { background: #f8fafc; padding: 1rem 1.5rem; border-bottom: 1px solid var(--outline-variant); display: flex; justify-content: space-between; align-items: center; }
+        .section-header h3 { font-size: 0.9rem; font-weight: 800; color: var(--on-surface); margin: 0; }
+        .section-questions { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+
+        .question-card { border: 1px solid var(--outline-variant); border-radius: 12px; padding: 1.25rem; transition: all 0.2s; background: white; }
+        .question-card:hover { border-color: var(--primary); }
+        .question-header { display: flex; justify-content: space-between; margin-bottom: 0.75rem; }
+        .badge-type { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .badge-mcq { background: #e0e7ff; color: #4338ca; }
+        .badge-short { background: #fef3c7; color: #92400e; }
+        
+        .action-btns { display: flex; gap: 0.5rem; }
+        .btn-icon { background: none; border: 1px solid var(--outline-variant); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--on-surface-variant); }
+        .btn-icon:hover { background: var(--surface-container-low); color: var(--primary); }
+        .btn-delete:hover { color: var(--error); border-color: var(--error); }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; width: 500px; max-width: 90%; padding: 2rem; border-radius: 16px; max-height: 90vh; overflow-y: auto; }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--on-surface); }
+        .form-control { width: 100%; padding: 0.75rem; border: 1px solid var(--outline-variant); border-radius: 8px; font-family: inherit; }
+    </style>
+</head>
+<body class="admin-layout">
+    <aside class="sidebar">
+        <div class="sidebar-logo" style="cursor: pointer;" onclick="window.location.href='../'">
+            <img src="../../logo (1).png" alt="BandPath Logo">
+            <span>BandPath</span>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../" class="nav-item"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a></li>
+                <li><a href="../users/" class="nav-item"><i data-lucide="users"></i><span>Users</span></a></li>
+                <li><a href="../courses/" class="nav-item"><i data-lucide="book-open"></i><span>Courses</span></a></li>
+                <li><a href="../orders/" class="nav-item"><i data-lucide="shopping-cart"></i><span>Orders</span></a></li>
+                <li><a href="./" class="nav-item active"><i data-lucide="help-circle"></i><span>Free Trial Quiz</span></a></li>
+                <li><a href="../settings/" class="nav-item"><i data-lucide="settings"></i><span>Settings</span></a></li>
+                <li><a href="#" id="logoutBtn" class="nav-item"><i data-lucide="log-out"></i><span>Logout</span></a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <div class="header-left">
+                <h1>Quiz Management</h1>
+                <p id="adminViewSubtitle">Choose a category to manage questions.</p>
+            </div>
+            <div id="categoryBackButton" style="display: none;">
+                <button class="btn-primary" style="background: white; color: var(--on-surface); border: 1px solid var(--outline-variant);" onclick="resetAdminView()">
+                    <i data-lucide="arrow-left"></i> Back to Categories
+                </button>
+            </div>
+        </header>
+
+        <div id="categorySelection" class="category-selection-admin">
+            <div class="admin-cat-card" onclick="selectCategory('LISTENING')">
+                <i data-lucide="headphones" style="color: var(--primary);"></i>
+                <h2>Listening</h2>
+                <p>Manage audio-based assessment questions.</p>
+            </div>
+            <div class="admin-cat-card" onclick="selectCategory('READING')">
+                <i data-lucide="book-open" style="color: #10b981;"></i>
+                <h2>Reading</h2>
+                <p>Manage passage-based assessment questions.</p>
+            </div>
+        </div>
+
+        <div class="quiz-container" id="quizContainer">
+            <div class="header-actions">
+                <h2 id="currentCategoryTitle">Questions</h2>
+                <button class="btn-primary" onclick="openModal()">
+                    <i data-lucide="plus"></i> Add Question
+                </button>
+            </div>
+
+            <div id="questionsList">
+                <p>Loading questions...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Question Modal -->
+    <div id="questionModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Add New Question</h2>
+            <form id="questionForm">
+                <input type="hidden" id="questionId">
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.25rem;">
+                    <div style="flex: 1;">
+                        <label>Category</label>
+                        <select id="qCategory" class="form-control" onchange="toggleCategory()" disabled>
+                            <option value="LISTENING">Listening</option>
+                            <option value="READING">Reading</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label>Question Type</label>
+                        <select id="qType" class="form-control" onchange="toggleOptions()">
+                            <option value="MCQ">Multiple Choice (MCQ)</option>
+                            <option value="SHORT_ANSWER">Short Answer</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Question Text</label>
+                    <textarea id="qText" class="form-control" rows="3" required></textarea>
+                </div>
+                <div id="mcqOptions" class="form-group">
+                    <label>Options (For MCQ)</label>
+                    <div id="optionsContainer" class="options-list"></div>
+                    <button type="button" class="btn-primary" style="margin-top: 1rem; padding: 0.5rem 1rem; font-size: 0.75rem;" onclick="addOption()">+ Add Option</button>
+                </div>
+                <div class="form-group">
+                    <label>Correct Answer</label>
+                    <input type="text" id="qCorrect" class="form-control" placeholder="Exact answer for validation" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Resource Section (Section ID)</label>
+                    <input type="text" id="qSectionId" class="form-control" placeholder="e.g. PASSAGE_1 or LISTENING_A">
+                </div>
+
+                <div id="listeningResource" class="form-group">
+                    <label>Audio File URL</label>
+                    <input type="text" id="qAudioUrl" class="form-control" placeholder="Audio URL">
+                </div>
+
+                <div id="readingResource" class="form-group" style="display: none;">
+                    <label>Reading Document URL</label>
+                    <input type="text" id="qDocumentUrl" class="form-control" placeholder="Document URL">
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn-primary" style="flex: 1;">Save Question</button>
+                    <button type="button" class="btn-primary" style="flex: 1; background: var(--surface-container-high); color: var(--on-surface);" onclick="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../auth.js"></script>
+    <script src="../common.js"></script>
+    <script src="../quiz.js"></script>
+</body>
+</html>

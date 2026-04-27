@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Page</title>
+    <title>My Profile – BandPath IELTS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
     <header>
         <div class="head-start">
             <div class="logo">
                 <img src="./logo (1).png">
-                <span>Byway</span>
+                <span>BandPath</span>
             </div>
-            <p>Categories</p>
-            <div class="search-container">
+            <p>IELTS Skills</p>
+            <div class="search-container" style="position:relative;">
                 <img src="./search-icon.png">
-                <input type="text" class="search-box" placeholder="Search courses">
-            </div>
+                <input type="text" class="search-box" placeholder="Search IELTS courses">
             </div>
         </div>
         <div class="func-bar">
@@ -32,175 +32,171 @@
                 <img src="./Frame 427318762.png" title="View Shopping Cart">
                 <span class="badge-count" id="cart-count">0</span>
             </div>
-
+            <!-- avatar injected by header-auth.js -->
         </div>
-    </header>  
+    </header>
+
     <div class="main-page">
+        <!-- ── LEFT SIDEBAR ─────────────────────────────── -->
         <div class="profile-section">
             <div class="profile-header">
-                <img src="./Ellipse 53.png">
-                <p>John Doe</p>
-                <button>Edit Profile</button>
+                <!-- Avatar: either image or initials circle -->
+                <div id="prof-avatar-circle" style="background:#4f46e5;">?</div>
+                <p id="prof-sidebarName">Loading...</p>
+                <button onclick="switchTab('profile')">Edit Profile</button>
             </div>
             <div class="sep-line1"></div>
             <div class="profile-func">
-                <div id="func1">
+                <div id="func1" class="active-tab" onclick="switchTab('profile')">
                     <p>Profile</p>
                 </div>
-                <div id="func2">
-                    <p>My Courses</p>
+                <div id="func2" onclick="switchTab('purchases')">
+                    <p>My Purchases</p>
                 </div>
-
-                <div id="func4">
-                    <p>Message</p>
-                </div>
-                <div id="func5">
+                <div id="func5" onclick="switchTab('reviews')">
                     <p>My Reviews</p>
                 </div>
             </div>
         </div>
-        <div class="basic-profile">
-            <div class="first-name">
-                <p>First Name</p>
-                <div class="form-field1">
-                <input type="text" id="prof-firstName" placeholder="First Name">
+
+        <!-- ── PROFILE TAB PANEL ─────────────────────────── -->
+        <div id="tab-profile" class="tab-panel active">
+            <div class="basic-profile">
+                <div class="first-name">
+                    <p>First Name</p>
+                    <div class="form-field1">
+                        <input type="text" id="prof-firstName" placeholder="First Name">
+                    </div>
                 </div>
-            </div>
-            <div class="last-name">
-                <p>Last Name</p>
-                <div class="form-field2">
-                <input type="text" id="prof-lastName" placeholder="Last Name">
+                <div class="last-name">
+                    <p>Last Name</p>
+                    <div class="form-field2">
+                        <input type="text" id="prof-lastName" placeholder="Last Name">
+                    </div>
                 </div>
-            </div>
-            <div class="email">
-                <p>Email</p>
-                <div class="form-field3">
-                <input type="text" id="prof-email" placeholder="Email" readonly>
+                <div class="email">
+                    <p>Email</p>
+                    <div class="form-field3">
+                        <input type="text" id="prof-email" placeholder="Email" readonly>
+                    </div>
+                </div>
+                <div class="lang">
+                    <p>Language</p>
+                    <div class="form-field5">
+                        <input type="text" id="prof-language" placeholder="e.g. English">
+                    </div>
                 </div>
             </div>
 
-            <div class="lang">
-                <p>Language</p>
-                <div class="form-field5">
-                <input type="text" placeholder="Label">
+            <div class="image-section">
+                <div class="img-up">
+                    <p>Image Preview</p>
+                    <div class="img-box">
+                        <img src="./Image.png" id="prof-imgPreview">
+                    </div>
                 </div>
+                <div class="add-change-img">
+                    <p>Add or Change Image</p>
+                    <div class="iac-button">
+                        <input type="file" id="prof-avatarFileInput" accept=".jpg,.jpeg,.png,.webp" style="display:none;">
+                        <input type="text" id="prof-imageUrl" placeholder="Or paste image URL">
+                    </div>
+                </div>
+                <button id="upload-btn">Upload Image</button>
+                <button id="save-btn">Save Changes</button>
             </div>
+
         </div>
-        <div class="image-section">
-            <div class="img-up">
-                <p>Image Preview</p>
-                <div class="img-box">
-                    <img src="./Image.png">
-                </div>
-            </div>
-            <div class="add-change-img">
-                <p>Add or Change Image</p>
-                <div class="iac-button">
-                <input type="text" placeholder="Label">
-                </div>
-            </div>
-            <button id="upload-btn">Upload Image</button>
-            <button id="save-btn">Save Changes</button>
-        </div>
-        <div class="link-section">
-            <p>Links</p>
-            <div class="link-field1">
-                <p>Website</p>
-                <div class="lf1-input">
-                <input type="text" placeholder="Label">
-                </div>
-            </div>
-            <div class="link-field2">
-                <p>X/Twitter Profile</p>
-                <div class="lf2-input">
-                <input type="text" placeholder="Label">
-                </div>
-            </div>
-            <div class="link-field3">
-                <p>LinkedIn Profile</p>
-                <div class="lf3-input">
-                <input type="text" placeholder="Label">
-                </div>
-            </div>
-            <div class="link-field4">
-                <p>Facebook Profile</p>
-                <div class="lf4-input">
-                <input type="text" placeholder="Label">
-                </div>
-            </div>
-            <div class="link-field5">
-                <p>Youtube Profile</p>
-                <div class="lf5-input">
-                <input type="text" placeholder="Label">
+
+        <!-- ── PURCHASES TAB PANEL ───────────────────────── -->
+        <div id="tab-purchases" class="tab-panel">
+            <!-- NEW: Purchased Content Section -->
+            <div class="enrolled-courses-section" style="grid-column: 1 / -1; margin-top: 40px;">
+                <h2 style="font-size: 24px; margin-bottom: 20px; color: #0f172a;">My Purchases</h2>
+                <div id="enrolled-courses-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;">
+                    <p style="color: #64748b;">Loading your purchases...</p>
                 </div>
             </div>
         </div>
 
-        <!-- NEW: Enrolled Courses Section -->
-        <div class="enrolled-courses-section" style="grid-column: 1 / -1; margin-top: 40px;">
-            <h2 style="font-size: 24px; margin-bottom: 20px; color: #0f172a;">My Enrolled Courses</h2>
-            <div id="enrolled-courses-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;">
-                <p style="color: #64748b;">Loading your courses...</p>
+        <!-- ── REVIEWS TAB PANEL ─────────────────────────── -->
+        <div id="tab-reviews" class="tab-panel">
+            <div class="my-reviews-section" style="grid-column: 1 / -1; margin-top: 40px;">
+                <h2 style="font-size: 24px; margin-bottom: 20px; color: #0f172a;">My Reviews</h2>
+                <div id="my-reviews-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 24px;">
+                    <p style="color: #64748b;">Loading your reviews...</p>
+                </div>
             </div>
         </div>
     </div>
+
     <footer>
         <div class="footer-info">
             <div class="footer-intro">
                 <div class="footer-logo">
-                    <img src="./logo (1).png" alt="Byway Logo" style="width: 31px; height: 40px;">
-                    <span>Byway</span>
+                    <img src="./logo (1).png" alt="BandPath Logo" style="width: 31px; height: 40px;">
+                    <span>BandPath</span>
                 </div>
-                <p>Empowering learners through accessible and engaging online education.</p>
-                <p>Byway is a leading online learning platform dedicated to providing high-quality, flexible, and affordable educational experiences.</p>
+                <p>Empowering IELTS learners to achieve their dream band score.</p>
+                <p>BandPath is Vietnam's leading IELTS preparation platform, delivering expert-led, flexible, and result-driven English language education.</p>
             </div>
-            
+
             <div class="get-help">
                 <p class="upper-p">Get Help</p>
                 <p>Contact Us</p>
                 <p>Latest Articles</p>
                 <p>FAQ</p>
             </div>
-            
+
             <div class="programs">
-                <p class="upper-p">Programs</p>
-                <p>Art & Design</p>
-                <p>Business</p>
-                <p>IT & Software</p>
-                <p>Languages</p>
-                <p>Programming</p>
+                <p class="upper-p">IELTS Skills</p>
+                <p>IELTS Listening</p>
+                <p>IELTS Reading</p>
+                <p>IELTS Writing</p>
+                <p>IELTS Speaking</p>
+                <p>Full Mock Tests</p>
             </div>
-            
+
             <div class="contact">
                 <div class="contact-us">
                     <p class="upper-p">Contact Us</p>
-                    <p>Address: 123 Main Street, Anytown, CA 12345</p>
-                    <p>Tel: +(123) 456-7890</p>
-                    <p>Mail: bywayellu@webkul.in</p>
+                    <p>Address: 45 Nguyen Hue, District 1, Ho Chi Minh City</p>
+                    <p>Tel: +(84) 028-3822-1234</p>
+                    <p>Mail: hello@bandpath.vn</p>
                 </div>
                 <div class="partner-button">
-                    <a href="#" class="icon-btn">
-                        <img src="./facebook.png" alt="Facebook">
-                    </a>
-                    <a href="#" class="icon-btn">
-                        <img src="./twitter.png" alt="Twitter">
-                    </a>
-                    <a href="#" class="icon-btn">
-                        <img src="./google.jpg" alt="Google">
-                    </a>
-                    <a href="#" class="icon-btn">
-                        <img src="github.png" alt="github">
-                    </a>
-                    <a href="#" class="icon-btn">
-                        <img src="./microsoft.png" alt="Microsoft">
-                    </a>
+                    <a href="#" class="icon-btn"><img src="./facebook.png" alt="Facebook"></a>
+                    <a href="#" class="icon-btn"><img src="./twitter.png" alt="Twitter"></a>
+                    <a href="#" class="icon-btn"><img src="./google.jpg" alt="Google"></a>
+                    <a href="#" class="icon-btn"><img src="github.png" alt="GitHub"></a>
+                    <a href="#" class="icon-btn"><img src="./microsoft.png" alt="Microsoft"></a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Toast for Notifications -->
+    <!-- Toast -->
     <div class="toast" id="toast" style="position:fixed; bottom:30px; right:30px; padding:15px; border-radius:8px; color:white; z-index:9999; display:none;"></div>
+
+    <!-- Review Modal -->
+    <div id="review-modal" class="modal" style="display:none; position:fixed; z-index:10000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+        <div class="modal-content" style="background:white; padding:32px; border-radius:16px; width:90%; max-width:500px; position:relative; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);">
+            <span class="close-modal" id="close-review-modal" style="position:absolute; right:20px; top:15px; font-size:24px; cursor:pointer; color:#64748b;">&times;</span>
+            <h2 id="modal-course-title" style="font-size:20px; margin-bottom:24px; color:#0f172a;">Write a Review</h2>
+            
+            <div class="star-selector" id="star-selector" style="display:flex; gap:8px; margin-bottom:24px; font-size:32px; color:#cbd5e1;">
+                <span data-rating="1" style="cursor:pointer; transition: color 0.2s;">★</span>
+                <span data-rating="2" style="cursor:pointer; transition: color 0.2s;">★</span>
+                <span data-rating="3" style="cursor:pointer; transition: color 0.2s;">★</span>
+                <span data-rating="4" style="cursor:pointer; transition: color 0.2s;">★</span>
+                <span data-rating="5" style="cursor:pointer; transition: color 0.2s;">★</span>
+            </div>
+            
+            <textarea id="review-comment" placeholder="Share your experience with this course..." style="width:100%; height:120px; padding:12px; border:1px solid #e2e8f0; border-radius:8px; margin-bottom:24px; font-size:14px; outline:none; resize:none;"></textarea>
+            
+            <button id="submit-review-btn" style="width:100%; padding:14px; background:#4f46e5; color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer; transition:background 0.2s;">Submit Review</button>
+        </div>
+    </div>
 
     <script src="../auth.js"></script>
     <script src="../cart.js"></script>
